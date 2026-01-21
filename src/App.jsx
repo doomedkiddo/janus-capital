@@ -84,10 +84,10 @@ const translations = {
       members: [
         { name: "Ricky", role: "Founder • Alfa1 PM • 20M USDT AUM" },
         { name: "Li Qi", role: "CICC" },
-        { name: "Louis Lee", role: "Optiver Senior Dev" },
+        { name: "Louise Lee", role: "Optiver Senior Dev" },
         { name: "Peter", role: "Former QRT Quant Researcher" },
-        { name: "ZY", role: "Minghong • Senior Portfolio Optimization Expert" },
-        { name: "Jarden", role: "High-Frequency Market Making" },
+        { name: "ZY", role: "A Top 10B RMB Hedge Fund • Senior Portfolio Optimization Expert" },
+        { name: "Evan", role: "High-Frequency Market Making" },
       ],
     },
     strategy: {
@@ -210,10 +210,10 @@ const translations = {
       members: [
         { name: "Ricky", role: "创始人 · Alfa1 PM · 2000万USDT AUM" },
         { name: "Li Qi", role: "中金（CICC）" },
-        { name: "Louis Lee", role: "Optiver 资深开发" },
+        { name: "Louise Lee", role: "Optiver 资深开发" },
         { name: "Peter", role: "前 QRT 量化研究员" },
-        { name: "ZY", role: "明汯 · 资深组合优化专家" },
-        { name: "Jarden", role: "高频做市（MM）" },
+        { name: "ZY", role: "某百亿私募 · 资深组合优化专家" },
+        { name: "Evan", role: "高频做市（MM）" },
       ],
     },
     strategy: {
@@ -266,7 +266,7 @@ const teamAvatars = [
   "/avatars/rainie.svg",
   "/avatars/peter.svg",
   "/avatars/zy.svg",
-  "/avatars/jarden.svg",
+  "/avatars/evan.svg",
 ];
 
 const teamIcons = [Crown, Landmark, BarChart3, ShieldCheck, Layers, Zap];
