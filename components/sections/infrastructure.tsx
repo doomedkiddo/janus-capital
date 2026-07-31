@@ -45,18 +45,21 @@ export function Infrastructure() {
           <div className="grid grid-cols-3 gap-3 md:gap-4">
             {copy.stats.map((stat, index) => (
               <BlurFade key={stat.label} delay={0.14 + index * 0.06}>
-                <div className="card h-full rounded-xl p-3 text-center md:p-5">
-                  <div className="font-display text-lg font-bold text-navy-600 sm:text-xl md:text-2xl">
+                <div className="card flex h-full flex-col items-center gap-1 rounded-xl p-3 text-center md:gap-1.5 md:p-5">
+                  <div className="font-display text-lg font-bold tabular-nums text-navy-600 sm:text-xl md:text-2xl">
                     {stat.ticker !== undefined ? (
                       <>
                         <NumberTicker value={stat.ticker} delay={index * 0.1} />
-                        {stat.suffix}
+                        <span className="ml-0.5 text-xs font-semibold text-navy-400 md:text-sm">
+                          {stat.suffix}
+                        </span>
                       </>
                     ) : (
                       stat.value
                     )}
                   </div>
-                  <div className="mt-1 text-[8px] uppercase leading-tight tracking-wider text-slate-500 sm:text-[10px] md:mt-2 md:text-xs">
+                  <span aria-hidden className="h-0.5 w-5 rounded-full bg-bronze-400/70" />
+                  <div className="text-[8px] uppercase leading-tight tracking-wider text-slate-500 sm:text-[10px] md:text-xs">
                     {stat.label}
                   </div>
                 </div>
@@ -78,7 +81,7 @@ export function Infrastructure() {
                     key={region}
                     className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white/70 px-2.5 py-1.5 text-[11px] font-medium text-slate-600 backdrop-blur md:text-xs"
                   >
-                    <span className="h-1 w-1 rounded-full bg-emerald-500" />
+                    <span className="h-1 w-1 rounded-full bg-bronze-400" />
                     {region}
                   </span>
                 ))}
@@ -92,10 +95,14 @@ export function Infrastructure() {
             <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 md:text-xs">
               {copy.pipeline}
             </div>
-            <div className="space-y-3 md:space-y-5">
+            <div className="relative space-y-3 md:space-y-5">
+              <span
+                aria-hidden
+                className="absolute bottom-3 left-3 top-3 w-px bg-gradient-to-b from-navy-100 via-navy-200/80 to-navy-100 md:left-4"
+              />
               {copy.steps.map((step, index) => (
                 <BlurFade key={step} delay={0.16 + index * 0.08}>
-                  <div className="flex items-center gap-3 md:gap-4">
+                  <div className="relative flex items-center gap-3 md:gap-4">
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-navy-100 bg-navy-50 font-display text-xs font-semibold text-navy-600 md:h-8 md:w-8 md:text-sm">
                       {index + 1}
                     </span>

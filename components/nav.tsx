@@ -76,7 +76,7 @@ export function Nav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="relative py-1 transition-colors hover:text-navy-600 after:absolute after:-bottom-0.5 after:left-0 after:h-[1.5px] after:w-0 after:bg-navy-600 after:transition-all after:duration-300 hover:after:w-full"
+                className="relative rounded py-1 transition-colors hover:text-navy-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 after:absolute after:-bottom-0.5 after:left-0 after:h-[1.5px] after:w-0 after:bg-navy-600 after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.label}
               </a>
@@ -84,7 +84,7 @@ export function Nav() {
             <Link
               href="/about"
               className={cn(
-                "relative inline-flex items-center gap-1.5 py-1 font-serif text-[15px] tracking-wide transition-colors",
+                "relative inline-flex items-center gap-1.5 rounded py-1 font-serif text-[15px] tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60",
                 pathname === "/about"
                   ? "text-bronze-600"
                   : "text-slate-600 hover:text-bronze-600",
@@ -99,13 +99,13 @@ export function Nav() {
             <button
               onClick={toggle}
               aria-label="Switch language"
-              className="rounded-lg border border-slate-200 px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50 md:px-4 md:py-2 md:text-xs"
+              className="min-w-[3rem] rounded-lg border border-slate-200 px-2 py-1.5 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 md:min-w-[4.25rem] md:px-3 md:py-2 md:text-xs"
             >
               {lang === "en" ? "中文" : "EN"}
             </button>
             <button
               onClick={handleContact}
-              className="group hidden items-center gap-1.5 rounded-lg bg-navy-600 px-4 py-1.5 text-xs font-semibold text-white transition-all hover:bg-navy-700 hover:shadow-[0_6px_18px_-6px_rgba(46,76,127,0.6)] sm:flex md:px-6 md:py-2 md:text-sm"
+              className="group hidden items-center gap-1.5 rounded-lg bg-navy-600 px-4 py-1.5 text-xs font-semibold text-white transition-all hover:bg-navy-700 hover:shadow-[0_6px_18px_-6px_rgba(46,76,127,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 focus-visible:ring-offset-2 sm:flex md:px-6 md:py-2 md:text-sm"
             >
               {copy.cta}
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -113,7 +113,7 @@ export function Nav() {
             <button
               onClick={() => setMobileOpen((prev) => !prev)}
               aria-label="Toggle menu"
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 md:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 md:hidden"
             >
               {mobileOpen ? (
                 <X className="h-5 w-5 text-slate-600" />

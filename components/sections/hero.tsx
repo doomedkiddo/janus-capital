@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight, ChevronDown, Download } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Mail } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Marquee } from "@/components/ui/marquee";
 import { GridPattern } from "@/components/ui/patterns";
+import { useContact } from "@/components/contact-modal";
 import { home } from "@/lib/i18n/home";
 import { useLanguage } from "@/lib/i18n/language-context";
 
@@ -13,10 +14,11 @@ export function Hero() {
   const { lang } = useLanguage();
   const copy = home[lang].hero;
   const reduce = useReducedMotion();
+  const { open } = useContact();
   const tickerItems = copy.ticker.split(" • ");
 
   return (
-    <section className="relative flex min-h-[86vh] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white px-4 pb-14 pt-20 md:min-h-[90vh] md:px-6 md:pb-16 md:pt-24">
+    <section className="relative flex min-h-[78vh] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-slate-50 via-white to-white px-4 pb-14 pt-20 md:min-h-[90vh] md:px-6 md:pb-16 md:pt-24">
       <GridPattern
         width={56}
         height={56}
@@ -102,17 +104,18 @@ export function Hero() {
           <div className="flex flex-col items-center justify-center gap-3 px-4 pt-1 sm:flex-row md:gap-4">
             <a
               href="#strategy"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy-600 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-navy-700 hover:shadow-[0_14px_32px_-12px_rgba(46,76,127,0.7)] sm:w-auto md:px-10 md:py-4 md:text-base"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy-600 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-navy-700 hover:shadow-[0_14px_32px_-12px_rgba(46,76,127,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 focus-visible:ring-offset-2 sm:w-auto md:px-10 md:py-4 md:text-base"
             >
               {copy.ctaPrimary}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
             <button
               type="button"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/80 px-6 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur transition-all hover:border-slate-400 hover:bg-white sm:w-auto md:px-10 md:py-4 md:text-base"
+              onClick={open}
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/80 px-6 py-3.5 text-sm font-semibold text-slate-700 backdrop-blur transition-all hover:border-slate-400 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 focus-visible:ring-offset-2 sm:w-auto md:px-10 md:py-4 md:text-base"
             >
               {copy.ctaSecondary}
-              <Download className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+              <Mail className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5" />
             </button>
           </div>
         </BlurFade>

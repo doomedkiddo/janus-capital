@@ -42,7 +42,7 @@ export type HomeCopy = {
     subtitle: string;
     items: TaggedItem[];
   };
-  dashboard: { title1: string; title2: string; badge: string; subtitle: string };
+  dashboard: { title1: string; title2: string; badge: string; subtitle: string; panels: string[] };
   team: {
     title1: string;
     title2: string;

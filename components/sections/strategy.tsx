@@ -33,7 +33,7 @@ export function Strategy() {
 
           <ul className="space-y-4 md:space-y-6">
             {copy.items.map((item, index) => (
-              <BlurFade key={item.title} delay={0.12 + index * 0.06} as="li">
+              <BlurFade key={item.title} delay={0.06 + index * 0.04} as="li">
                 <div className="group flex items-start gap-3 md:gap-4">
                   <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-navy-100 bg-navy-50 text-navy-600 transition-colors group-hover:border-navy-200 group-hover:bg-navy-100 md:mt-1 md:h-8 md:w-8">
                     <Check className="h-3 w-3 md:h-4 md:w-4" />
@@ -110,6 +110,9 @@ export function Strategy() {
                   <BarChart3 className="h-3.5 w-3.5 text-navy-400" />
                   PnL · 30D
                 </div>
+                <span className="absolute right-3 top-3 text-[9px] font-semibold uppercase tracking-wider text-slate-300 md:right-5 md:top-5 md:text-[10px]">
+                  UTC · 4H
+                </span>
                 <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-lg border border-slate-200 bg-white/90 p-2 shadow-sm backdrop-blur md:bottom-6 md:left-6 md:right-6 md:rounded-xl md:p-4">
                   <div className="flex items-center gap-2 md:gap-3">
                     <span className="relative flex h-1.5 w-1.5 md:h-2 md:w-2">

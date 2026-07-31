@@ -24,7 +24,23 @@ export function SectionHeading({
 
   return (
     <div className={cn("flex flex-col gap-4 md:gap-6", className)}>
-      <BlurFade>
+      {badge ? (
+        <BlurFade>
+          <div
+            className={cn(
+              "flex items-center gap-3",
+              centered ? "justify-center" : "justify-center md:justify-start",
+            )}
+          >
+            <span className="h-px w-8 bg-navy-300/80" />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-navy-600 md:text-[11px]">
+              {badge}
+            </span>
+          </div>
+        </BlurFade>
+      ) : null}
+
+      <BlurFade delay={badge ? 0.06 : 0}>
         <h2
           className={cn(
             "font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl",
@@ -39,7 +55,7 @@ export function SectionHeading({
       </BlurFade>
 
       {subtitle ? (
-        <BlurFade delay={0.08}>
+        <BlurFade delay={0.12}>
           <p
             className={cn(
               "max-w-2xl text-sm leading-relaxed text-slate-500 md:text-base",
@@ -48,19 +64,6 @@ export function SectionHeading({
           >
             {subtitle}
           </p>
-        </BlurFade>
-      ) : null}
-
-      {badge ? (
-        <BlurFade delay={0.14}>
-          <div
-            className={cn(
-              "w-fit rounded-xl border border-navy-100 bg-navy-50 px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-navy-700 md:px-6 md:py-3 md:text-xs",
-              centered ? "mx-auto" : "mx-auto md:mx-0",
-            )}
-          >
-            {badge}
-          </div>
         </BlurFade>
       ) : null}
     </div>

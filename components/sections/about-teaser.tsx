@@ -62,7 +62,7 @@ export function AboutTeaser() {
 
                 <Link
                   href="/about"
-                  className="group mt-2 inline-flex items-center gap-2 rounded-xl border border-bronze-400/60 bg-white/60 px-5 py-2.5 font-serif text-sm text-bronze-700 backdrop-blur transition-all hover:border-bronze-500 hover:bg-white hover:shadow-[0_10px_26px_-14px_rgba(140,109,63,0.55)] md:px-6 md:py-3 md:text-base"
+                  className="group mt-2 inline-flex items-center gap-2 rounded-xl border border-bronze-400/60 bg-white/60 px-5 py-2.5 font-serif text-sm text-bronze-700 backdrop-blur transition-all hover:border-bronze-500 hover:bg-white hover:shadow-[0_10px_26px_-14px_rgba(140,109,63,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bronze-400/70 focus-visible:ring-offset-2 md:px-6 md:py-3 md:text-base"
                 >
                   {copy.cta}
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
