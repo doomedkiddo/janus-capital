@@ -1,10 +1,12 @@
-const { execSync, spawn } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
 
-const distPath = path.join(__dirname, 'dist');
+// Next.js static export output. `-s` (SPA fallback) must NOT be used here:
+// it would rewrite /about to the root index.html.
+const rootPath = path.join(__dirname, 'out');
 const port = 3002;
 
-const serve = spawn('serve', ['-s', distPath, '-l', port], {
+const serve = spawn('serve', [rootPath, '-l', port], {
   stdio: 'inherit',
   cwd: __dirname,
 });

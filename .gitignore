@@ -7,6 +7,15 @@ node_modules/
 dist/
 build/
 
+# Next.js
+.next/
+out/
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Local verification scratch
+.tmp/
+
 # Environment variables
 .env
 .env.local
