@@ -2,6 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
+    screens: {
+      'xs': '400px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       colors: {
         // Brand Navy Scale (from logo blue)
@@ -43,51 +51,26 @@ export default {
           800: "#1B3049",
           900: "#0F1B27",
         },
-        // Semantic mappings
+        // Semantic mappings (light theme)
         primary: "#2E4C7F",
-        secondary: "#1B2336",
-        cta: "#5694D1",
-        accent: "#B9C0CC",
-        background: "#0C101A",
-        surface: "#141A28",
-        text: "#F6F7FB",
-        border: "#222B3D",
-        muted: "#7A8599",
-        highlight: "#D4D8E0",
+        secondary: "#3E6FB2",
+        cta: "#2E4C7F",
+        accent: "#3E6FB2",
+        background: "#FFFFFF",
+        surface: "#F8FAFC",
+        text: "#0F172A",
+        border: "#E2E8F0",
+        muted: "#64748B",
+        highlight: "#EFF4FB",
       },
       fontFamily: {
-        display: ["Press Start 2P", "Noto Sans SC", "system-ui"],
-        body: ["VT323", "Noto Sans SC", "system-ui"],
+        display: ["Inter", "Noto Sans SC", "system-ui"],
+        body: ["Inter", "Noto Sans SC", "system-ui"],
       },
       animation: {
-        glow: "glow 2s ease-in-out infinite alternate",
-        float: "float 6s ease-in-out infinite",
-        "float-slow": "floatSlow 10s ease-in-out infinite",
-        scan: "scan 6s linear infinite",
-        "pulse-soft": "pulseSoft 4s ease-in-out infinite",
-        ticker: "ticker 18s linear infinite",
+        ticker: "ticker 32s linear infinite",
       },
       keyframes: {
-        glow: {
-          "0%": { boxShadow: "0 0 8px rgba(86, 148, 209, 0.25)" },
-          "100%": { boxShadow: "0 0 28px rgba(86, 148, 209, 0.55)" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-20px)" },
-        },
-        floatSlow: {
-          "0%, 100%": { transform: "translateY(0) translateX(0)" },
-          "50%": { transform: "translateY(-12px) translateX(10px)" },
-        },
-        scan: {
-          "0%": { transform: "translateY(-60%)" },
-          "100%": { transform: "translateY(60%)" },
-        },
-        pulseSoft: {
-          "0%, 100%": { opacity: 0.4, transform: "scale(0.98)" },
-          "50%": { opacity: 0.9, transform: "scale(1.02)" },
-        },
         ticker: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
