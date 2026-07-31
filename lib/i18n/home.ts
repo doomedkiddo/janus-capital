@@ -7,7 +7,7 @@ export const home: Record<Lang, HomeCopy> = {
       about: "About",
       team: "Team",
       strategy: "Strategy",
-      story: "Our Name",
+      story: "Janus",
       cta: "Connect",
     },
     contact: {
@@ -162,7 +162,7 @@ export const home: Record<Lang, HomeCopy> = {
       about: "关于我们",
       team: "团队",
       strategy: "策略",
-      story: "品牌溯源",
+      story: "Janus",
       cta: "联系",
     },
     contact: {
