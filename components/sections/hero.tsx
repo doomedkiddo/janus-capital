@@ -66,9 +66,11 @@ export function Hero() {
         </BlurFade>
 
         <motion.h1
-          initial={reduce ? undefined : { opacity: 0, letterSpacing: "0.14em", filter: "blur(8px)" }}
-          animate={reduce ? undefined : { opacity: 1, letterSpacing: "-0.015em", filter: "blur(0px)" }}
-          transition={{ delay: 0.22, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, letterSpacing: "0.14em", filter: "blur(8px)" }}
+          animate={{ opacity: 1, letterSpacing: "-0.015em", filter: "blur(0px)" }}
+          transition={
+            reduce ? { duration: 0 } : { delay: 0.22, duration: 1.1, ease: [0.22, 1, 0.36, 1] }
+          }
           className="font-display text-3xl font-extrabold leading-[1.08] text-slate-900 sm:text-4xl md:text-6xl lg:text-[4.25rem]"
         >
           {copy.title1}

@@ -41,9 +41,11 @@ export function AboutHero() {
         </BlurFade>
 
         <motion.h1
-          initial={reduce ? undefined : { opacity: 0, letterSpacing: "0.42em", filter: "blur(10px)" }}
-          animate={reduce ? undefined : { opacity: 1, letterSpacing: "0.14em", filter: "blur(0px)" }}
-          transition={{ delay: 0.18, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, letterSpacing: "0.42em", filter: "blur(10px)" }}
+          animate={{ opacity: 1, letterSpacing: "0.14em", filter: "blur(0px)" }}
+          transition={
+            reduce ? { duration: 0 } : { delay: 0.18, duration: 1.5, ease: [0.22, 1, 0.36, 1] }
+          }
           className="mt-7 pl-[0.14em] font-serif text-[3.25rem] font-normal leading-none text-navy-800 sm:text-7xl md:mt-9 md:text-[6.5rem]"
         >
           {copy.wordmark}

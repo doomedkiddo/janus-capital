@@ -47,7 +47,8 @@ export function BlurFade({
   const MotionTag = motion[as];
 
   if (reduce) {
-    return <div className={className}>{children}</div>;
+    const Tag = as;
+    return <Tag className={className}>{children}</Tag>;
   }
 
   return (
