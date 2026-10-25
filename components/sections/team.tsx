@@ -23,7 +23,7 @@ export function Team() {
           className="mb-12 md:mb-16"
         />
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
           {copy.members.map((member, index) => {
             const Icon = icons[index] ?? ShieldCheck;
             return (

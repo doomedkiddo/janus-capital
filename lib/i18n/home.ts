@@ -87,12 +87,9 @@ export const home: Record<Lang, HomeCopy> = {
       subtitle:
         "Our team brings together veterans from the world's most sophisticated quantitative trading firms and hedge funds. We combine traditional finance rigor with crypto-native agility. All members are 985+ or equivalent.",
       members: [
-        { name: "Ricky", role: "Founder • Alfa1 PM • 20M USDT AUM" },
-        { name: "Li", role: "Top Brokerage" },
+        { name: "Ricky", role: "Founder • Bitget • 20M USDT AUM" },
         { name: "Louise Lee", role: "Optiver Senior Dev" },
         { name: "Peter", role: "Former QRT Quant Researcher" },
-        { name: "ZY", role: "A Top 10B RMB Hedge Fund • Senior Portfolio Optimization Expert" },
-        { name: "Evan", role: "High-Frequency Market Making" },
       ],
     },
     teaser: {
@@ -218,12 +215,9 @@ export const home: Record<Lang, HomeCopy> = {
       subtitle:
         "团队成员来自全球顶尖量化交易机构与对冲基金，融合传统金融严谨与加密原生效率。全员985以上及同等学力。",
       members: [
-        { name: "Ricky", role: "创始人 · Alfa1 PM · 2000万USDT AUM" },
-        { name: "Li", role: "头部券商" },
+        { name: "Ricky", role: "创始人 · Bitget · 2000万USDT AUM" },
         { name: "Louise Lee", role: "Optiver 资深开发" },
         { name: "Peter", role: "前 QRT 量化研究员" },
-        { name: "ZY", role: "某百亿私募 · 资深组合优化专家" },
-        { name: "Evan", role: "高频做市（MM）" },
       ],
     },
     teaser: {
