@@ -4,11 +4,25 @@
 
 :root {
   color-scheme: light;
+  /* default colour scheme (lib/themes.ts "evergreen"); ThemeProvider overrides these for the others */
+  --c-ink: 15 33 27; --c-ink2: 22 51 41; --c-ink3: 31 74 60; --c-ink4: 47 102 82; --c-ink-soft: 184 197 189; --c-deep: 11 26 21;
+  --c-paper: 244 239 228; --c-paper2: 251 248 241; --c-rule: 230 224 210; --c-rule2: 207 200 184; --c-rule-faint: 239 234 223; --c-wash: 223 233 227;
+  --c-accent: 216 191 138; --c-accent2: 180 138 60; --c-neg: 163 55 90; --c-neg-soft: 241 217 224; --c-mute: 124 130 122;
+  --font-headline: var(--font-garamond), var(--font-noto-serif), Georgia, "Songti SC", serif;
+  --headline-weight: 400; --headline-case: none; --headline-tracking: -0.01em;
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Large headings take the scheme's face: serif in most schemes, bold uppercase sans in the monochrome one */
+.headline {
+  font-family: var(--font-headline);
+  font-weight: var(--headline-weight);
+  text-transform: var(--headline-case);
+  letter-spacing: var(--headline-tracking);
 }
 
 body {
@@ -150,16 +164,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4efe4;
+  background: rgb(var(--c-paper));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cfc8b8;
+  background: rgb(var(--c-rule2));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #b48a3c;
+  background: rgb(var(--c-accent2));
 }
 
 @media (prefers-reduced-motion: reduce) {

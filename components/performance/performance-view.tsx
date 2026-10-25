@@ -6,7 +6,7 @@ import { performance, type StrategyCopy } from "@/lib/i18n/performance";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { STRATEGIES, mult, pct, utc, type PerformanceRecord } from "@/lib/performance";
 import { cn } from "@/lib/utils";
-import { Frame, P, areaPath, at, linePath, ticks } from "./charts";
+import { Frame, areaPath, at, linePath, ticks, useChartPalette } from "./charts";
 
 const fmt = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
 const pctAxis = (v: number) => `${Math.round(v * 100)}%`.replace("-", "−");
@@ -31,7 +31,7 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
   const meta = copy.strategies[entry.id];
 
   const tabs = STRATEGIES.length > 1 && (
-    <div role="tablist" className="inline-flex rounded-full bg-ivory-100/[0.06] p-1 ring-1 ring-ivory-100/10">
+    <div role="tablist" className="inline-flex rounded-full bg-paper/[0.06] p-1 ring-1 ring-paper/10">
       {STRATEGIES.map((s) => (
         <button
           key={s.id}
@@ -40,7 +40,7 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
           onClick={() => setActive(s.id)}
           className={cn(
             "rounded-full px-6 py-2 text-sm font-medium transition-colors md:px-8",
-            s.id === entry.id ? "bg-ivory-100 text-pine-900" : "text-ivory-100/70 hover:text-ivory-100",
+            s.id === entry.id ? "bg-paper text-ink" : "text-paper/70 hover:text-paper",
           )}
         >
           {copy.strategies[s.id].venue}
@@ -49,27 +49,27 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
     </div>
   );
   const asof = rec && rec !== "error" && (
-    <p className="text-xs tabular-nums tracking-wide text-ivory-100/50 md:text-sm">
+    <p className="text-xs tabular-nums tracking-wide text-paper/50 md:text-sm">
       {fmt(copy.asof, { t: utc(rec.asof, "ymdhm") })}
-      <span className="mx-2 text-brass-500">·</span>
+      <span className="mx-2 text-accent-2">·</span>
       {fmt(copy.since, { t: utc(rec.since, "ymdhm"), note: meta.sinceNote })}
     </p>
   );
 
   return (
-    <div className="bg-ivory-100">
+    <div className="bg-paper">
       {home ? (
-        <div className="bg-pine-900 px-4 pb-24 pt-4 text-ivory-100 md:px-6 md:pb-32 md:pt-6">
-          <div className="mx-auto grid max-w-7xl gap-10 border-t border-ivory-100/10 pt-14 md:grid-cols-[1.3fr_1fr] md:items-end md:pt-20">
+        <div className="bg-ink px-4 pb-24 pt-4 text-paper md:px-6 md:pb-32 md:pt-6">
+          <div className="mx-auto grid max-w-7xl gap-10 border-t border-paper/10 pt-14 md:grid-cols-[1.3fr_1fr] md:items-end md:pt-20">
             <div>
               <BlurFade>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brass-300 md:text-xs">{copy.overline}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent md:text-xs">{copy.overline}</p>
               </BlurFade>
               <BlurFade delay={0.06}>
-                <h2 className="mt-5 font-serif text-4xl leading-[1.05] sm:text-5xl md:text-7xl">{copy.title}</h2>
+                <h2 className="mt-5 headline text-4xl leading-[1.05] sm:text-5xl md:text-7xl">{copy.title}</h2>
               </BlurFade>
               <BlurFade delay={0.12}>
-                <p className="mt-6 max-w-2xl text-base leading-relaxed text-ivory-100/70 md:text-lg">{copy.lede}</p>
+                <p className="mt-6 max-w-2xl text-base leading-relaxed text-paper/70 md:text-lg">{copy.lede}</p>
               </BlurFade>
             </div>
             <BlurFade delay={0.16} className="flex flex-col items-start gap-5 md:items-end md:text-right">
@@ -79,16 +79,16 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
           </div>
         </div>
       ) : (
-        <div className="bg-pine-900 px-4 pb-20 pt-20 text-center text-ivory-100 md:px-6 md:pb-28 md:pt-28">
+        <div className="bg-ink px-4 pb-20 pt-20 text-center text-paper md:px-6 md:pb-28 md:pt-28">
           <div className="mx-auto max-w-4xl">
             <BlurFade>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brass-300 md:text-xs">{copy.overline}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent md:text-xs">{copy.overline}</p>
             </BlurFade>
             <BlurFade delay={0.08}>
-              <h1 className="mt-7 font-serif text-5xl leading-[1.02] sm:text-6xl md:text-8xl">{copy.title}</h1>
+              <h1 className="mt-7 headline text-5xl leading-[1.02] sm:text-6xl md:text-8xl">{copy.title}</h1>
             </BlurFade>
             <BlurFade delay={0.16}>
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ivory-100/70 md:text-lg">{copy.lede}</p>
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-paper/70 md:text-lg">{copy.lede}</p>
             </BlurFade>
             <BlurFade delay={0.2} className="mt-9 flex flex-col items-center gap-5">
               {tabs}
@@ -100,13 +100,13 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
 
       <div className="relative mx-auto -mt-12 max-w-7xl px-4 pb-20 md:-mt-16 md:px-6 md:pb-28">
         <BlurFade>
-          <div className="rounded-[28px] bg-ivory-50 p-6 ring-1 ring-ivory-200 md:p-10">
+          <div className="rounded-[28px] bg-paper-2 p-6 ring-1 ring-rule md:p-10">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brass-500">{meta.kind}</p>
-                <h3 className="mt-3 font-serif text-3xl leading-tight text-pine-900 md:text-[2.6rem]">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">{meta.kind}</p>
+                <h3 className="mt-3 headline text-3xl leading-tight text-ink md:text-[2.6rem]">
                   {meta.name}
-                  <span className="mt-1 block font-display text-base font-semibold tracking-wide text-pine-700 md:ml-3 md:mt-0 md:inline md:align-middle md:text-lg">
+                  <span className="mt-1 block font-display text-base font-semibold tracking-wide text-ink-3 md:ml-3 md:mt-0 md:inline md:align-middle md:text-lg">
                     <span className="hidden md:inline">· </span>
                     {meta.venue}
                   </span>
@@ -114,14 +114,14 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
               </div>
               <div className="flex flex-wrap gap-2 md:justify-end">
                 {meta.tags.map((t) => (
-                  <span key={t} className="rounded-full border border-pine-700/20 px-3.5 py-1.5 text-xs font-medium text-pine-700">
+                  <span key={t} className="rounded-full border border-ink-3/20 px-3.5 py-1.5 text-xs font-medium text-ink-3">
                     {t}
                   </span>
                 ))}
               </div>
             </div>
-            {rec === undefined && <p className="mt-10 text-sm text-[#7c827a]">{copy.loading}</p>}
-            {rec === "error" && <p className="mt-10 text-sm text-claret">{copy.failed}</p>}
+            {rec === undefined && <p className="mt-10 text-sm text-mute">{copy.loading}</p>}
+            {rec === "error" && <p className="mt-10 text-sm text-neg">{copy.failed}</p>}
             {rec && rec !== "error" && <Kpis rec={rec} meta={meta} />}
           </div>
         </BlurFade>
@@ -146,7 +146,7 @@ function Kpis({ rec, meta }: { rec: PerformanceRecord; meta: StrategyCopy }) {
       label: c.best[0],
       value: (
         <>
-          {pct(k.best_day)} <span className="text-[#a3375a]">/ {pct(k.worst_day)}</span>
+          {pct(k.best_day)} <span className="text-neg">/ {pct(k.worst_day)}</span>
         </>
       ),
       sub: c.best[1],
@@ -155,28 +155,28 @@ function Kpis({ rec, meta }: { rec: PerformanceRecord; meta: StrategyCopy }) {
     { label: c.turn[0], value: mult(k.turnover_per_day, 0), sub: fmt(c.turn[1], { c: mult(k.turnover, 0) }) },
   ];
   return (
-    <div className="mt-10 grid grid-cols-2 border-t border-[#13241e] lg:grid-cols-4">
+    <div className="mt-10 grid grid-cols-2 border-t border-ink lg:grid-cols-4">
       {items.map((it, i) => (
         <div
           key={it.label}
           className={cn(
-            "border-b border-[#e6e0d2] py-5 pr-3 md:py-7",
+            "border-b border-rule py-5 pr-3 md:py-7",
             i % 2 === 1 && "pl-4 md:pl-6 border-l",
             i % 4 !== 0 && "lg:border-l lg:pl-6",
             i % 4 === 0 && "lg:border-l-0 lg:pl-0",
           )}
         >
-          <p className="text-xs text-[#7c827a] md:text-sm">{it.label}</p>
+          <p className="text-xs text-mute md:text-sm">{it.label}</p>
           <p
             className={cn(
               "mt-2 font-display font-semibold tabular-nums tracking-tight",
               i === 5 ? "text-xl md:text-[1.7rem]" : "text-2xl md:text-[2.1rem]",
-              it.tone === "neg" ? "text-[#a3375a]" : "text-[#13241e]",
+              it.tone === "neg" ? "text-neg" : "text-ink",
             )}
           >
             {it.value}
           </p>
-          <p className="mt-1.5 text-[11px] text-[#9a9e95] md:text-xs">{it.sub}</p>
+          <p className="mt-1.5 text-[11px] text-mute/80 md:text-xs">{it.sub}</p>
         </div>
       ))}
     </div>
@@ -185,10 +185,10 @@ function Kpis({ rec, meta }: { rec: PerformanceRecord; meta: StrategyCopy }) {
 
 function Card({ title, desc, children, className }: { title: string; desc?: string; children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("rounded-[28px] bg-[#fbf8f1] p-5 ring-1 ring-[#e6e0d2] md:p-8", className)}>
+    <div className={cn("rounded-[28px] bg-paper-2 p-5 ring-1 ring-rule md:p-8", className)}>
       <div className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 className="font-serif text-xl text-[#13241e] md:text-2xl">{title}</h3>
-        {desc && <span className="text-xs text-[#7c827a] md:text-sm">{desc}</span>}
+        <h3 className="headline text-xl text-ink md:text-2xl">{title}</h3>
+        {desc && <span className="text-xs text-mute md:text-sm">{desc}</span>}
       </div>
       {children}
     </div>
@@ -196,6 +196,7 @@ function Card({ title, desc, children, className }: { title: string; desc?: stri
 }
 
 function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy; notes: string[] }) {
+  const P = useChartPalette();
   const { lang } = useLanguage();
   const copy = performance[lang];
   const [hover, setHover] = useState<number | null>(null);
@@ -230,14 +231,14 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
       <BlurFade>
         <Card title={copy.nav.title} desc={copy.nav.desc}>
           <div className="relative">
-            <div className="pointer-events-none absolute left-0 top-0 z-10 min-h-[44px] text-xs tabular-nums text-[#5d655e]">
+            <div className="pointer-events-none absolute left-0 top-0 z-10 min-h-[44px] text-xs tabular-nums text-ink/70">
               {hi && (
-                <div className="rounded-xl bg-white/90 px-3 py-2 shadow-sm ring-1 ring-[#e6e0d2]">
-                  <div className="text-[#7c827a]">{utc(hi[0], "ymdhm")} UTC</div>
+                <div className="rounded-xl bg-paper-2/95 px-3 py-2 shadow-sm ring-1 ring-rule">
+                  <div className="text-mute">{utc(hi[0], "ymdhm")} UTC</div>
                   <div className="mt-0.5">
-                    {copy.nav.tooltipNav} <b className="text-[#13241e]">{hi[1].toFixed(3)}</b>
-                    <span className="mx-1.5 text-[#cfc8b8]">|</span>
-                    {copy.nav.tooltipDd} <b className="text-[#a3375a]">{pct(hi[2])}</b>
+                    {copy.nav.tooltipNav} <b className="text-ink">{hi[1].toFixed(3)}</b>
+                    <span className="mx-1.5 text-rule-2">|</span>
+                    {copy.nav.tooltipDd} <b className="text-neg">{pct(hi[2])}</b>
                   </div>
                 </div>
               )}
@@ -370,11 +371,11 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
       </div>
 
       <BlurFade>
-        <div className="rounded-[28px] bg-pine-900 p-6 text-[13px] leading-relaxed text-pine-200 md:p-8">
+        <div className="rounded-[28px] bg-ink p-6 text-[13px] leading-relaxed text-ink-soft md:p-8">
           <ol className="grid gap-4 md:grid-cols-3 md:gap-8">
             {notes.map((n, i) => (
               <li key={i} className="flex gap-3">
-                <span className="font-serif text-[#d8bf8a]">{i + 1}</span>
+                <span className="headline text-accent">{i + 1}</span>
                 <span>{fmt(n, { m: k.maker.toFixed(1) })}</span>
               </li>
             ))}
@@ -386,13 +387,14 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
 }
 
 function Daily({ rec }: { rec: PerformanceRecord }) {
+  const P = useChartPalette();
   const { lang } = useLanguage();
   const c = performance[lang].daily;
   const rows = rec.daily.rows;
   const bmax = Math.max(...rows.map((r) => Math.abs(r[1])));
   return (
     <div>
-      <div className="grid grid-cols-[112px_minmax(0,1fr)_68px_60px] gap-x-2 border-b border-[#13241e] pb-2 text-[11px] text-[#7c827a] md:text-xs">
+      <div className="grid grid-cols-[112px_minmax(0,1fr)_68px_60px] gap-x-2 border-b border-ink pb-2 text-[11px] text-mute md:text-xs">
         <span>{c.cols[0]}</span>
         <span />
         <span className="text-right">{c.cols[1]}</span>
@@ -403,15 +405,15 @@ function Daily({ rec }: { rec: PerformanceRecord }) {
           key={d}
           className={cn(
             "grid grid-cols-[112px_minmax(0,1fr)_68px_60px] gap-x-2 items-center py-[7px] text-[13px] tabular-nums",
-            i % 2 === 0 && "bg-[#f4efe4]/70",
+            i % 2 === 0 && "bg-paper/70",
           )}
         >
-          <span className={cn("pl-1", part ? "text-[#9a9e95]" : "text-[#13241e]")}>
+          <span className={cn("pl-1", part ? "text-mute/80" : "text-ink")}>
             {utc(d, "ymd")}
             {part ? " *" : ""}
           </span>
           <span className="relative h-2.5">
-            <span className="absolute inset-y-[-6px] left-1/2 w-px bg-[#cfc8b8]" />
+            <span className="absolute inset-y-[-6px] left-1/2 w-px bg-rule-2" />
             <span
               className="absolute top-0 h-2.5 rounded-[2px]"
               style={{
@@ -422,11 +424,11 @@ function Daily({ rec }: { rec: PerformanceRecord }) {
               }}
             />
           </span>
-          <span className={cn("text-right font-medium", r >= 0 ? "text-[#13241e]" : "text-[#a3375a]")}>{pct(r)}</span>
-          <span className="pr-1 text-right text-[#13241e]">{v.toFixed(3)}</span>
+          <span className={cn("text-right font-medium", r >= 0 ? "text-ink" : "text-neg")}>{pct(r)}</span>
+          <span className="pr-1 text-right text-ink">{v.toFixed(3)}</span>
         </div>
       ))}
-      <div className="border-t border-[#13241e] pt-2 text-[11px] text-[#9a9e95]">{c.partial}</div>
+      <div className="border-t border-ink pt-2 text-[11px] text-mute/80">{c.partial}</div>
     </div>
   );
 }

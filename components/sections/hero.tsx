@@ -12,14 +12,14 @@ export function Hero() {
   const { open } = useContact();
 
   return (
-    <section className="flex min-h-[72vh] flex-col items-center justify-center bg-pine-900 px-4 pb-20 pt-20 text-center text-ivory-100 md:min-h-[82vh] md:px-6 md:pb-28 md:pt-28">
+    <section className="flex min-h-[72vh] flex-col items-center justify-center bg-ink px-4 pb-20 pt-20 text-center text-paper md:min-h-[82vh] md:px-6 md:pb-28 md:pt-28">
       <div className="w-full max-w-5xl">
         <BlurFade delay={0.05}>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brass-300 md:text-xs">{copy.tagline}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent md:text-xs">{copy.tagline}</p>
         </BlurFade>
 
         <BlurFade delay={0.14}>
-          <h1 className="mt-7 font-serif text-5xl leading-[1.02] sm:text-6xl md:mt-9 md:text-8xl lg:text-[7rem]">
+          <h1 className="mt-7 headline text-5xl leading-[1.02] sm:text-6xl md:mt-9 md:text-8xl lg:text-[7rem]">
             {copy.title1}
             <br />
             {copy.title2}
@@ -27,7 +27,7 @@ export function Hero() {
         </BlurFade>
 
         <BlurFade delay={0.26}>
-          <p className="mx-auto mt-7 max-w-xl font-serif text-lg italic text-ivory-100/70 md:mt-9 md:text-2xl">
+          <p className="mx-auto mt-7 max-w-xl headline text-lg italic text-paper/70 md:mt-9 md:text-2xl">
             {copy.inscription}
           </p>
         </BlurFade>
@@ -36,7 +36,7 @@ export function Hero() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row md:mt-12 md:gap-4">
             <a
               href="#performance"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-ivory-100 px-7 py-3.5 text-sm font-semibold text-pine-900 transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-300/60 sm:w-auto md:px-9 md:py-4 md:text-base"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-paper px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto md:px-9 md:py-4 md:text-base"
             >
               {copy.ctaPrimary}
               <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -44,7 +44,7 @@ export function Hero() {
             <button
               type="button"
               onClick={open}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-ivory-100/30 px-7 py-3.5 text-sm font-semibold text-ivory-100 transition-colors hover:border-ivory-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-300/60 sm:w-auto md:px-9 md:py-4 md:text-base"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-paper/30 px-7 py-3.5 text-sm font-semibold text-paper transition-colors hover:border-paper/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto md:px-9 md:py-4 md:text-base"
             >
               {copy.ctaSecondary}
               <Mail className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5" />
@@ -55,7 +55,7 @@ export function Hero() {
 
       <a
         href="#performance"
-        className="mt-16 hidden items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-ivory-100/40 transition-colors hover:text-brass-300 md:inline-flex"
+        className="mt-16 hidden items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-paper/40 transition-colors hover:text-accent md:inline-flex"
       >
         {copy.scroll}
         <ArrowUpRight className="h-3.5 w-3.5 rotate-[135deg]" />

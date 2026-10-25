@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Inter, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n/language-context";
+import { ThemeProvider } from "@/lib/theme-context";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -61,7 +62,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       )}
     >
       <body>
-        <LanguageProvider>{children}</LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

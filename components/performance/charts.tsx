@@ -2,21 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { utc } from "@/lib/performance";
+import { useChartPalette } from "@/lib/theme-context";
 
-// Palette of the performance page: evergreen, ivory and brass, with claret for losses.
-export const P = {
-  ink: "#13241e",
-  forest: "#1f4a3c",
-  forest2: "#2f6652",
-  wash: "#dfe9e3",
-  paper: "#fbf8f1",
-  rule: "#e6e0d2",
-  faint: "#efeadf",
-  mute: "#7c827a",
-  brass: "#b48a3c",
-  claret: "#a3375a",
-  claretWash: "#f1d9e0",
-};
+export { useChartPalette } from "@/lib/theme-context";
 
 export function useWidth<T extends HTMLElement>() {
   const ref = useRef<T>(null);
@@ -76,6 +64,7 @@ const PAD_R = 46;
 /** Time-series frame: day grid, right-hand y axis, optional day labels and a shared hover line. */
 export function Frame({ t0, t1, lo, hi, height, yTicks, yFormat, xLabels = true, dayStep = 1, hoverT, onHover, children, className, ariaLabel }: FrameProps) {
   const [ref, width] = useWidth<HTMLDivElement>();
+  const P = useChartPalette();
   const padB = xLabels ? 26 : 6;
   const w = Math.max(width - PAD_R, 10);
   const h = height - padB;
