@@ -13,7 +13,7 @@ export type TitledItem = {
 export type TaggedItem = TitledItem & { tag: string };
 
 export type HomeCopy = {
-  nav: { about: string; team: string; strategy: string; story: string; cta: string };
+  nav: { about: string; team: string; strategy: string; performance: string; story: string; cta: string };
   contact: {
     title: string;
     desc: string;

@@ -14,6 +14,7 @@ export function Footer() {
     { href: "/#about", label: copy.nav.about },
     { href: "/#team", label: copy.nav.team },
     { href: "/#strategy", label: copy.nav.strategy },
+    { href: "/performance", label: copy.nav.performance },
     { href: "/about", label: copy.nav.story },
   ];
 

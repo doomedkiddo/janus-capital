@@ -82,6 +82,15 @@ export function Nav() {
               </a>
             ))}
             <Link
+              href="/performance"
+              className={cn(
+                "relative rounded py-1 transition-colors hover:text-navy-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 after:absolute after:-bottom-0.5 after:left-0 after:h-[1.5px] after:bg-navy-600 after:transition-all after:duration-300 hover:after:w-full",
+                pathname === "/performance" ? "text-navy-600 after:w-full" : "after:w-0",
+              )}
+            >
+              {copy.performance}
+            </Link>
+            <Link
               href="/about"
               className={cn(
                 "relative inline-flex items-center gap-1.5 rounded py-1 font-serif text-[15px] tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60",
@@ -143,6 +152,13 @@ export function Nav() {
                   {link.label}
                 </a>
               ))}
+              <Link
+                href="/performance"
+                onClick={() => setMobileOpen(false)}
+                className="border-b border-slate-100 py-3 text-lg font-medium text-slate-700 transition-colors hover:text-navy-600"
+              >
+                {copy.performance}
+              </Link>
               <Link
                 href="/about"
                 onClick={() => setMobileOpen(false)}
