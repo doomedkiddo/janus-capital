@@ -1,4 +1,4 @@
-// Live performance records, as exported by binance_mm's live_web_export.py. Only ratios are published (net value, drawdown,
+// Live performance records: Binance from binance_mm's live_web_export.py, Bitget from scripts/export_bitget_performance.py (bg-dash's data). Only ratios are published (net value, drawdown,
 // returns, leverage, turnover multiples): no dollar amount, position or coin. The page fetches the file at runtime, so replacing
 // the JSON under public/data/performance/ (or out/data/performance/ on the server) updates the page without a rebuild.
 
@@ -32,7 +32,10 @@ export type PerformanceRecord = {
 
 export type StrategyEntry = { id: string; data: string };
 
-export const STRATEGIES: StrategyEntry[] = [{ id: "market-making", data: "/data/performance/market-making.json" }];
+export const STRATEGIES: StrategyEntry[] = [
+  { id: "binance", data: "/data/performance/market-making-binance.json" },
+  { id: "bitget", data: "/data/performance/market-making-bitget.json" },
+];
 
 export const pct = (v: number, digits = 1, sign = true) =>
   `${sign && v > 0 ? "+" : ""}${(v * 100).toFixed(digits)}%`.replace("-", "−");

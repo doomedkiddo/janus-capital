@@ -22,6 +22,7 @@ export function Nav() {
   const prefix = onHome ? "" : "/";
 
   const links = [
+    { href: `${prefix}#performance`, label: copy.performance },
     { href: `${prefix}#about`, label: copy.about },
     { href: `${prefix}#team`, label: copy.team },
     { href: `${prefix}#strategy`, label: copy.strategy },
@@ -81,15 +82,6 @@ export function Nav() {
                 {link.label}
               </a>
             ))}
-            <Link
-              href="/performance"
-              className={cn(
-                "relative rounded py-1 transition-colors hover:text-navy-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 after:absolute after:-bottom-0.5 after:left-0 after:h-[1.5px] after:bg-navy-600 after:transition-all after:duration-300 hover:after:w-full",
-                pathname === "/performance" ? "text-navy-600 after:w-full" : "after:w-0",
-              )}
-            >
-              {copy.performance}
-            </Link>
             <Link
               href="/about"
               className={cn(
@@ -152,13 +144,6 @@ export function Nav() {
                   {link.label}
                 </a>
               ))}
-              <Link
-                href="/performance"
-                onClick={() => setMobileOpen(false)}
-                className="border-b border-slate-100 py-3 text-lg font-medium text-slate-700 transition-colors hover:text-navy-600"
-              >
-                {copy.performance}
-              </Link>
               <Link
                 href="/about"
                 onClick={() => setMobileOpen(false)}

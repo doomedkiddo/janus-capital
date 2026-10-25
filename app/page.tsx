@@ -1,8 +1,8 @@
 import { ContactProvider } from "@/components/contact-modal";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
+import { PerformanceView } from "@/components/performance/performance-view";
 import { AboutTeaser } from "@/components/sections/about-teaser";
-import { Dashboard } from "@/components/sections/dashboard";
 import { Hero } from "@/components/sections/hero";
 import { Infrastructure } from "@/components/sections/infrastructure";
 import { Overview } from "@/components/sections/overview";
@@ -16,6 +16,9 @@ export default function HomePage() {
       <Nav />
       <main>
         <Hero />
+        <section id="performance" className="scroll-mt-16">
+          <PerformanceView variant="home" />
+        </section>
         <Stats />
         <div className="mx-auto max-w-6xl px-4 md:px-6">
           <div className="divider" />
@@ -24,7 +27,6 @@ export default function HomePage() {
         <Team />
         <AboutTeaser />
         <Strategy />
-        <Dashboard />
         <Infrastructure />
       </main>
       <Footer />

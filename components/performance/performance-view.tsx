@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { performance } from "@/lib/i18n/performance";
+import { performance, type StrategyCopy } from "@/lib/i18n/performance";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { STRATEGIES, mult, pct, utc, type PerformanceRecord } from "@/lib/performance";
 import { cn } from "@/lib/utils";
@@ -11,13 +11,14 @@ import { Frame, P, areaPath, at, linePath, ticks } from "./charts";
 const fmt = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
 const pctAxis = (v: number) => `${Math.round(v * 100)}%`.replace("-", "−");
 
-export function PerformanceView() {
+export function PerformanceView({ variant = "page" }: { variant?: "page" | "home" }) {
   const { lang } = useLanguage();
   const copy = performance[lang];
   const [active, setActive] = useState(STRATEGIES[0].id);
   const [data, setData] = useState<Record<string, PerformanceRecord | "error">>({});
   const entry = STRATEGIES.find((s) => s.id === active) ?? STRATEGIES[0];
   const rec = data[entry.id];
+  const home = variant === "home";
 
   useEffect(() => {
     if (data[entry.id]) return;
@@ -28,10 +29,16 @@ export function PerformanceView() {
   }, [entry, data]);
 
   const meta = copy.strategies[entry.id];
+  const Title = home ? "h2" : "h1";
 
   return (
-    <main className="bg-[#f4efe4]">
-      <section className="relative overflow-hidden bg-[#0f211b] px-4 pb-20 pt-20 text-center md:px-6 md:pb-28 md:pt-28">
+    <div className="bg-[#f4efe4]">
+      <div
+        className={cn(
+          "relative overflow-hidden bg-[#0f211b] px-4 text-center md:px-6",
+          home ? "pb-20 pt-16 md:pb-28 md:pt-24" : "pb-20 pt-20 md:pb-28 md:pt-28",
+        )}
+      >
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -61,47 +68,61 @@ export function PerformanceView() {
             </span>
           </BlurFade>
           <BlurFade delay={0.08}>
-            <h1 className="mt-7 font-serif text-5xl leading-[1.05] text-[#f4efe4] sm:text-6xl md:text-8xl">{copy.title}</h1>
+            <Title
+              className={cn(
+                "mt-7 font-serif leading-[1.05] text-[#f4efe4]",
+                home ? "text-4xl sm:text-5xl md:text-7xl" : "text-5xl sm:text-6xl md:text-8xl",
+              )}
+            >
+              {copy.title}
+            </Title>
           </BlurFade>
           <BlurFade delay={0.16}>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#c9d3cc] md:text-lg">{copy.lede}</p>
           </BlurFade>
-          {rec && rec !== "error" && (
-            <BlurFade delay={0.24}>
-              <p className="mt-8 text-xs tabular-nums tracking-wide text-[#8fa69a] md:text-sm">
-                {fmt(copy.asof, { t: utc(rec.asof, "ymdhm") })}
-                <span className="mx-2 text-[#b48a3c]">·</span>
-                {fmt(copy.since, { t: utc(rec.since, "ymdhm") })}
-              </p>
+          {STRATEGIES.length > 1 && (
+            <BlurFade delay={0.2}>
+              <div role="tablist" className="mt-9 inline-flex rounded-full bg-white/[0.06] p-1 ring-1 ring-white/10">
+                {STRATEGIES.map((s) => (
+                  <button
+                    key={s.id}
+                    role="tab"
+                    aria-selected={s.id === entry.id}
+                    onClick={() => setActive(s.id)}
+                    className={cn(
+                      "rounded-full px-6 py-2 text-sm font-medium transition-colors md:px-8",
+                      s.id === entry.id ? "bg-[#f4efe4] text-[#13241e]" : "text-[#c9d3cc] hover:text-white",
+                    )}
+                  >
+                    {copy.strategies[s.id].venue}
+                  </button>
+                ))}
+              </div>
             </BlurFade>
           )}
+          {rec && rec !== "error" && (
+            <p className="mt-6 text-xs tabular-nums tracking-wide text-[#8fa69a] md:text-sm">
+              {fmt(copy.asof, { t: utc(rec.asof, "ymdhm") })}
+              <span className="mx-2 text-[#b48a3c]">·</span>
+              {fmt(copy.since, { t: utc(rec.since, "ymdhm"), note: meta.sinceNote })}
+            </p>
+          )}
         </div>
-      </section>
+      </div>
 
       <div className="relative mx-auto -mt-10 max-w-7xl px-4 pb-20 md:-mt-14 md:px-6 md:pb-28">
-        {STRATEGIES.length > 1 && (
-          <div className="mb-5 flex flex-wrap justify-center gap-2">
-            {STRATEGIES.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setActive(s.id)}
-                className={cn(
-                  "rounded-full px-5 py-2 text-sm font-medium transition-colors",
-                  s.id === entry.id ? "bg-[#f4efe4] text-[#13241e]" : "bg-white/10 text-[#c9d3cc] hover:bg-white/20",
-                )}
-              >
-                {copy.strategies[s.id]?.name ?? s.id}
-              </button>
-            ))}
-          </div>
-        )}
-
         <BlurFade>
           <div className="rounded-[28px] bg-[#fbf8f1] p-6 shadow-[0_30px_80px_-40px_rgba(15,33,27,0.55)] ring-1 ring-[#e6e0d2] md:p-10">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-2xl">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b48a3c]">{meta.kind}</p>
-                <h2 className="mt-3 font-serif text-3xl leading-tight text-[#13241e] md:text-[2.6rem]">{meta.name}</h2>
+                <h3 className="mt-3 font-serif text-3xl leading-tight text-[#13241e] md:text-[2.6rem]">
+                  {meta.name}
+                  <span className="mt-1 block font-display text-base font-semibold tracking-wide text-[#1f4a3c] md:ml-3 md:mt-0 md:inline md:align-middle md:text-lg">
+                    <span className="hidden md:inline">· </span>
+                    {meta.venue}
+                  </span>
+                </h3>
               </div>
               <div className="flex flex-wrap gap-2 md:justify-end">
                 {meta.tags.map((t) => (
@@ -113,22 +134,22 @@ export function PerformanceView() {
             </div>
             {rec === undefined && <p className="mt-10 text-sm text-[#7c827a]">{copy.loading}</p>}
             {rec === "error" && <p className="mt-10 text-sm text-[#a3375a]">{copy.failed}</p>}
-            {rec && rec !== "error" && <Kpis rec={rec} />}
+            {rec && rec !== "error" && <Kpis rec={rec} meta={meta} />}
           </div>
         </BlurFade>
 
-        {rec && rec !== "error" && <Body rec={rec} />}
+        {rec && rec !== "error" && <Body key={entry.id} rec={rec} meta={meta} notes={[...meta.notes, ...copy.notes]} />}
       </div>
-    </main>
+    </div>
   );
 }
 
-function Kpis({ rec }: { rec: PerformanceRecord }) {
+function Kpis({ rec, meta }: { rec: PerformanceRecord; meta: StrategyCopy }) {
   const { lang } = useLanguage();
   const c = performance[lang].kpi;
   const k = rec.kpi;
   const items: { label: string; value: React.ReactNode; sub: string; tone?: "neg" }[] = [
-    { label: c.cum[0], value: pct(k.cum_return), sub: c.cum[1] },
+    { label: c.cum, value: pct(k.cum_return), sub: meta.cumSub },
     { label: c.dd[0], value: pct(k.max_dd), sub: fmt(c.dd[1], { a: utc(k.dd_peak), b: utc(k.dd_trough) }), tone: "neg" },
     { label: c.sharpe[0], value: k.sharpe?.toFixed(2) ?? "—", sub: fmt(c.sharpe[1], { n: k.n_days }) },
     { label: c.vol[0], value: k.daily_vol == null ? "—" : pct(k.daily_vol, 1, false), sub: c.vol[1] },
@@ -186,7 +207,7 @@ function Card({ title, desc, children, className }: { title: string; desc?: stri
   );
 }
 
-function Body({ rec }: { rec: PerformanceRecord }) {
+function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy; notes: string[] }) {
   const { lang } = useLanguage();
   const copy = performance[lang];
   const [hover, setHover] = useState<number | null>(null);
@@ -322,7 +343,7 @@ function Body({ rec }: { rec: PerformanceRecord }) {
         </BlurFade>
         <div className="space-y-6 lg:col-span-7">
           <BlurFade>
-            <Card title={copy.lev.title} desc={`${copy.lev.desc} · ${copy.lev.mean} ${mult(k.lev_mean)}`}>
+            <Card title={copy.lev.title} desc={`${meta.levDesc} · ${copy.lev.mean} ${mult(k.lev_mean)}`}>
               <Frame t0={t0} t1={t1} lo={0} hi={levHi} height={200} yTicks={ticks(0, levHi, 3)} yFormat={(v) => `${v}×`} dayStep={2 * step} ariaLabel={copy.lev.title}>
                 {({ x, y }) => {
                   const band = [...lev.map((r) => [x(r[0]), y(r[3])] as [number, number]), ...[...lev].reverse().map((r) => [x(r[0]), y(r[2])] as [number, number])];
@@ -338,7 +359,7 @@ function Body({ rec }: { rec: PerformanceRecord }) {
             </Card>
           </BlurFade>
           <BlurFade>
-            <Card title={copy.turn.title} desc={copy.turn.desc}>
+            <Card title={copy.turn.title} desc={meta.turnDesc}>
               <Frame t0={t0} t1={t1} lo={0} hi={turnHi} height={200} yTicks={ticks(0, turnHi, 3)} yFormat={(v) => `${v.toLocaleString("en-US")}×`} dayStep={2 * step} ariaLabel={copy.turn.title}>
                 {({ x, y, h }) => {
                   const pts = turn.map((r) => [x(r[0]), y(r[1])] as [number, number]);
@@ -363,7 +384,7 @@ function Body({ rec }: { rec: PerformanceRecord }) {
       <BlurFade>
         <div className="rounded-[28px] bg-[#0f211b] p-6 text-[13px] leading-relaxed text-[#b8c5bd] md:p-8">
           <ol className="grid gap-4 md:grid-cols-3 md:gap-8">
-            {copy.notes.map((n, i) => (
+            {notes.map((n, i) => (
               <li key={i} className="flex gap-3">
                 <span className="font-serif text-[#d8bf8a]">{i + 1}</span>
                 <span>{fmt(n, { m: k.maker.toFixed(1) })}</span>

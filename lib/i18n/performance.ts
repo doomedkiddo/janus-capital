@@ -1,5 +1,17 @@
 import type { Lang } from "./language-context";
 
+export type StrategyCopy = {
+  venue: string;
+  name: string;
+  kind: string;
+  tags: string[];
+  sinceNote: string;
+  cumSub: string;
+  levDesc: string;
+  turnDesc: string;
+  notes: string[];
+};
+
 export type PerformanceCopy = {
   overline: string;
   title: string;
@@ -8,9 +20,9 @@ export type PerformanceCopy = {
   since: string;
   loading: string;
   failed: string;
-  strategies: Record<string, { name: string; kind: string; tags: string[] }>;
+  strategies: Record<string, StrategyCopy>;
   kpi: {
-    cum: [string, string];
+    cum: string;
     dd: [string, string];
     sharpe: [string, string];
     vol: [string, string];
@@ -21,8 +33,8 @@ export type PerformanceCopy = {
   };
   nav: { title: string; desc: string; dd: string; mdd: string; peak: string; tooltipNav: string; tooltipDd: string };
   daily: { title: string; desc: string; cols: [string, string, string]; partial: string };
-  lev: { title: string; desc: string; mean: string };
-  turn: { title: string; desc: string };
+  lev: { title: string; mean: string };
+  turn: { title: string };
   notes: string[];
 };
 
@@ -30,20 +42,41 @@ export const performance: Record<Lang, PerformanceCopy> = {
   en: {
     overline: "Live record",
     title: "Live Performance",
-    lede: "Every figure below comes from the exchange's own trade records on a live account, marked to market. Amounts are not disclosed.",
+    lede: "Every figure below comes from live accounts on the exchanges, marked to market. Amounts are not disclosed.",
     asof: "As of {t} UTC",
-    since: "Since {t} UTC (last restart)",
+    since: "Since {t} UTC{note}",
     loading: "Loading the live record…",
     failed: "The live record could not be loaded. Please try again later.",
     strategies: {
-      "market-making": {
+      binance: {
+        venue: "Binance",
         name: "Market-Making Strategy",
         kind: "High-frequency maker",
         tags: ["USDT-margined perpetuals", "Passive execution"],
+        sinceNote: " (last restart)",
+        cumSub: "since restart",
+        levDesc: "gross position ÷ equity, hourly mean and range",
+        turnDesc: "notional ÷ starting equity",
+        notes: [
+          "Binance. Net value marked to market (open positions included), 1 = equity at the restart, not compounded; order size was raised twice (Oct 15, Oct 18).",
+        ],
+      },
+      bitget: {
+        venue: "Bitget",
+        name: "Market-Making Strategy",
+        kind: "High-frequency maker",
+        tags: ["USDT-margined perpetuals", "Passive execution"],
+        sinceNote: " (first live day)",
+        cumSub: "since going live",
+        levDesc: "gross position ÷ account equity, hourly mean and range",
+        turnDesc: "notional ÷ equity at the time, summed",
+        notes: [
+          "Bitget, whole account. Net value from 30-second equity snapshots (open positions included), deposits and withdrawals taken out (one deposit on Oct 14), chained (compounded); order size was raised several times.",
+        ],
       },
     },
     kpi: {
-      cum: ["Cumulative return", "since restart"],
+      cum: "Cumulative return",
       dd: ["Max drawdown", "{a} to {b}"],
       sharpe: ["Sharpe ratio", "daily, annualised · n = {n}"],
       vol: ["Daily volatility", "sd of daily returns"],
@@ -62,10 +95,9 @@ export const performance: Record<Lang, PerformanceCopy> = {
       tooltipDd: "Drawdown",
     },
     daily: { title: "Daily performance", desc: "UTC days", cols: ["Date", "Return", "Net value"], partial: "* partial day" },
-    lev: { title: "Leverage", desc: "gross position ÷ equity, hourly mean and range", mean: "mean" },
-    turn: { title: "Cumulative turnover", desc: "notional ÷ starting equity" },
+    lev: { title: "Leverage", mean: "mean" },
+    turn: { title: "Cumulative turnover" },
     notes: [
-      "Net value marked to market (open positions included), 1 = equity at the restart, not compounded; order size was raised twice (Oct 15, Oct 18).",
       "Sharpe from complete UTC days, annualised by √365; the record is under a year, so returns are not annualised. Passive fills {m}%. Amounts not disclosed. Times in UTC.",
       "Live account record, for information only. Past performance is not indicative of future results.",
     ],
@@ -73,20 +105,39 @@ export const performance: Record<Lang, PerformanceCopy> = {
   zh: {
     overline: "实盘记录",
     title: "实盘业绩",
-    lede: "以下数据均来自实盘账户在交易所的成交记录，按市价计值。金额不披露。",
+    lede: "以下数据均来自交易所实盘账户，按市价计值。金额不披露。",
     asof: "截至 {t} UTC",
-    since: "自 {t} UTC 起（最近一次重启）",
+    since: "自 {t} UTC 起{note}",
     loading: "正在载入实盘记录…",
     failed: "实盘记录暂时无法载入，请稍后再试。",
     strategies: {
-      "market-making": {
+      binance: {
+        venue: "Binance",
         name: "Market-Making 策略",
         kind: "高频做市",
         tags: ["USDT 本位永续合约", "全挂单执行"],
+        sinceNote: "（最近一次重启）",
+        cumSub: "自重启以来",
+        levDesc: "总持仓名义 ÷ 权益，小时均值与区间",
+        turnDesc: "成交额 ÷ 起始权益",
+        notes: ["Binance。净值按市价计（含未平仓头寸浮动盈亏），以重启时权益为 1，不复投；期间两次上调单笔规模（10-15、10-18）。"],
+      },
+      bitget: {
+        venue: "Bitget",
+        name: "Market-Making 策略",
+        kind: "高频做市",
+        tags: ["USDT 本位永续合约", "全挂单执行"],
+        sinceNote: "（首日上线）",
+        cumSub: "自上线以来",
+        levDesc: "总持仓名义 ÷ 账户权益，小时均值与区间",
+        turnDesc: "成交额 ÷ 当时权益，累计",
+        notes: [
+          "Bitget，账户整体。净值取自每 30 秒的账户权益快照（含未平仓头寸浮动盈亏），剔除入金 / 出金（10-14 入金一笔）后逐段连乘（复利）；期间多次上调单笔规模。",
+        ],
       },
     },
     kpi: {
-      cum: ["累计收益", "自重启以来"],
+      cum: "累计收益",
       dd: ["最大回撤", "{a} → {b}"],
       sharpe: ["夏普比率", "日收益年化 · n = {n}"],
       vol: ["日波动率", "日收益标准差"],
@@ -105,10 +156,9 @@ export const performance: Record<Lang, PerformanceCopy> = {
       tooltipDd: "回撤",
     },
     daily: { title: "逐日表现", desc: "UTC 日", cols: ["日期", "日收益", "期末净值"], partial: "* 不足一日" },
-    lev: { title: "持仓杠杆", desc: "总持仓名义 ÷ 权益，小时均值与区间", mean: "均值" },
-    turn: { title: "累计换手", desc: "成交额 ÷ 起始权益" },
+    lev: { title: "持仓杠杆", mean: "均值" },
+    turn: { title: "累计换手" },
     notes: [
-      "净值按市价计（含未平仓头寸浮动盈亏），以重启时权益为 1，不复投；期间两次上调单笔规模（10-15、10-18）。",
       "夏普比率以完整 UTC 日收益计算，按 √365 年化；样本不足一年，收益率不作年化。挂单成交占 {m}%。金额不披露。时间均为 UTC。",
       "以上为实盘账户记录，仅供参考；过往业绩不代表未来表现。",
     ],

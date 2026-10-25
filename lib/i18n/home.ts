@@ -75,13 +75,6 @@ export const home: Record<Lang, HomeCopy> = {
         },
       ],
     },
-    dashboard: {
-      title1: "REAL-TIME",
-      title2: "MONITORING",
-      badge: "Unified Control Plane",
-      subtitle: "Multi-venue surveillance, risk overlays, and live execution telemetry.",
-      panels: ["Portfolio Overview", "Equity Curve", "Mobile Ops"],
-    },
     team: {
       title1: "ELITE",
       title2: "PEDIGREE",
@@ -203,13 +196,6 @@ export const home: Record<Lang, HomeCopy> = {
         { title: "流动性网络", desc: "跨 CeFi 与 DeFi 的最优流动性调度。", tag: "7x24" },
         { title: "LLM 智能", desc: "大语言模型深度参与研究与信号生成。", tag: "前沿 AI" },
       ],
-    },
-    dashboard: {
-      title1: "实时",
-      title2: "监控",
-      badge: "Unified Control Plane",
-      subtitle: "多交易所监控、风控覆盖与实时执行遥测。",
-      panels: ["组合总览", "净值曲线", "移动端运维"],
     },
     team: {
       title1: "顶级",
