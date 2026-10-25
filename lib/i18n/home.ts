@@ -4,7 +4,6 @@ import type { HomeCopy } from "./types";
 export const home: Record<Lang, HomeCopy> = {
   en: {
     nav: {
-      about: "About",
       team: "Team",
       strategy: "Strategy",
       performance: "Performance",
@@ -22,58 +21,14 @@ export const home: Record<Lang, HomeCopy> = {
     },
     hero: {
       tagline: "Empowering the Future of Crypto Trading",
-      title1: "DECODING THE",
-      title2: "DIGITAL FRONTIER",
+      title1: "Decoding the",
+      title2: "digital frontier",
       inscription: "At the threshold of every beginning",
       subtitle: "",
-      ctaPrimary: "Explore Strategies",
+      ctaPrimary: "See the live record",
       ctaSecondary: "Request Whitepaper",
       ticker: "Liquidity • Market Making • Stat Arb • DeFi • HFT • AI Signals • Options",
       scroll: "Scroll",
-    },
-    stats: [
-      { value: "10μs", label: "Execution Latency", ticker: 10, suffix: "μs" },
-      { value: "24/7", label: "Market Liquidity" },
-      { value: "200+", label: "Trading Pairs", ticker: 200, suffix: "+" },
-    ],
-    overview: {
-      title1: "CORE",
-      title2: "SYSTEMS",
-      badge: "Sovereign Quant Stack",
-      subtitle:
-        "A modular trading stack built for speed, resilience, and adaptive intelligence.",
-      items: [
-        {
-          title: "Execution Engine",
-          desc: "Microstructure-aware routing with millisecond-level responsiveness.",
-          tag: "Ultra-Low Latency",
-        },
-        {
-          title: "Research Lab",
-          desc: "Multi-factor, transformer, and RL research pipelines at scale.",
-          tag: "AI Alpha",
-        },
-        {
-          title: "Risk Control",
-          desc: "Real-time exposure, inventory, and venue health monitoring.",
-          tag: "Kill-Switch",
-        },
-        {
-          title: "Data Mesh",
-          desc: "Multi-venue feeds with deep historical archives for replay.",
-          tag: "Petabyte-Ready",
-        },
-        {
-          title: "Liquidity Network",
-          desc: "Cross-venue optimization across CeFi and DeFi liquidity pools.",
-          tag: "24/7",
-        },
-        {
-          title: "LLM Intelligence",
-          desc: "Large Language Models deeply integrated into research and signal generation pipelines.",
-          tag: "Frontier AI",
-        },
-      ],
     },
     team: {
       title1: "ELITE",
@@ -127,31 +82,10 @@ export const home: Record<Lang, HomeCopy> = {
         },
       ],
     },
-    infrastructure: {
-      title1: "GLOBAL",
-      title2: "INFRA",
-      subtitle:
-        "Always-on infrastructure with geographically distributed systems and layered controls.",
-      pipeline: "Pipeline",
-      regionsLabel: "Colocation & edge",
-      regions: ["Tokyo", "Singapore", "Hong Kong", "Frankfurt", "London", "Ashburn"],
-      stats: [
-        { label: "Colocation Sites", value: "6+", ticker: 6, suffix: "+" },
-        { label: "Risk Checks / Sec", value: "120K", ticker: 120, suffix: "K" },
-        { label: "Venue Connections", value: "6+", ticker: 6, suffix: "+" },
-      ],
-      steps: [
-        "Signal ingestion & normalization",
-        "Clustered outlier selection",
-        "Adaptive execution & hedging",
-        "Post-trade analytics & risk review",
-      ],
-    },
     footer: "© 2026 Janus Capital. All Rights Reserved.",
   },
   zh: {
     nav: {
-      about: "关于我们",
       team: "团队",
       strategy: "策略",
       performance: "实盘业绩",
@@ -169,33 +103,14 @@ export const home: Record<Lang, HomeCopy> = {
     },
     hero: {
       tagline: "驱动未来的加密交易",
-      title1: "DECODING THE",
-      title2: "DIGITAL FRONTIER",
+      title1: "Decoding the",
+      title2: "digital frontier",
       inscription: "立于一切开始之处",
       subtitle: "",
-      ctaPrimary: "查看策略",
+      ctaPrimary: "查看实盘业绩",
       ctaSecondary: "索取白皮书",
       ticker: "流动性 • 做市 • 统计套利 • DeFi • 高频 • AI信号 • 期权",
       scroll: "下滑",
-    },
-    stats: [
-      { value: "10μs", label: "执行延迟", ticker: 10, suffix: "μs" },
-      { value: "24/7", label: "市场流动性" },
-      { value: "200+", label: "交易对", ticker: 200, suffix: "+" },
-    ],
-    overview: {
-      title1: "核心",
-      title2: "系统",
-      badge: "Sovereign Quant Stack",
-      subtitle: "为速度、稳定性与智能适配构建的模块化交易体系。",
-      items: [
-        { title: "执行引擎", desc: "微观结构感知的路由系统，毫秒级响应。", tag: "超低延迟" },
-        { title: "研究实验室", desc: "多因子、Transformer 与强化学习研究流水线。", tag: "AI Alpha" },
-        { title: "风险控制", desc: "实时暴露、库存与交易场所健康监测。", tag: "一键熔断" },
-        { title: "数据网格", desc: "多交易所数据流 + 深度历史回放。", tag: "PB 级" },
-        { title: "流动性网络", desc: "跨 CeFi 与 DeFi 的最优流动性调度。", tag: "7x24" },
-        { title: "LLM 智能", desc: "大语言模型深度参与研究与信号生成。", tag: "前沿 AI" },
-      ],
     },
     team: {
       title1: "顶级",
@@ -233,20 +148,6 @@ export const home: Record<Lang, HomeCopy> = {
         { title: "强化学习做市", desc: "RL 智能体自适应报价，优化点差与库存风险。" },
         { title: "Polymarket 做市", desc: "在预测市场提供流动性，配合严格风控模型。" },
       ],
-    },
-    infrastructure: {
-      title1: "全球",
-      title2: "基建",
-      subtitle: "全天候基础设施，分布式部署与分层风控。",
-      pipeline: "Pipeline",
-      regionsLabel: "机房与边缘节点",
-      regions: ["东京", "新加坡", "香港", "法兰克福", "伦敦", "阿什本"],
-      stats: [
-        { label: "机房节点", value: "6+", ticker: 6, suffix: "+" },
-        { label: "风险校验/秒", value: "120K", ticker: 120, suffix: "K" },
-        { label: "交易所连接", value: "6+", ticker: 6, suffix: "+" },
-      ],
-      steps: ["信号接入与规范化", "聚类筛选离群币对", "自适应执行与对冲", "复盘与风险复核"],
     },
     footer: "© 2026 Janus Capital. 保留所有权利。",
   },

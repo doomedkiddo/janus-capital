@@ -4,66 +4,33 @@ import { BlurFade } from "@/components/ui/blur-fade";
 import { cn } from "@/lib/utils";
 
 type SectionHeadingProps = {
-  title1: string;
-  title2: string;
+  overline?: string;
+  title: string;
   subtitle?: string;
-  badge?: string;
-  align?: "left" | "center";
+  tone?: "light" | "dark";
   className?: string;
 };
 
-export function SectionHeading({
-  title1,
-  title2,
-  subtitle,
-  badge,
-  align = "left",
-  className,
-}: SectionHeadingProps) {
-  const centered = align === "center";
-
+/** Section header in the Optiver manner: a small overline, a large serif title, one line of prose; left-aligned. */
+export function SectionHeading({ overline, title, subtitle, tone = "light", className }: SectionHeadingProps) {
+  const dark = tone === "dark";
   return (
-    <div className={cn("flex flex-col gap-4 md:gap-6", className)}>
-      {badge ? (
+    <div className={cn("flex flex-col gap-5 md:gap-6", className)}>
+      {overline ? (
         <BlurFade>
-          <div
-            className={cn(
-              "flex items-center gap-3",
-              centered ? "justify-center" : "justify-center md:justify-start",
-            )}
-          >
-            <span className="h-px w-8 bg-navy-300/80" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-navy-600 md:text-[11px]">
-              {badge}
-            </span>
-          </div>
+          <p className={cn("text-[11px] font-semibold uppercase tracking-[0.28em] md:text-xs", dark ? "text-brass-300" : "text-brass-500")}>
+            {overline}
+          </p>
         </BlurFade>
       ) : null}
-
-      <BlurFade delay={badge ? 0.06 : 0}>
-        <h2
-          className={cn(
-            "font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl",
-            centered ? "text-center" : "text-center md:text-left",
-          )}
-        >
-          {title1}{" "}
-          <span className="bg-gradient-to-r from-navy-600 to-blue-500 bg-clip-text text-transparent">
-            {title2}
-          </span>
+      <BlurFade delay={overline ? 0.06 : 0}>
+        <h2 className={cn("font-serif text-4xl leading-[1.05] sm:text-5xl md:text-7xl", dark ? "text-ivory-100" : "text-pine-900")}>
+          {title}
         </h2>
       </BlurFade>
-
       {subtitle ? (
         <BlurFade delay={0.12}>
-          <p
-            className={cn(
-              "max-w-2xl text-sm leading-relaxed text-slate-500 md:text-base",
-              centered ? "mx-auto text-center" : "mx-auto text-center md:mx-0 md:text-left",
-            )}
-          >
-            {subtitle}
-          </p>
+          <p className={cn("max-w-2xl text-base leading-relaxed md:text-lg", dark ? "text-ivory-100/70" : "text-pine-900/65")}>{subtitle}</p>
         </BlurFade>
       ) : null}
     </div>

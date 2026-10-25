@@ -29,96 +29,84 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
   }, [entry, data]);
 
   const meta = copy.strategies[entry.id];
-  const Title = home ? "h2" : "h1";
+
+  const tabs = STRATEGIES.length > 1 && (
+    <div role="tablist" className="inline-flex rounded-full bg-ivory-100/[0.06] p-1 ring-1 ring-ivory-100/10">
+      {STRATEGIES.map((s) => (
+        <button
+          key={s.id}
+          role="tab"
+          aria-selected={s.id === entry.id}
+          onClick={() => setActive(s.id)}
+          className={cn(
+            "rounded-full px-6 py-2 text-sm font-medium transition-colors md:px-8",
+            s.id === entry.id ? "bg-ivory-100 text-pine-900" : "text-ivory-100/70 hover:text-ivory-100",
+          )}
+        >
+          {copy.strategies[s.id].venue}
+        </button>
+      ))}
+    </div>
+  );
+  const asof = rec && rec !== "error" && (
+    <p className="text-xs tabular-nums tracking-wide text-ivory-100/50 md:text-sm">
+      {fmt(copy.asof, { t: utc(rec.asof, "ymdhm") })}
+      <span className="mx-2 text-brass-500">·</span>
+      {fmt(copy.since, { t: utc(rec.since, "ymdhm"), note: meta.sinceNote })}
+    </p>
+  );
 
   return (
-    <div className="bg-[#f4efe4]">
-      <div
-        className={cn(
-          "relative overflow-hidden bg-[#0f211b] px-4 text-center md:px-6",
-          home ? "pb-20 pt-16 md:pb-28 md:pt-24" : "pb-20 pt-20 md:pb-28 md:pt-28",
-        )}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(60% 55% at 50% 0%, rgba(180,138,60,0.22), transparent 70%), radial-gradient(40% 40% at 85% 90%, rgba(47,102,82,0.45), transparent 70%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: "linear-gradient(#f4efe4 1px, transparent 1px), linear-gradient(90deg, #f4efe4 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
-            maskImage: "radial-gradient(70% 70% at 50% 40%, #000, transparent)",
-            WebkitMaskImage: "radial-gradient(70% 70% at 50% 40%, #000, transparent)",
-          }}
-        />
-        <div className="relative mx-auto max-w-4xl">
-          <BlurFade>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#b48a3c]/40 bg-white/[0.04] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-[#d8bf8a]">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-[#d8bf8a]" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#d8bf8a]" />
-              </span>
-              {copy.overline}
-            </span>
-          </BlurFade>
-          <BlurFade delay={0.08}>
-            <Title
-              className={cn(
-                "mt-7 font-serif leading-[1.05] text-[#f4efe4]",
-                home ? "text-4xl sm:text-5xl md:text-7xl" : "text-5xl sm:text-6xl md:text-8xl",
-              )}
-            >
-              {copy.title}
-            </Title>
-          </BlurFade>
-          <BlurFade delay={0.16}>
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#c9d3cc] md:text-lg">{copy.lede}</p>
-          </BlurFade>
-          {STRATEGIES.length > 1 && (
-            <BlurFade delay={0.2}>
-              <div role="tablist" className="mt-9 inline-flex rounded-full bg-white/[0.06] p-1 ring-1 ring-white/10">
-                {STRATEGIES.map((s) => (
-                  <button
-                    key={s.id}
-                    role="tab"
-                    aria-selected={s.id === entry.id}
-                    onClick={() => setActive(s.id)}
-                    className={cn(
-                      "rounded-full px-6 py-2 text-sm font-medium transition-colors md:px-8",
-                      s.id === entry.id ? "bg-[#f4efe4] text-[#13241e]" : "text-[#c9d3cc] hover:text-white",
-                    )}
-                  >
-                    {copy.strategies[s.id].venue}
-                  </button>
-                ))}
-              </div>
+    <div className="bg-ivory-100">
+      {home ? (
+        <div className="bg-pine-900 px-4 pb-24 pt-4 text-ivory-100 md:px-6 md:pb-32 md:pt-6">
+          <div className="mx-auto grid max-w-7xl gap-10 border-t border-ivory-100/10 pt-14 md:grid-cols-[1.3fr_1fr] md:items-end md:pt-20">
+            <div>
+              <BlurFade>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brass-300 md:text-xs">{copy.overline}</p>
+              </BlurFade>
+              <BlurFade delay={0.06}>
+                <h2 className="mt-5 font-serif text-4xl leading-[1.05] sm:text-5xl md:text-7xl">{copy.title}</h2>
+              </BlurFade>
+              <BlurFade delay={0.12}>
+                <p className="mt-6 max-w-2xl text-base leading-relaxed text-ivory-100/70 md:text-lg">{copy.lede}</p>
+              </BlurFade>
+            </div>
+            <BlurFade delay={0.16} className="flex flex-col items-start gap-5 md:items-end md:text-right">
+              {tabs}
+              {asof}
             </BlurFade>
-          )}
-          {rec && rec !== "error" && (
-            <p className="mt-6 text-xs tabular-nums tracking-wide text-[#8fa69a] md:text-sm">
-              {fmt(copy.asof, { t: utc(rec.asof, "ymdhm") })}
-              <span className="mx-2 text-[#b48a3c]">·</span>
-              {fmt(copy.since, { t: utc(rec.since, "ymdhm"), note: meta.sinceNote })}
-            </p>
-          )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-pine-900 px-4 pb-20 pt-20 text-center text-ivory-100 md:px-6 md:pb-28 md:pt-28">
+          <div className="mx-auto max-w-4xl">
+            <BlurFade>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brass-300 md:text-xs">{copy.overline}</p>
+            </BlurFade>
+            <BlurFade delay={0.08}>
+              <h1 className="mt-7 font-serif text-5xl leading-[1.02] sm:text-6xl md:text-8xl">{copy.title}</h1>
+            </BlurFade>
+            <BlurFade delay={0.16}>
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-ivory-100/70 md:text-lg">{copy.lede}</p>
+            </BlurFade>
+            <BlurFade delay={0.2} className="mt-9 flex flex-col items-center gap-5">
+              {tabs}
+              {asof}
+            </BlurFade>
+          </div>
+        </div>
+      )}
 
-      <div className="relative mx-auto -mt-10 max-w-7xl px-4 pb-20 md:-mt-14 md:px-6 md:pb-28">
+      <div className="relative mx-auto -mt-12 max-w-7xl px-4 pb-20 md:-mt-16 md:px-6 md:pb-28">
         <BlurFade>
-          <div className="rounded-[28px] bg-[#fbf8f1] p-6 shadow-[0_30px_80px_-40px_rgba(15,33,27,0.55)] ring-1 ring-[#e6e0d2] md:p-10">
+          <div className="rounded-[28px] bg-ivory-50 p-6 ring-1 ring-ivory-200 md:p-10">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b48a3c]">{meta.kind}</p>
-                <h3 className="mt-3 font-serif text-3xl leading-tight text-[#13241e] md:text-[2.6rem]">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brass-500">{meta.kind}</p>
+                <h3 className="mt-3 font-serif text-3xl leading-tight text-pine-900 md:text-[2.6rem]">
                   {meta.name}
-                  <span className="mt-1 block font-display text-base font-semibold tracking-wide text-[#1f4a3c] md:ml-3 md:mt-0 md:inline md:align-middle md:text-lg">
+                  <span className="mt-1 block font-display text-base font-semibold tracking-wide text-pine-700 md:ml-3 md:mt-0 md:inline md:align-middle md:text-lg">
                     <span className="hidden md:inline">· </span>
                     {meta.venue}
                   </span>
@@ -126,14 +114,14 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
               </div>
               <div className="flex flex-wrap gap-2 md:justify-end">
                 {meta.tags.map((t) => (
-                  <span key={t} className="rounded-full border border-[#1f4a3c]/20 px-3.5 py-1.5 text-xs font-medium text-[#1f4a3c]">
+                  <span key={t} className="rounded-full border border-pine-700/20 px-3.5 py-1.5 text-xs font-medium text-pine-700">
                     {t}
                   </span>
                 ))}
               </div>
             </div>
             {rec === undefined && <p className="mt-10 text-sm text-[#7c827a]">{copy.loading}</p>}
-            {rec === "error" && <p className="mt-10 text-sm text-[#a3375a]">{copy.failed}</p>}
+            {rec === "error" && <p className="mt-10 text-sm text-claret">{copy.failed}</p>}
             {rec && rec !== "error" && <Kpis rec={rec} meta={meta} />}
           </div>
         </BlurFade>
@@ -382,7 +370,7 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
       </div>
 
       <BlurFade>
-        <div className="rounded-[28px] bg-[#0f211b] p-6 text-[13px] leading-relaxed text-[#b8c5bd] md:p-8">
+        <div className="rounded-[28px] bg-pine-900 p-6 text-[13px] leading-relaxed text-pine-200 md:p-8">
           <ol className="grid gap-4 md:grid-cols-3 md:gap-8">
             {notes.map((n, i) => (
               <li key={i} className="flex gap-3">

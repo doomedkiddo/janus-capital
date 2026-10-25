@@ -1,19 +1,10 @@
-export type StatItem = {
-  value: string;
-  label: string;
-  ticker?: number;
-  suffix?: string;
-};
-
 export type TitledItem = {
   title: string;
   desc: string;
 };
 
-export type TaggedItem = TitledItem & { tag: string };
-
 export type HomeCopy = {
-  nav: { about: string; team: string; strategy: string; performance: string; story: string; cta: string };
+  nav: { team: string; strategy: string; performance: string; story: string; cta: string };
   contact: {
     title: string;
     desc: string;
@@ -33,14 +24,6 @@ export type HomeCopy = {
     ctaSecondary: string;
     ticker: string;
     scroll: string;
-  };
-  stats: StatItem[];
-  overview: {
-    title1: string;
-    title2: string;
-    badge: string;
-    subtitle: string;
-    items: TaggedItem[];
   };
   team: {
     title1: string;
@@ -62,16 +45,6 @@ export type HomeCopy = {
     subtitle: string;
     feed: string;
     items: TitledItem[];
-  };
-  infrastructure: {
-    title1: string;
-    title2: string;
-    subtitle: string;
-    pipeline: string;
-    regionsLabel: string;
-    regions: string[];
-    stats: StatItem[];
-    steps: string[];
   };
   footer: string;
 };

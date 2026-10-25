@@ -13,6 +13,26 @@ const config: Config = {
     },
     extend: {
       colors: {
+        pine: {
+          950: "#0b1a15",
+          900: "#0f211b",
+          800: "#163329",
+          700: "#1f4a3c",
+          600: "#2f6652",
+          200: "#b8c5bd",
+          100: "#dfe9e3",
+        },
+        ivory: {
+          50: "#fbf8f1",
+          100: "#f4efe4",
+          200: "#e6e0d2",
+          300: "#cfc8b8",
+        },
+        brass: {
+          300: "#d8bf8a",
+          500: "#b48a3c",
+        },
+        claret: "#a3375a",
         navy: {
           50: "#E8EDF5",
           100: "#C4D1E4",
@@ -74,9 +94,9 @@ const config: Config = {
         secondary: "#3E6FB2",
         cta: "#2E4C7F",
         accent: "#3E6FB2",
-        background: "#FFFFFF",
+        background: "#f4efe4",
         surface: "#F8FAFC",
-        text: "#0F172A",
+        text: "#0f211b",
         border: "#E2E8F0",
         muted: "#64748B",
         highlight: "#EFF4FB",

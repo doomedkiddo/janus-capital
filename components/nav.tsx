@@ -23,9 +23,8 @@ export function Nav() {
 
   const links = [
     { href: `${prefix}#performance`, label: copy.performance },
-    { href: `${prefix}#about`, label: copy.about },
-    { href: `${prefix}#team`, label: copy.team },
     { href: `${prefix}#strategy`, label: copy.strategy },
+    { href: `${prefix}#team`, label: copy.team },
   ];
 
   useEffect(() => {
@@ -53,8 +52,8 @@ export function Nav() {
     <>
       <nav
         className={cn(
-          "nav-surface sticky top-0 z-50 transition-shadow duration-300",
-          scrolled && "shadow-[0_1px_20px_-8px_rgba(15,23,42,0.16)]",
+          "sticky top-0 z-50 bg-pine-900 text-ivory-100 transition-shadow duration-300",
+          scrolled && "shadow-[0_1px_0_0_rgba(244,239,228,0.1)]",
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
@@ -67,17 +66,15 @@ export function Nav() {
               priority
               className="h-7 w-7 object-contain transition-transform duration-300 group-hover:scale-105 md:h-9 md:w-9"
             />
-            <span className="hidden font-display text-sm font-bold tracking-tight text-slate-900 xs:block md:text-lg">
-              Janus Capital
-            </span>
+            <span className="hidden font-serif text-base tracking-wide xs:block md:text-xl">Janus Capital</span>
           </Link>
 
-          <div className="hidden items-center gap-8 text-sm font-medium text-slate-600 md:flex">
+          <div className="hidden items-center gap-8 text-sm font-medium text-ivory-100/70 md:flex">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="relative rounded py-1 transition-colors hover:text-navy-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 after:absolute after:-bottom-0.5 after:left-0 after:h-[1.5px] after:w-0 after:bg-navy-600 after:transition-all after:duration-300 hover:after:w-full"
+                className="relative rounded py-1 transition-colors hover:text-ivory-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-300/60 after:absolute after:-bottom-0.5 after:left-0 after:h-[1.5px] after:w-0 after:bg-brass-300 after:transition-all after:duration-300 hover:after:w-full"
               >
                 {link.label}
               </a>
@@ -85,13 +82,11 @@ export function Nav() {
             <Link
               href="/about"
               className={cn(
-                "relative inline-flex items-center gap-1.5 rounded py-1 font-serif text-[15px] tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60",
-                pathname === "/about"
-                  ? "text-bronze-600"
-                  : "text-slate-600 hover:text-bronze-600",
+                "relative inline-flex items-center gap-1.5 rounded py-1 font-serif text-[15px] tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-300/60",
+                pathname === "/about" ? "text-brass-300" : "text-ivory-100/70 hover:text-brass-300",
               )}
             >
-              <span className="h-1 w-1 rounded-full bg-bronze-400" />
+              <span className="h-1 w-1 rounded-full bg-brass-300" />
               {copy.story}
             </Link>
           </div>
@@ -100,13 +95,13 @@ export function Nav() {
             <button
               onClick={toggle}
               aria-label="Switch language"
-              className="min-w-[3rem] rounded-lg border border-slate-200 px-2 py-1.5 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 md:min-w-[4.25rem] md:px-3 md:py-2 md:text-xs"
+              className="min-w-[3rem] rounded-full border border-ivory-100/25 px-2 py-1.5 text-center text-[10px] font-semibold uppercase tracking-wider text-ivory-100/80 transition-colors hover:border-ivory-100/60 hover:text-ivory-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-300/60 md:min-w-[4.25rem] md:px-3 md:py-2 md:text-xs"
             >
               {lang === "en" ? "中文" : "EN"}
             </button>
             <button
               onClick={handleContact}
-              className="group hidden items-center gap-1.5 rounded-lg bg-navy-600 px-4 py-1.5 text-xs font-semibold text-white transition-all hover:bg-navy-700 hover:shadow-[0_6px_18px_-6px_rgba(46,76,127,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 focus-visible:ring-offset-2 sm:flex md:px-6 md:py-2 md:text-sm"
+              className="group hidden items-center gap-1.5 rounded-full bg-ivory-100 px-4 py-1.5 text-xs font-semibold text-pine-900 transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-300/60 sm:flex md:px-6 md:py-2 md:text-sm"
             >
               {copy.cta}
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -114,13 +109,9 @@ export function Nav() {
             <button
               onClick={() => setMobileOpen((prev) => !prev)}
               aria-label="Toggle menu"
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-400/60 md:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-ivory-100/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brass-300/60 md:hidden"
             >
-              {mobileOpen ? (
-                <X className="h-5 w-5 text-slate-600" />
-              ) : (
-                <Menu className="h-5 w-5 text-slate-600" />
-              )}
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
@@ -128,18 +119,15 @@ export function Nav() {
 
       {mobileOpen && (
         <div className="fixed inset-0 z-40 md:hidden">
-          <div
-            className="absolute inset-0 bg-slate-900/30 backdrop-blur-sm"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="absolute left-3 right-3 top-16 space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_50px_-20px_rgba(15,23,42,0.3)]">
+          <div className="absolute inset-0 bg-pine-950/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-3 right-3 top-16 space-y-5 rounded-[28px] bg-pine-800 p-6 text-ivory-100 shadow-[0_20px_50px_-20px_rgba(11,26,21,0.6)]">
             <div className="flex flex-col gap-1">
               {links.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="border-b border-slate-100 py-3 text-lg font-medium text-slate-700 transition-colors hover:text-navy-600"
+                  className="border-b border-ivory-100/10 py-3 text-lg font-medium transition-colors hover:text-brass-300"
                 >
                   {link.label}
                 </a>
@@ -147,15 +135,15 @@ export function Nav() {
               <Link
                 href="/about"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 py-3 font-serif text-lg text-bronze-700"
+                className="flex items-center gap-2 py-3 font-serif text-lg text-brass-300"
               >
-                <span className="h-1 w-1 rounded-full bg-bronze-400" />
+                <span className="h-1 w-1 rounded-full bg-brass-300" />
                 {copy.story}
               </Link>
             </div>
             <button
               onClick={handleContact}
-              className="w-full rounded-xl bg-navy-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-navy-700"
+              className="w-full rounded-full bg-ivory-100 py-3 text-sm font-semibold text-pine-900 transition-colors hover:bg-white"
             >
               {copy.cta}
             </button>
