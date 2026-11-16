@@ -1,6 +1,7 @@
-// Live performance records: Binance from binance_mm's live_web_export.py, Bitget from scripts/export_bitget_performance.py (bg-dash's data). Only ratios are published (net value, drawdown,
-// returns, leverage, turnover multiples): no dollar amount, position or coin. The page fetches the file at runtime, so replacing
-// the JSON under public/data/performance/ (or out/data/performance/ on the server) updates the page without a rebuild.
+// Live performance record: the combined net value of the live market-making accounts, written once a day by Oculus
+// (`python -m oculus.ledger.composite site --out ...` in ~/JanusOculus/backend, see AGENTS.md). Only ratios are published
+// (net value, drawdown, daily returns): no dollar amount, account, position or coin. The page fetches the file at runtime, so
+// replacing the JSON under out/data/performance/ on the server updates the page without a rebuild.
 
 export type Kpi = {
   cum_return: number;
@@ -11,37 +12,24 @@ export type Kpi = {
   n_days: number;
   daily_vol: number | null;
   pos_days: number;
-  best_day: number;
-  worst_day: number;
-  lev_mean: number;
-  lev_now: number;
-  turnover: number;
-  turnover_per_day: number;
-  maker: number;
+  best_day: number | null;
+  worst_day: number | null;
 };
 
 export type PerformanceRecord = {
   asof: number;
   since: number;
   kpi: Kpi;
+  /** hourly: unix seconds, net value (1 at the start), drawdown from the prior peak */
   series: { cols: string[]; rows: [number, number, number][] };
-  leverage: { cols: string[]; rows: [number, number, number, number][] };
-  turnover: { cols: string[]; rows: [number, number][] };
+  /** UTC days: start, return, closing net value, partial (the record does not span the whole day) */
   daily: { cols: string[]; rows: [number, number, number, boolean][] };
 };
 
-export type StrategyEntry = { id: string; data: string };
-
-export const STRATEGIES: StrategyEntry[] = [
-  { id: "binance", data: "/data/performance/market-making-binance.json" },
-  { id: "bitget", data: "/data/performance/market-making-bitget.json" },
-];
+export const RECORD_URL = "/data/performance/live.json";
 
 export const pct = (v: number, digits = 1, sign = true) =>
   `${sign && v > 0 ? "+" : ""}${(v * 100).toFixed(digits)}%`.replace("-", "−");
-
-export const mult = (v: number, digits = 1) =>
-  `${v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits })}×`;
 
 const two = (n: number) => String(n).padStart(2, "0");
 

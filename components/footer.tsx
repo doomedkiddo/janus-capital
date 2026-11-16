@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Mail } from "lucide-react";
+import { Logo } from "@/components/logo";
 import { home } from "@/lib/i18n/home";
 import { useLanguage } from "@/lib/i18n/language-context";
 
@@ -18,17 +18,15 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-ink px-4 pb-12 pt-12 text-paper md:px-6 md:pb-16 md:pt-16">
+    <footer className="ink-surface bg-ink px-4 pb-12 pt-12 text-paper md:px-6 md:pb-16 md:pt-16">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 border-t border-paper/10 pt-10 md:flex-row md:items-center md:justify-between md:pt-12">
         <Link
           href="/"
-          className="flex items-center justify-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 md:justify-start"
+          aria-label="Sagnac Trading"
+          className="flex flex-col items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 md:items-start"
         >
-          <Image src="/mark.png" alt="Janus Capital" width={40} height={40} className="h-7 w-7 object-contain md:h-9 md:w-9" />
-          <span className="flex flex-col">
-            <span className="headline text-base tracking-wide md:text-lg">Janus Capital</span>
-            <span className="headline text-[11px] italic tracking-wide text-accent">{copy.hero.inscription}</span>
-          </span>
+          <Logo className="h-9 w-auto md:h-10" />
+          <span className="headline text-[11px] italic tracking-wide text-accent md:text-xs">{copy.hero.inscription}</span>
         </Link>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-paper/60 md:text-sm">

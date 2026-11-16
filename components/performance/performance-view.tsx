@@ -1,66 +1,51 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { performance, type StrategyCopy } from "@/lib/i18n/performance";
+import { performance } from "@/lib/i18n/performance";
 import { useLanguage } from "@/lib/i18n/language-context";
-import { STRATEGIES, mult, pct, utc, type PerformanceRecord } from "@/lib/performance";
+import { RECORD_URL, pct, utc, type PerformanceRecord } from "@/lib/performance";
 import { cn } from "@/lib/utils";
-import { Frame, areaPath, at, linePath, ticks, useChartPalette } from "./charts";
+import { Frame, areaPath, at, linePath, ticks, useChartPalette, useWidth } from "./charts";
 
 const fmt = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
 const pctAxis = (v: number) => `${Math.round(v * 100)}%`.replace("-", "−");
+const EASE = [0.22, 1, 0.36, 1] as const;
+const LATEST_DAYS = 14;
 
 export function PerformanceView({ variant = "page" }: { variant?: "page" | "home" }) {
   const { lang } = useLanguage();
   const copy = performance[lang];
-  const [active, setActive] = useState(STRATEGIES[0].id);
-  const [data, setData] = useState<Record<string, PerformanceRecord | "error">>({});
-  const entry = STRATEGIES.find((s) => s.id === active) ?? STRATEGIES[0];
-  const rec = data[entry.id];
+  const [rec, setRec] = useState<PerformanceRecord | "error">();
   const home = variant === "home";
 
   useEffect(() => {
-    if (data[entry.id]) return;
-    fetch(entry.data, { cache: "no-cache" })
+    fetch(RECORD_URL, { cache: "no-cache" })
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((j: PerformanceRecord) => setData((d) => ({ ...d, [entry.id]: j })))
-      .catch(() => setData((d) => ({ ...d, [entry.id]: "error" })));
-  }, [entry, data]);
+      .then((j: PerformanceRecord) => setRec(j))
+      .catch(() => setRec("error"));
+  }, []);
 
-  const meta = copy.strategies[entry.id];
-
-  const tabs = STRATEGIES.length > 1 && (
-    <div role="tablist" className="inline-flex rounded-full bg-paper/[0.06] p-1 ring-1 ring-paper/10">
-      {STRATEGIES.map((s) => (
-        <button
-          key={s.id}
-          role="tab"
-          aria-selected={s.id === entry.id}
-          onClick={() => setActive(s.id)}
-          className={cn(
-            "rounded-full px-6 py-2 text-sm font-medium transition-colors md:px-8",
-            s.id === entry.id ? "bg-paper text-ink" : "text-paper/70 hover:text-paper",
-          )}
-        >
-          {copy.strategies[s.id].venue}
-        </button>
-      ))}
-    </div>
-  );
   const asof = rec && rec !== "error" && (
-    <p className="text-xs tabular-nums tracking-wide text-paper/50 md:text-sm">
+    <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs tabular-nums tracking-wide text-paper/50 md:text-sm">
+      <span className="relative mr-1 flex h-1.5 w-1.5">
+        <span className="absolute inset-0 animate-pulse-ring rounded-full bg-accent" />
+        <span className="relative h-1.5 w-1.5 rounded-full bg-accent" />
+      </span>
       {fmt(copy.asof, { t: utc(rec.asof, "ymdhm") })}
-      <span className="mx-2 text-accent-2">·</span>
-      {fmt(copy.since, { t: utc(rec.since, "ymdhm"), note: meta.sinceNote })}
+      <span className="text-accent-2">·</span>
+      {fmt(copy.since, { t: utc(rec.since, "ymdhm") })}
+      <span className="text-accent-2">·</span>
+      {copy.cadence}
     </p>
   );
 
   return (
     <div className="bg-paper">
       {home ? (
-        <div className="bg-ink px-4 pb-24 pt-4 text-paper md:px-6 md:pb-32 md:pt-6">
-          <div className="mx-auto grid max-w-7xl gap-10 border-t border-paper/10 pt-14 md:grid-cols-[1.3fr_1fr] md:items-end md:pt-20">
+        <div className="ink-surface bg-ink px-4 pb-24 pt-4 text-paper md:px-6 md:pb-32 md:pt-6">
+          <div className="mx-auto grid max-w-7xl gap-10 pt-14 md:grid-cols-[1.3fr_1fr] md:items-end md:pt-20">
             <div>
               <BlurFade>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent md:text-xs">{copy.overline}</p>
@@ -73,13 +58,12 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
               </BlurFade>
             </div>
             <BlurFade delay={0.16} className="flex flex-col items-start gap-5 md:items-end md:text-right">
-              {tabs}
               {asof}
             </BlurFade>
           </div>
         </div>
       ) : (
-        <div className="bg-ink px-4 pb-20 pt-20 text-center text-paper md:px-6 md:pb-28 md:pt-28">
+        <div className="ink-surface bg-ink px-4 pb-20 pt-20 text-center text-paper md:px-6 md:pb-28 md:pt-28">
           <div className="mx-auto max-w-4xl">
             <BlurFade>
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent md:text-xs">{copy.overline}</p>
@@ -91,7 +75,6 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
               <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-paper/70 md:text-lg">{copy.lede}</p>
             </BlurFade>
             <BlurFade delay={0.2} className="mt-9 flex flex-col items-center gap-5">
-              {tabs}
               {asof}
             </BlurFade>
           </div>
@@ -103,74 +86,88 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
           <div className="rounded-[28px] bg-paper-2 p-6 ring-1 ring-rule md:p-10">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">{meta.kind}</p>
-                <h3 className="mt-3 headline text-3xl leading-tight text-ink md:text-[2.6rem]">
-                  {meta.name}
-                  <span className="mt-1 block font-display text-base font-semibold tracking-wide text-ink-3 md:ml-3 md:mt-0 md:inline md:align-middle md:text-lg">
-                    <span className="hidden md:inline">· </span>
-                    {meta.venue}
-                  </span>
-                </h3>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">{copy.record.kind}</p>
+                <h3 className="mt-3 headline text-3xl leading-tight text-ink md:text-[2.6rem]">{copy.record.name}</h3>
               </div>
               <div className="flex flex-wrap gap-2 md:justify-end">
-                {meta.tags.map((t) => (
+                {copy.record.tags.map((t) => (
                   <span key={t} className="rounded-full border border-ink-3/20 px-3.5 py-1.5 text-xs font-medium text-ink-3">
                     {t}
                   </span>
                 ))}
               </div>
             </div>
-            {rec === undefined && <p className="mt-10 text-sm text-mute">{copy.loading}</p>}
+            {rec === undefined && <Loading label={copy.loading} />}
             {rec === "error" && <p className="mt-10 text-sm text-neg">{copy.failed}</p>}
-            {rec && rec !== "error" && <Kpis rec={rec} meta={meta} />}
+            {rec && rec !== "error" && <Kpis rec={rec} />}
           </div>
         </BlurFade>
 
-        {rec && rec !== "error" && <Body key={entry.id} rec={rec} meta={meta} notes={[...meta.notes, ...copy.notes]} />}
+        {rec && rec !== "error" && <Body rec={rec} />}
       </div>
     </div>
   );
 }
 
-function Kpis({ rec, meta }: { rec: PerformanceRecord; meta: StrategyCopy }) {
+/** Two pulses round a ring in opposite directions while the record is on its way. */
+function Loading({ label }: { label: string }) {
+  return (
+    <p className="mt-10 flex items-center gap-3 text-sm text-mute">
+      <svg viewBox="-12 -12 24 24" className="h-5 w-5 text-accent-2" aria-hidden>
+        <circle r="9" fill="none" stroke="currentColor" strokeOpacity="0.25" />
+        <circle cy="-9" r="1.8" fill="currentColor">
+          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.8s" repeatCount="indefinite" />
+        </circle>
+        <circle cy="-9" r="1.8" fill="currentColor">
+          <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="1.8s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+      {label}
+    </p>
+  );
+}
+
+function Kpis({ rec }: { rec: PerformanceRecord }) {
   const { lang } = useLanguage();
-  const c = performance[lang].kpi;
+  const copy = performance[lang];
+  const c = copy.kpi;
   const k = rec.kpi;
-  const items: { label: string; value: React.ReactNode; sub: string; tone?: "neg" }[] = [
-    { label: c.cum, value: pct(k.cum_return), sub: meta.cumSub },
+  const items: { label: string; value: React.ReactNode; sub: string; tone?: "neg"; small?: boolean }[] = [
+    { label: c.cum, value: pct(k.cum_return), sub: fmt(copy.record.cumSub, { t: utc(rec.since, "ymd") }) },
     { label: c.dd[0], value: pct(k.max_dd), sub: fmt(c.dd[1], { a: utc(k.dd_peak), b: utc(k.dd_trough) }), tone: "neg" },
     { label: c.sharpe[0], value: k.sharpe?.toFixed(2) ?? "—", sub: fmt(c.sharpe[1], { n: k.n_days }) },
     { label: c.vol[0], value: k.daily_vol == null ? "—" : pct(k.daily_vol, 1, false), sub: c.vol[1] },
     { label: c.pos[0], value: `${k.pos_days} / ${k.n_days}`, sub: fmt(c.pos[1], { w: Math.round((100 * k.pos_days) / Math.max(k.n_days, 1)) }) },
     {
       label: c.best[0],
-      value: (
-        <>
-          {pct(k.best_day)} <span className="text-neg">/ {pct(k.worst_day)}</span>
-        </>
-      ),
+      value:
+        k.best_day == null || k.worst_day == null ? (
+          "—"
+        ) : (
+          <>
+            {pct(k.best_day)} <span className="text-neg">/ {pct(k.worst_day)}</span>
+          </>
+        ),
       sub: c.best[1],
+      small: true,
     },
-    { label: c.lev[0], value: mult(k.lev_mean), sub: fmt(c.lev[1], { c: mult(k.lev_now) }) },
-    { label: c.turn[0], value: mult(k.turnover_per_day, 0), sub: fmt(c.turn[1], { c: mult(k.turnover, 0) }) },
   ];
   return (
-    <div className="mt-10 grid grid-cols-2 border-t border-ink lg:grid-cols-4">
+    <div className="mt-10 grid grid-cols-2 border-t border-ink lg:grid-cols-3">
       {items.map((it, i) => (
         <div
           key={it.label}
           className={cn(
             "border-b border-rule py-5 pr-3 md:py-7",
-            i % 2 === 1 && "pl-4 md:pl-6 border-l",
-            i % 4 !== 0 && "lg:border-l lg:pl-6",
-            i % 4 === 0 && "lg:border-l-0 lg:pl-0",
+            i % 2 === 1 && "border-l pl-4 md:pl-6",
+            i % 3 !== 0 ? "lg:border-l lg:pl-6" : "lg:border-l-0 lg:pl-0",
           )}
         >
           <p className="text-xs text-mute md:text-sm">{it.label}</p>
           <p
             className={cn(
               "mt-2 font-display font-semibold tabular-nums tracking-tight",
-              i === 5 ? "text-xl md:text-[1.7rem]" : "text-2xl md:text-[2.1rem]",
+              it.small ? "text-xl md:text-[1.7rem]" : "text-2xl md:text-[2.1rem]",
               it.tone === "neg" ? "text-neg" : "text-ink",
             )}
           >
@@ -183,20 +180,22 @@ function Kpis({ rec, meta }: { rec: PerformanceRecord; meta: StrategyCopy }) {
   );
 }
 
-function Card({ title, desc, children, className }: { title: string; desc?: string; children: React.ReactNode; className?: string }) {
+function Card({ title, desc, right, children, className }: { title: string; desc?: string; right?: React.ReactNode; children: React.ReactNode; className?: string }) {
   return (
     <div className={cn("rounded-[28px] bg-paper-2 p-5 ring-1 ring-rule md:p-8", className)}>
       <div className="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h3 className="headline text-xl text-ink md:text-2xl">{title}</h3>
         {desc && <span className="text-xs text-mute md:text-sm">{desc}</span>}
+        {right && <span className="ml-auto">{right}</span>}
       </div>
       {children}
     </div>
   );
 }
 
-function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy; notes: string[] }) {
+function Body({ rec }: { rec: PerformanceRecord }) {
   const P = useChartPalette();
+  const reduce = useReducedMotion();
   const { lang } = useLanguage();
   const copy = performance[lang];
   const [hover, setHover] = useState<number | null>(null);
@@ -214,17 +213,17 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
     const peak = rows.map((r) => (pk = Math.max(pk, r[1])));
     return { lo: lo - pad, hi: hi + pad, peak };
   }, [rows]);
-  const ddLo = Math.min(...rows.map((r) => r[2])) * 1.15;
-  const lev = rec.leverage.rows;
-  const levHi = Math.max(...lev.map((r) => r[3])) * 1.1;
-  const turn = rec.turnover.rows;
-  const turnHi = turn[turn.length - 1][1] * 1.18;
+  const ddLo = Math.min(...rows.map((r) => r[2]), -0.005) * 1.15;
   const nDays = (t1 - t0) / 86400;
-  const step = nDays > 16 ? 2 : 1;
+  const step = nDays > 16 ? Math.ceil(nDays / 12) : 1;
   const hi = hover == null ? null : rows[at(rows, hover)];
   const last = rows[rows.length - 1];
   const iPeak = at(rows, k.dd_peak);
   const iTrough = at(rows, k.dd_trough);
+  // the curve draws itself from the start, the way the record was made: once, when it scrolls into view
+  const drawn = reduce ? false : { pathLength: 0 };
+  const faded = reduce ? false : { opacity: 0 };
+  const view = { once: true, margin: "-80px" } as const;
 
   return (
     <div className="mt-6 space-y-6">
@@ -264,12 +263,12 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
                   <>
                     <defs>
                       <linearGradient id="navFill" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor={P.forest2} stopOpacity={0.28} />
-                        <stop offset="100%" stopColor={P.forest2} stopOpacity={0.02} />
+                        <stop offset="0%" stopColor={P.brass} stopOpacity={0.2} />
+                        <stop offset="100%" stopColor={P.brass} stopOpacity={0.01} />
                       </linearGradient>
                     </defs>
                     <rect x={xp} y={0} width={Math.max(xt - xp, 1)} height={h} fill={P.claret} opacity={0.06} />
-                    <path d={areaPath(pts, h)} fill="url(#navFill)" />
+                    <motion.path d={areaPath(pts, h)} fill="url(#navFill)" initial={faded} whileInView={{ opacity: 1 }} viewport={view} transition={{ duration: 1.2, delay: 0.9 }} />
                     <path
                       d={linePath(rows.map((r, i) => [x(r[0]), y(nav.peak[i])]))}
                       fill="none"
@@ -279,16 +278,28 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
                       opacity={0.8}
                     />
                     <line x1={0} x2={x(t1)} y1={y(1)} y2={y(1)} stroke={P.ink} strokeOpacity={0.5} />
-                    <path d={linePath(pts)} fill="none" stroke={P.forest} strokeWidth={1.6} strokeLinejoin="round" />
+                    <motion.path
+                      d={linePath(pts)}
+                      fill="none"
+                      stroke={P.forest}
+                      strokeWidth={1.6}
+                      strokeLinejoin="round"
+                      initial={drawn}
+                      whileInView={{ pathLength: 1 }}
+                      viewport={view}
+                      transition={{ duration: 1.8, ease: EASE }}
+                    />
                     <circle cx={xp} cy={y(rows[iPeak][1])} r={4} fill="#fff" stroke={P.claret} strokeWidth={1.3} />
                     <circle cx={xt} cy={y(rows[iTrough][1])} r={4} fill="#fff" stroke={P.claret} strokeWidth={1.3} />
                     <text x={(xp + xt) / 2} y={12} textAnchor="middle" fontSize={12} fontWeight={600} fill={P.claret}>
                       {copy.nav.mdd} {pct(k.max_dd)}
                     </text>
-                    <circle cx={x(last[0])} cy={y(last[1])} r={5} fill={P.brass} stroke="#fff" strokeWidth={1.5} />
-                    <text x={x(last[0]) - 8} y={y(last[1]) - 10} textAnchor="end" fontSize={14} fontWeight={600} fill={P.ink} className="tabular-nums">
-                      {last[1].toFixed(3)}
-                    </text>
+                    <motion.g initial={faded} whileInView={{ opacity: 1 }} viewport={view} transition={{ duration: 0.5, delay: 1.5 }}>
+                      <circle cx={x(last[0])} cy={y(last[1])} r={5} fill={P.brass} stroke="#fff" strokeWidth={1.5} />
+                      <text x={x(last[0]) - 8} y={y(last[1]) - 10} textAnchor="end" fontSize={14} fontWeight={600} fill={P.ink} className="tabular-nums">
+                        {last[1].toFixed(3)}
+                      </text>
+                    </motion.g>
                   </>
                 );
               }}
@@ -325,58 +336,41 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
       </BlurFade>
 
       <div className="grid gap-6 lg:grid-cols-12">
+        <BlurFade className="lg:col-span-7">
+          <Card
+            title={copy.fringes.title}
+            desc={copy.fringes.desc}
+            className="h-full"
+            right={
+              <span className="flex items-center gap-4 text-[11px] text-mute md:text-xs">
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-1.5 rounded-[1px]" style={{ background: P.ink }} />
+                  {copy.fringes.up}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2.5 w-1.5 rounded-[1px]" style={{ background: P.brass }} />
+                  {copy.fringes.down}
+                </span>
+              </span>
+            }
+          >
+            <DailyFringes rec={rec} />
+          </Card>
+        </BlurFade>
         <BlurFade className="lg:col-span-5">
           <Card title={copy.daily.title} desc={copy.daily.desc} className="h-full">
             <Daily rec={rec} />
           </Card>
         </BlurFade>
-        <div className="space-y-6 lg:col-span-7">
-          <BlurFade>
-            <Card title={copy.lev.title} desc={`${meta.levDesc} · ${copy.lev.mean} ${mult(k.lev_mean)}`}>
-              <Frame t0={t0} t1={t1} lo={0} hi={levHi} height={200} yTicks={ticks(0, levHi, 3)} yFormat={(v) => `${v}×`} dayStep={2 * step} ariaLabel={copy.lev.title}>
-                {({ x, y }) => {
-                  const band = [...lev.map((r) => [x(r[0]), y(r[3])] as [number, number]), ...[...lev].reverse().map((r) => [x(r[0]), y(r[2])] as [number, number])];
-                  return (
-                    <>
-                      <path d={`${linePath(band)}Z`} fill={P.wash} />
-                      <path d={linePath(lev.map((r) => [x(r[0]), y(r[1])]))} fill="none" stroke={P.forest} strokeWidth={1.1} />
-                      <line x1={0} x2={x(t1)} y1={y(k.lev_mean)} y2={y(k.lev_mean)} stroke={P.brass} strokeWidth={1.2} strokeDasharray="4 3" />
-                    </>
-                  );
-                }}
-              </Frame>
-            </Card>
-          </BlurFade>
-          <BlurFade>
-            <Card title={copy.turn.title} desc={meta.turnDesc}>
-              <Frame t0={t0} t1={t1} lo={0} hi={turnHi} height={200} yTicks={ticks(0, turnHi, 3)} yFormat={(v) => `${v.toLocaleString("en-US")}×`} dayStep={2 * step} ariaLabel={copy.turn.title}>
-                {({ x, y, h }) => {
-                  const pts = turn.map((r) => [x(r[0]), y(r[1])] as [number, number]);
-                  const e = turn[turn.length - 1];
-                  return (
-                    <>
-                      <path d={areaPath(pts, h)} fill={P.wash} opacity={0.8} />
-                      <path d={linePath(pts)} fill="none" stroke={P.forest} strokeWidth={1.5} />
-                      <circle cx={x(e[0])} cy={y(e[1])} r={4.5} fill={P.brass} stroke="#fff" strokeWidth={1.3} />
-                      <text x={x(e[0]) - 8} y={y(e[1]) - 8} textAnchor="end" fontSize={13} fontWeight={600} fill={P.ink} className="tabular-nums">
-                        {mult(e[1], 0)}
-                      </text>
-                    </>
-                  );
-                }}
-              </Frame>
-            </Card>
-          </BlurFade>
-        </div>
       </div>
 
       <BlurFade>
-        <div className="rounded-[28px] bg-ink p-6 text-[13px] leading-relaxed text-ink-soft md:p-8">
+        <div className="ink-surface rounded-[28px] bg-ink p-6 text-[13px] leading-relaxed text-ink-soft md:p-8">
           <ol className="grid gap-4 md:grid-cols-3 md:gap-8">
-            {notes.map((n, i) => (
+            {copy.notes.map((n, i) => (
               <li key={i} className="flex gap-3">
                 <span className="headline text-accent">{i + 1}</span>
-                <span>{fmt(n, { m: k.maker.toFixed(1) })}</span>
+                <span>{n}</span>
               </li>
             ))}
           </ol>
@@ -386,15 +380,89 @@ function Body({ rec, meta, notes }: { rec: PerformanceRecord; meta: StrategyCopy
   );
 }
 
+/** Daily returns drawn as the mark draws its fringes: one bar a day, gains standing on the line, losses hanging
+ *  from it in the accent colour. */
+function DailyFringes({ rec }: { rec: PerformanceRecord }) {
+  const P = useChartPalette();
+  const reduce = useReducedMotion();
+  const [ref, width] = useWidth<HTMLDivElement>();
+  const shown = useInView(ref, { once: true, margin: "-60px" }) || !!reduce; // the bars grow from the line, once
+  const [hover, setHover] = useState<number | null>(null);
+  const rows = rec.daily.rows;
+  const height = 330;
+  const padR = 46;
+  const padB = 24;
+  const up = Math.max(...rows.map((r) => r[1]), 0.001);
+  const down = Math.max(...rows.map((r) => -r[1]), 0.001);
+  const w = Math.max(width - padR, 10);
+  const h = height - padB;
+  const gap = 3; // the slit between the two halves, as in the mark
+  const scale = (h - gap - 28) / (up + down);
+  const y0 = 22 + up * scale;
+  const slot = w / rows.length;
+  const bar = Math.max(Math.min(slot / 2, 30), 1.5);
+  const labelStep = Math.max(1, Math.ceil(44 / slot));
+  const marks = [...ticks(-down, up, 4).filter((v) => Math.abs(v) > 1e-9), 0];
+  const cur = hover == null ? null : rows[hover];
+
+  return (
+    <div ref={ref} className="relative" style={{ height }}>
+      {cur && (
+        <div className="pointer-events-none absolute left-0 top-0 z-10 rounded-xl bg-paper-2/95 px-3 py-2 text-xs tabular-nums shadow-sm ring-1 ring-rule">
+          <span className="text-mute">{utc(cur[0], "ymd")}</span>
+          <b className={cn("ml-2", cur[1] >= 0 ? "text-ink" : "text-neg")}>{pct(cur[1], 2)}</b>
+        </div>
+      )}
+      {width > 0 && (
+        <svg width={width} height={height} role="img" aria-label="Daily returns" className="block select-none overflow-visible">
+          {marks.map((v) => (
+            <g key={v}>
+              <line x1={0} x2={w} y1={y0 - v * scale} y2={y0 - v * scale} stroke={v === 0 ? P.ink : P.rule} strokeOpacity={v === 0 ? 0.55 : 1} />
+              <text x={w + 10} y={y0 - v * scale} dy="0.35em" fontSize={11} fill={P.mute} className="tabular-nums">
+                {pctAxis(v)}
+              </text>
+            </g>
+          ))}
+          {rows.map(([d, r, , partial], i) => {
+            const size = Math.max(Math.abs(r) * scale, 1);
+            const x = i * slot + (slot - bar) / 2;
+            const top = r >= 0 ? y0 - gap / 2 - size : y0 + gap / 2;
+            return (
+              <g key={d}>
+                <motion.rect
+                  x={x}
+                  width={bar}
+                  rx={Math.min(1.5, bar / 4)}
+                  fill={r >= 0 ? P.ink : P.brass}
+                  opacity={(partial ? 0.4 : 1) * (hover == null || hover === i ? 1 : 0.55)}
+                  initial={false}
+                  animate={shown ? { attrY: top, height: size } : { attrY: r >= 0 ? y0 - gap / 2 : y0 + gap / 2, height: 0 }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.7, ease: EASE, delay: Math.min(i * 0.05, 1.2) }}
+                />
+                {i % labelStep === 0 && (
+                  <text x={x + bar / 2} y={h + 16} textAnchor="middle" fontSize={11} fill={P.mute} className="tabular-nums">
+                    {utc(d)}
+                  </text>
+                )}
+                <rect x={i * slot} y={0} width={slot} height={h} fill="transparent" onPointerEnter={() => setHover(i)} onPointerLeave={() => setHover(null)} />
+              </g>
+            );
+          })}
+        </svg>
+      )}
+    </div>
+  );
+}
+
 function Daily({ rec }: { rec: PerformanceRecord }) {
   const P = useChartPalette();
   const { lang } = useLanguage();
   const c = performance[lang].daily;
-  const rows = rec.daily.rows;
-  const bmax = Math.max(...rows.map((r) => Math.abs(r[1])));
+  const rows = rec.daily.rows.slice(-LATEST_DAYS).reverse();
+  const bmax = Math.max(...rows.map((r) => Math.abs(r[1])), 1e-9);
   return (
     <div>
-      <div className="grid grid-cols-[112px_minmax(0,1fr)_68px_60px] gap-x-2 border-b border-ink pb-2 text-[11px] text-mute md:text-xs">
+      <div className="grid grid-cols-[104px_minmax(0,1fr)_64px_56px] gap-x-2 border-b border-ink pb-2 text-[11px] text-mute md:text-xs">
         <span>{c.cols[0]}</span>
         <span />
         <span className="text-right">{c.cols[1]}</span>
@@ -404,7 +472,7 @@ function Daily({ rec }: { rec: PerformanceRecord }) {
         <div
           key={d}
           className={cn(
-            "grid grid-cols-[112px_minmax(0,1fr)_68px_60px] gap-x-2 items-center py-[7px] text-[13px] tabular-nums",
+            "grid grid-cols-[104px_minmax(0,1fr)_64px_56px] items-center gap-x-2 py-[7px] text-[13px] tabular-nums",
             i % 2 === 0 && "bg-paper/70",
           )}
         >
@@ -419,7 +487,7 @@ function Daily({ rec }: { rec: PerformanceRecord }) {
               style={{
                 width: `${(Math.abs(r) / bmax) * 50}%`,
                 left: r >= 0 ? "50%" : `${50 - (Math.abs(r) / bmax) * 50}%`,
-                background: r >= 0 ? P.forest : P.claret,
+                background: r >= 0 ? P.ink : P.brass,
                 opacity: part ? 0.4 : 0.85,
               }}
             />

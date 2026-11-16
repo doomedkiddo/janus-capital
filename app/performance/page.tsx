@@ -3,22 +3,25 @@ import { ContactProvider } from "@/components/contact-modal";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { PerformanceView } from "@/components/performance/performance-view";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 export const metadata: Metadata = {
-  title: "实盘业绩 | Live Performance — Janus Capital",
+  alternates: { canonical: "/performance/" },
+  title: "实盘业绩 | Live Performance — Sagnac Trading",
   description:
-    "Janus Capital 实盘账户业绩：净值、回撤、逐日收益、杠杆与换手。Live account record of Janus Capital: net value, drawdown, daily returns, leverage and turnover.",
+    "Sagnac Trading 实盘做市账户的合并净值：净值、回撤与逐日收益，每日同步。Combined net value of Sagnac Trading's live market-making accounts: net value, drawdown and daily returns, synchronised daily.",
   openGraph: {
-    title: "Live Performance — Janus Capital",
+    title: "Live Performance — Sagnac Trading",
     description: "Live account record, marked to market.",
     type: "website",
-    images: ["/og.jpg"],
+    images: ["/og.jpg?v=2"],
   },
 };
 
 export default function PerformancePage() {
   return (
     <ContactProvider>
+      <ScrollProgress />
       <Nav />
       <PerformanceView />
       <Footer />

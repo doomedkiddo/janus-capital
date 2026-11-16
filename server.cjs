@@ -4,7 +4,7 @@ const path = require('path');
 // Next.js static export output. `-s` (SPA fallback) must NOT be used here:
 // it would rewrite /about to the root index.html.
 const rootPath = path.join(__dirname, 'out');
-const port = 3002;
+const port = 3003;
 
 const serve = spawn('serve', [rootPath, '-l', port], {
   stdio: 'inherit',

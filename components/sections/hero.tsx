@@ -1,7 +1,9 @@
 "use client";
 
-import { ArrowDown, ArrowUpRight, Mail } from "lucide-react";
+import { ArrowDown, Mail } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { DotPattern } from "@/components/ui/patterns";
+import { PhaseStrip } from "@/components/ui/phase-strip";
 import { useContact } from "@/components/contact-modal";
 import { home } from "@/lib/i18n/home";
 import { useLanguage } from "@/lib/i18n/language-context";
@@ -12,10 +14,20 @@ export function Hero() {
   const { open } = useContact();
 
   return (
-    <section className="flex min-h-[72vh] flex-col items-center justify-center bg-ink px-4 pb-20 pt-20 text-center text-paper md:min-h-[82vh] md:px-6 md:pb-28 md:pt-28">
-      <div className="w-full max-w-5xl">
+    <section className="ink-surface story-surface relative flex min-h-[72vh] flex-col items-center justify-center overflow-hidden px-4 pb-12 pt-20 text-center text-paper md:min-h-[82vh] md:px-6 md:pb-14 md:pt-28">
+      <DotPattern
+        width={26}
+        height={26}
+        className="[mask-image:radial-gradient(52%_46%_at_50%_44%,#000_10%,transparent_100%)] fill-paper/[0.10]"
+      />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink to-transparent" />
+      <div className="relative z-[1] w-full max-w-5xl">
         <BlurFade delay={0.05}>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent md:text-xs">{copy.tagline}</p>
+          <p className="flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-accent md:text-xs">
+            <span className="h-px w-6 bg-accent/50" />
+            {copy.tagline}
+            <span className="h-px w-6 bg-accent/50" />
+          </p>
         </BlurFade>
 
         <BlurFade delay={0.14}>
@@ -36,7 +48,7 @@ export function Hero() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row md:mt-12 md:gap-4">
             <a
               href="#performance"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-paper px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto md:px-9 md:py-4 md:text-base"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-paper px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-paper/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto md:px-9 md:py-4 md:text-base"
             >
               {copy.ctaPrimary}
               <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -53,13 +65,10 @@ export function Hero() {
         </BlurFade>
       </div>
 
-      <a
-        href="#performance"
-        className="mt-16 hidden items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-paper/40 transition-colors hover:text-accent md:inline-flex"
-      >
-        {copy.scroll}
-        <ArrowUpRight className="h-3.5 w-3.5 rotate-[135deg]" />
-      </a>
+      {/* the instrument: fringes that shift as the pointer or the page turns the table */}
+      <BlurFade delay={0.5} className="relative z-[1] mt-14 w-full max-w-3xl md:mt-20">
+        <PhaseStrip />
+      </BlurFade>
     </section>
   );
 }

@@ -39,7 +39,7 @@ const translations = {
       title2: "DIGITAL FRONTIER",
       subtitle: "",
       ctaPrimary: "Explore Strategies",
-      ctaSecondary: "Read Whitepaper",
+      ctaSecondary: "Get in touch",
       ticker:
         "Liquidity • Market Making • Stat Arb • DeFi • HFT • AI Signals • Options",
       scroll: "Scroll",
@@ -162,7 +162,7 @@ const translations = {
         "Post-trade analytics & risk review",
       ],
     },
-    footer: "© 2026 Janus Capital. All Rights Reserved.",
+    footer: "© 2026 Sagnac Trading. All Rights Reserved.",
   },
   zh: {
     nav: {
@@ -186,7 +186,7 @@ const translations = {
       title2: "DIGITAL FRONTIER",
       subtitle: "",
       ctaPrimary: "查看策略",
-      ctaSecondary: "阅读白皮书",
+      ctaSecondary: "联系我们",
       ticker: "流动性 • 做市 • 统计套利 • DeFi • 高频 • AI信号 • 期权",
       scroll: "下滑",
     },
@@ -295,7 +295,7 @@ const translations = {
       ],
       steps: ["信号接入与规范化", "聚类筛选离群币对", "自适应执行与对冲", "复盘与风险复核"],
     },
-    footer: "© 2026 Janus Capital. 保留所有权利。",
+    footer: "© 2026 Sagnac Trading. 保留所有权利。",
   },
 };
 
@@ -373,13 +373,13 @@ const App = () => {
           <div className="flex items-center gap-2 md:gap-3">
             <div className="w-9 h-9 md:w-11 md:h-11 bg-white flex items-center justify-center rounded-lg md:rounded-xl border border-slate-200">
               <img
-                src="/logo.png"
-                alt="Janus Capital logo"
+                src="/brand/sagnac-cyan-icon-on-light.svg"
+                alt="Sagnac Trading logo"
                 className="w-6 h-6 md:w-8 md:h-8 object-contain"
               />
             </div>
             <span className="font-display text-sm md:text-lg font-bold tracking-tight text-slate-900 hidden xs:block">
-              Janus Capital
+              Sagnac Trading
             </span>
           </div>
 
@@ -487,8 +487,8 @@ const App = () => {
 
             <div className="flex flex-col items-center gap-4 md:gap-8">
               <img
-                src="/logo.png"
-                alt="Janus Capital logo"
+                src="/brand/sagnac-cyan-icon-on-light.svg"
+                alt="Sagnac Trading logo"
                 className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-contain"
               />
               <h1 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-slate-900">
@@ -779,13 +779,13 @@ const App = () => {
           <div className="flex items-center justify-center md:justify-start gap-3">
             <div className="w-8 h-8 md:w-10 md:h-10 bg-white flex items-center justify-center rounded-lg border border-slate-200">
               <img
-                src="/logo.png"
-                alt="Janus Capital logo"
+                src="/brand/sagnac-cyan-icon-on-light.svg"
+                alt="Sagnac Trading logo"
                 className="w-5 h-5 md:w-7 md:h-7 object-contain"
               />
             </div>
             <span className="font-display text-base md:text-lg font-bold tracking-tight text-slate-900">
-              Janus Capital
+              Sagnac Trading
             </span>
           </div>
 

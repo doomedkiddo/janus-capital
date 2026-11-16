@@ -36,11 +36,11 @@ export function TracingBeam({
     <div ref={ref} className={cn("relative", className)}>
       <div className="pointer-events-none absolute left-6 top-0 hidden h-full lg:block xl:left-10">
         <motion.span
-          className="absolute -left-[4.5px] z-10 block h-2.5 w-2.5 rounded-full border border-bronze-500/70 bg-bronze-50 shadow-[0_0_0_4px_rgba(176,141,87,0.14)]"
+          className="absolute -left-[4.5px] z-10 block h-2.5 w-2.5 rounded-full border border-accent/70 bg-ink shadow-[0_0_0_4px_rgb(var(--c-accent)/0.14)]"
           style={{ top: dotY }}
         />
         <svg aria-hidden width="2" height={height} className="block">
-          <line x1="1" y1="0" x2="1" y2={height} stroke="rgba(176,141,87,0.16)" strokeWidth="1.5" />
+          <line x1="1" y1="0" x2="1" y2={height} style={{ stroke: "rgb(var(--c-accent) / 0.14)" }} strokeWidth="1.5" />
           <line x1="1" y1="0" x2="1" y2={height} stroke="url(#tracing-beam)" strokeWidth="1.5" />
           <defs>
             <motion.linearGradient
@@ -51,10 +51,10 @@ export function TracingBeam({
               y1={gradientTail}
               y2={gradientHead}
             >
-              <stop stopColor="#B08D57" stopOpacity="0" />
-              <stop offset="0.18" stopColor="#B08D57" />
-              <stop offset="0.72" stopColor="#D6BC8A" />
-              <stop offset="1" stopColor="#D6BC8A" stopOpacity="0" />
+              <stop style={{ stopColor: "rgb(var(--c-accent))" }} stopOpacity="0" />
+              <stop offset="0.18" style={{ stopColor: "rgb(var(--c-accent))" }} />
+              <stop offset="0.72" style={{ stopColor: "rgb(var(--c-paper))" }} />
+              <stop offset="1" style={{ stopColor: "rgb(var(--c-paper))" }} stopOpacity="0" />
             </motion.linearGradient>
           </defs>
         </svg>

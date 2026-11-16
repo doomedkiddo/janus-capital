@@ -1,9 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { DEFAULT_THEME, THEMES, chartPalette, themeVars, type Theme } from "./themes";
-
-const STORAGE_KEY = "janus-theme";
+import { DEFAULT_THEME, THEME_STORAGE_KEY as STORAGE_KEY, THEMES, chartPalette, themeVars, type Theme } from "./themes";
 
 type ThemeContextValue = { theme: Theme; setTheme: (id: string) => void };
 
@@ -11,19 +9,22 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [id, setId] = useState(DEFAULT_THEME.id);
+  const [ready, setReady] = useState(false);
   const theme = THEMES.find((t) => t.id === id) ?? DEFAULT_THEME;
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored && THEMES.some((t) => t.id === stored)) setId(stored);
+    setReady(true);
   }, []);
 
   // globals.css carries the default scheme on :root for the first paint; the others are applied here.
   useEffect(() => {
+    if (!ready) return;
     const root = document.documentElement;
     for (const [k, v] of themeVars(theme)) root.style.setProperty(k, v);
     root.dataset.theme = theme.id;
-  }, [theme]);
+  }, [theme, ready]);
 
   const setTheme = useCallback((next: string) => {
     setId(next);

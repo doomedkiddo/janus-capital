@@ -13,18 +13,18 @@ export function AboutCta() {
   const contact = useContact();
 
   return (
-    <section className="relative bg-gradient-to-b from-marble-100 via-marble-50 to-white px-5 pb-16 pt-8 md:pb-24 md:pt-12">
+    <section className="relative bg-ink px-5 pb-16 pt-8 md:pb-24 md:pt-12">
       <div className="mx-auto max-w-2xl text-center">
         <BlurFade>
-          <div className="divider-bronze mb-10 md:mb-12" />
+          <div className="divider-accent mb-10 md:mb-12" />
         </BlurFade>
 
         <BlurFade delay={0.06}>
-          <h2 className="font-serif text-2xl text-navy-800 md:text-[2.25rem]">{copy.title}</h2>
+          <h2 className="font-serif text-2xl text-paper md:text-[2.25rem]">{copy.title}</h2>
         </BlurFade>
 
         <BlurFade delay={0.12}>
-          <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-slate-600 md:text-base">
+          <p className="mx-auto mt-4 max-w-lg text-balance break-keep text-sm leading-relaxed text-paper/60 md:text-base">
             {copy.desc}
           </p>
         </BlurFade>
@@ -33,7 +33,7 @@ export function AboutCta() {
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row md:mt-10">
             <Link
               href="/#strategy"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy-600 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-navy-700 hover:shadow-[0_14px_32px_-12px_rgba(46,76,127,0.7)] sm:w-auto md:px-8"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-paper px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-paper/85 sm:w-auto md:px-8"
             >
               {copy.primary}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -41,7 +41,7 @@ export function AboutCta() {
             <button
               type="button"
               onClick={contact.open}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-bronze-400/70 bg-white/70 px-6 py-3.5 font-serif text-sm text-bronze-700 backdrop-blur transition-all hover:border-bronze-500 hover:bg-white sm:w-auto md:px-8 md:text-base"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-paper/30 px-6 py-3.5 text-sm font-semibold text-paper transition-colors hover:border-paper/70 sm:w-auto md:px-8"
             >
               <Mail className="h-4 w-4" />
               {copy.secondary}

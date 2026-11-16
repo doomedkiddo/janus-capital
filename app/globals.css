@@ -4,12 +4,13 @@
 
 :root {
   color-scheme: light;
-  /* default colour scheme (lib/themes.ts "evergreen"); ThemeProvider overrides these for the others */
-  --c-ink: 15 33 27; --c-ink2: 22 51 41; --c-ink3: 31 74 60; --c-ink4: 47 102 82; --c-ink-soft: 184 197 189; --c-deep: 11 26 21;
-  --c-paper: 244 239 228; --c-paper2: 251 248 241; --c-rule: 230 224 210; --c-rule2: 207 200 184; --c-rule-faint: 239 234 223; --c-wash: 223 233 227;
-  --c-accent: 216 191 138; --c-accent2: 180 138 60; --c-neg: 163 55 90; --c-neg-soft: 241 217 224; --c-mute: 124 130 122;
+  /* default colour scheme (lib/themes.ts "dark"); ThemeProvider overrides these for the others */
+  --c-ink: 9 13 19; --c-ink2: 15 22 32; --c-ink3: 16 34 54; --c-ink4: 29 59 92; --c-ink-soft: 174 184 198; --c-deep: 5 8 12;
+  --c-paper: 243 245 248; --c-paper2: 255 255 255; --c-rule: 220 226 234; --c-rule2: 194 203 216; --c-rule-faint: 233 237 242; --c-wash: 224 234 245;
+  --c-accent: 56 198 255; --c-accent2: 10 132 224; --c-neg: 229 72 77; --c-neg-soft: 250 218 219; --c-mute: 102 113 130;
   --font-headline: var(--font-garamond), var(--font-noto-serif), Georgia, "Songti SC", serif;
   --headline-weight: 400; --headline-case: none; --headline-tracking: -0.01em;
+  --logo-main: #eef2f7; --logo-accent: #38c6ff; --logo-sub: #8791a0;
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -59,80 +60,56 @@ body {
   background: linear-gradient(90deg, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent);
 }
 
-.divider-bronze {
+.divider-accent {
   height: 1px;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(176, 141, 87, 0.35) 25%,
-    rgba(176, 141, 87, 0.55) 50%,
-    rgba(176, 141, 87, 0.35) 75%,
+    rgb(var(--c-accent) / 0.22) 25%,
+    rgb(var(--c-accent) / 0.45) 50%,
+    rgb(var(--c-accent) / 0.22) 75%,
     transparent
   );
 }
 
-/* ---------- About page: marble stone surfaces ---------- */
-.marble-surface {
-  position: relative;
-  background-color: #f7f5f1;
-  background-image:
-    radial-gradient(120% 80% at 12% 4%, rgba(255, 255, 255, 0.9) 0%, transparent 55%),
-    radial-gradient(90% 70% at 88% 22%, rgba(176, 141, 87, 0.05) 0%, transparent 60%),
-    radial-gradient(100% 90% at 40% 96%, rgba(154, 163, 179, 0.08) 0%, transparent 62%),
-    linear-gradient(160deg, #faf8f4 0%, #f3f0ea 55%, #efebe3 100%);
+html[data-theme="light"] .ink-surface {
+  --c-ink: 255 255 255; --c-ink2: 243 245 248; --c-ink3: 232 239 248; --c-ink4: 199 216 236; --c-ink-soft: 74 85 104; --c-deep: 9 13 19;
+  --c-paper: 9 13 19; --c-accent: 10 132 224;
+  --logo-main: #090d13; --logo-accent: #0a84e0; --logo-sub: #667182;
 }
 
-.marble-surface::before {
+/* ---------- About page surfaces ---------- */
+.story-surface {
+  position: relative;
+  background-color: rgb(var(--c-ink));
+  background-image:
+    radial-gradient(60% 50% at 50% 46%, rgb(var(--c-accent) / 0.08) 0%, transparent 70%),
+    radial-gradient(120% 70% at 50% -10%, rgb(var(--c-ink3) / 0.7) 0%, transparent 65%);
+}
+
+.story-surface::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image: var(--noise);
-  opacity: 0.03;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.marble-veined::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    118deg,
-    transparent 0px,
-    transparent 46px,
-    rgba(154, 163, 179, 0.055) 47px,
-    transparent 49px,
-    transparent 130px,
-    rgba(176, 141, 87, 0.04) 131px,
-    transparent 133px
-  );
+  opacity: 0.05;
   pointer-events: none;
   z-index: 0;
 }
 
 /* Long-scroll narrative surface: no directional gradient, so it reads the same
    at any container height. */
-.marble-panel {
+.story-panel {
   position: relative;
-  background-color: #f7f5f1;
+  background-color: rgb(var(--c-ink));
 }
 
-.marble-panel::before {
+.story-panel::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: var(--noise),
-    repeating-linear-gradient(
-      118deg,
-      transparent 0px,
-      transparent 58px,
-      rgba(154, 163, 179, 0.5) 59px,
-      transparent 61px,
-      transparent 168px,
-      rgba(176, 141, 87, 0.4) 169px,
-      transparent 171px
-    );
-  opacity: 0.045;
+  background-image: var(--noise);
+  opacity: 0.04;
   pointer-events: none;
   z-index: 0;
 }
@@ -145,7 +122,7 @@ body {
 
 /* Drop cap for narrative opening paragraphs */
 .dropcap::first-letter {
-  @apply font-serif text-bronze-600;
+  @apply font-serif text-accent;
   float: left;
   font-size: 3.6rem;
   line-height: 0.86;
@@ -157,6 +134,95 @@ body {
   .dropcap::first-letter {
     font-size: 4.6rem;
   }
+}
+
+/* ---------- Sagnac motifs: two beams round one loop, and the fringes that shift ---------- */
+
+/* Logo (components/logo.tsx): the lower fringes drift by one period, a shift that ends on the same picture,
+   once when the page opens and again while the logo is hovered. */
+.logo-fringes {
+  transition: transform 1.2s cubic-bezier(0.45, 0, 0.2, 1);
+  animation: fringe-settle 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s backwards;
+}
+
+a:hover > svg .logo-fringes,
+svg:hover > g > .logo-fringes {
+  transform: translateX(var(--fringe-period));
+}
+
+@keyframes fringe-settle {
+  from {
+    transform: translateX(calc(-1 * var(--fringe-period)));
+  }
+}
+
+/* A card as a closed light path: while it is hovered two lights go round its border in opposite directions,
+   leaving from the top together and meeting again at the bottom. */
+@property --loop-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.loop-card {
+  position: relative;
+}
+
+.loop-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background:
+    conic-gradient(from var(--loop-angle), transparent 0deg 338deg, rgb(var(--c-accent)) 352deg, transparent 360deg),
+    conic-gradient(from calc(-1 * var(--loop-angle)), transparent 0deg, rgb(var(--c-accent)) 8deg, transparent 22deg 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+.loop-card:hover::before {
+  opacity: 1;
+  animation: loop-beams 3.2s linear infinite;
+}
+
+@keyframes loop-beams {
+  to {
+    --loop-angle: 360deg;
+  }
+}
+
+/* A link's underline: two beams from its ends that meet in the middle. */
+.beam-link {
+  position: relative;
+}
+
+.beam-link::before,
+.beam-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  height: 1.5px;
+  width: 0;
+  background: rgb(var(--c-accent));
+  transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.beam-link::before {
+  left: 0;
+}
+
+.beam-link::after {
+  right: 0;
+}
+
+.beam-link:hover::before,
+.beam-link:hover::after {
+  width: 50%;
 }
 
 ::-webkit-scrollbar {
@@ -188,7 +254,13 @@ body {
   .animate-shimmer,
   .animate-pulse-ring,
   .animate-float,
-  .animate-spin-slow {
+  .animate-spin-slow,
+  .logo-fringes,
+  .loop-card:hover::before {
     animation: none !important;
+  }
+
+  .logo-fringes {
+    transition: none;
   }
 }

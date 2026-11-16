@@ -47,7 +47,7 @@ export function GlyphFrame({
       initial={reduce ? "visible" : "hidden"}
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
-      className={cn("aspect-square h-auto w-full text-bronze-500", className)}
+      className={cn("aspect-square h-auto w-full text-accent", className)}
     >
       {children}
     </motion.svg>
@@ -64,4 +64,24 @@ export function circlePath(cx: number, cy: number, r: number) {
 
 export function linePath(x1: number, y1: number, x2: number, y2: number) {
   return `M${x1} ${y1} L${x2} ${y2}`;
+}
+
+const rad = (deg: number) => (deg * Math.PI) / 180;
+const fix = (n: number) => +n.toFixed(2);
+
+export function polar(cx: number, cy: number, r: number, deg: number): [number, number] {
+  return [fix(cx + r * Math.cos(rad(deg))), fix(cy + r * Math.sin(rad(deg)))];
+}
+
+export function arcPath(cx: number, cy: number, r: number, from: number, to: number) {
+  const [x0, y0] = polar(cx, cy, r, from);
+  const [x1, y1] = polar(cx, cy, r, to);
+  const large = Math.abs(to - from) > 180 ? 1 : 0;
+  return `M${x0} ${y0} A${r} ${r} 0 ${large} ${to > from ? 1 : 0} ${x1} ${y1}`;
+}
+
+export function chevron(x: number, y: number, deg: number, size = 5) {
+  const [ax, ay] = polar(x, y, size, deg + 150);
+  const [bx, by] = polar(x, y, size, deg - 150);
+  return `M${ax} ${ay} L${x} ${y} L${bx} ${by}`;
 }

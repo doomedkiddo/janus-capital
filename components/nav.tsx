@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useContact } from "@/components/contact-modal";
-import { ThemeMenu } from "@/components/theme-menu";
+import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { home } from "@/lib/i18n/home";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { cn } from "@/lib/utils";
@@ -53,21 +53,18 @@ export function Nav() {
     <>
       <nav
         className={cn(
-          "sticky top-0 z-50 bg-ink text-paper transition-shadow duration-300",
-          scrolled && "shadow-[0_1px_0_0_rgba(244,239,228,0.1)]",
+          "ink-surface sticky top-0 z-50 bg-ink text-paper transition-shadow duration-300",
+          scrolled && "shadow-[0_1px_0_0_rgb(var(--c-paper)/0.1)]",
         )}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
-          <Link href="/" className="group flex items-center gap-2.5 md:gap-3">
-            <Image
-              src="/mark.png"
-              alt="Janus Capital"
-              width={44}
-              height={44}
-              priority
-              className="h-7 w-7 object-contain transition-transform duration-300 group-hover:scale-105 md:h-9 md:w-9"
-            />
-            <span className="hidden headline text-base tracking-wide xs:block md:text-xl">Janus Capital</span>
+          <Link
+            href="/"
+            aria-label="Sagnac Trading"
+            className="rounded transition-opacity duration-300 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+          >
+            <Logo variant="mark" className="h-7 w-7 xs:hidden" />
+            <Logo className="hidden h-8 w-auto xs:block md:h-9" />
           </Link>
 
           <div className="hidden items-center gap-8 text-sm font-medium text-paper/70 md:flex">
@@ -75,7 +72,7 @@ export function Nav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="relative rounded py-1 transition-colors hover:text-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 after:absolute after:-bottom-0.5 after:left-0 after:h-[1.5px] after:w-0 after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
+                className="beam-link rounded py-1 transition-colors hover:text-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
               >
                 {link.label}
               </a>
@@ -93,7 +90,7 @@ export function Nav() {
           </div>
 
           <div className="flex items-center gap-2 md:gap-3">
-            <ThemeMenu />
+            <ThemeToggle />
             <button
               onClick={toggle}
               aria-label="Switch language"
@@ -103,7 +100,7 @@ export function Nav() {
             </button>
             <button
               onClick={handleContact}
-              className="group hidden items-center gap-1.5 rounded-full bg-paper px-4 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:flex md:px-6 md:py-2 md:text-sm"
+              className="group hidden items-center gap-1.5 rounded-full bg-paper px-4 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-paper/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:flex md:px-6 md:py-2 md:text-sm"
             >
               {copy.cta}
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -120,7 +117,7 @@ export function Nav() {
       </nav>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
+        <div className="ink-surface fixed inset-0 z-40 md:hidden">
           <div className="absolute inset-0 bg-ink-deep/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
           <div className="absolute left-3 right-3 top-16 space-y-5 rounded-[28px] bg-ink-2 p-6 text-paper shadow-[0_20px_50px_-20px_rgba(11,26,21,0.6)]">
             <div className="flex flex-col gap-1">
@@ -145,7 +142,7 @@ export function Nav() {
             </div>
             <button
               onClick={handleContact}
-              className="w-full rounded-full bg-paper py-3 text-sm font-semibold text-ink transition-colors hover:bg-white"
+              className="w-full rounded-full bg-paper py-3 text-sm font-semibold text-ink transition-colors hover:bg-paper/85"
             >
               {copy.cta}
             </button>

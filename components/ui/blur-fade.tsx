@@ -46,19 +46,14 @@ export function BlurFade({
 
   const MotionTag = motion[as];
 
-  if (reduce) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
-
   return (
     <AnimatePresence>
       <MotionTag
         ref={ref as never}
         initial="hidden"
-        animate={inView ? "visible" : "hidden"}
+        animate={inView || reduce ? "visible" : "hidden"}
         variants={variants}
-        transition={{ delay: 0.04 + delay, duration, ease: [0.22, 1, 0.36, 1] }}
+        transition={reduce ? { duration: 0 } : { delay: 0.04 + delay, duration, ease: [0.22, 1, 0.36, 1] }}
         className={cn(className)}
       >
         {children}

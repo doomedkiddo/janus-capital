@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 
 export type Lang = "zh" | "en";
 
-const STORAGE_KEY = "janus-lang";
+const STORAGE_KEY = "sagnac-lang";
 
 type LanguageContextValue = {
   lang: Lang;

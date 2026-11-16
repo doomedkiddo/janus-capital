@@ -33,11 +33,9 @@ export type HomeCopy = {
   };
   teaser: {
     overline: string;
-    latin: string;
     title: string;
     body: string;
     cta: string;
-    chapters: string[];
   };
   strategy: {
     title1: string;
@@ -50,30 +48,32 @@ export type HomeCopy = {
 };
 
 export type AboutChapter = {
-  numeral: string;
+  marker: string;
   overline: string;
   title: string;
   paragraphs: string[];
   pull: string;
+  figure: string;
+  spec: string;
 };
 
 export type AboutCopy = {
   meta: { title: string; description: string };
   hero: {
     wordmark: string;
-    latin: string;
-    latinSource: string;
+    source: string;
     title: string;
     lede: string;
     scroll: string;
   };
-  prologue: { overline: string; paragraphs: string[]; nameLine: string };
+  prologue: { overline: string; paragraphs: string[]; closing: string };
   chapters: AboutChapter[];
-  maxim: {
+  name: { overline: string; lines: string[] };
+  instruments: {
     overline: string;
-    intro: string;
-    lead: string;
-    items: { title: string; desc: string }[];
+    title: string;
+    items: { label: string; title: string; desc: string; code: string }[];
+    closing: string;
   };
   epilogue: { overline: string; paragraphs: string[]; signature: string; tagline: string };
   cta: { title: string; desc: string; primary: string; secondary: string };

@@ -1,9 +1,9 @@
 module.exports = {
   apps: [
     {
-      name: 'janus-capital',
+      name: 'sagnac-trading',
       script: 'server.cjs',
-      cwd: '/home/ubuntu/janus-capital',
+      cwd: '/home/ubuntu/sagnac-trading',
       env: {
         NODE_ENV: 'production',
       },

@@ -54,7 +54,7 @@ export function ChapterNav() {
     >
       {chapters.map((chapter, index) => (
         <a
-          key={chapter.numeral}
+          key={chapter.marker}
           href={`#chapter-${index + 1}`}
           className="group flex items-center gap-2.5"
         >
@@ -62,8 +62,8 @@ export function ChapterNav() {
             className={cn(
               "whitespace-nowrap font-serif text-[11px] tracking-wide transition-all duration-300",
               active === index
-                ? "text-bronze-700 opacity-100"
-                : "text-slate-400 opacity-0 group-hover:opacity-100",
+                ? "text-accent opacity-100"
+                : "text-paper/40 opacity-0 group-hover:opacity-100",
             )}
           >
             {chapter.title}
@@ -71,17 +71,17 @@ export function ChapterNav() {
           <span
             className={cn(
               "font-serif text-xs transition-colors duration-300",
-              active === index ? "text-bronze-600" : "text-slate-300 group-hover:text-bronze-500",
+              active === index ? "text-accent" : "text-paper/25 group-hover:text-accent/70",
             )}
           >
-            {chapter.numeral}
+            {chapter.marker}
           </span>
           <span
             className={cn(
               "h-px transition-all duration-300",
               active === index
-                ? "w-6 bg-bronze-500"
-                : "w-3 bg-slate-300 group-hover:w-5 group-hover:bg-bronze-400",
+                ? "w-6 bg-accent"
+                : "w-3 bg-paper/20 group-hover:w-5 group-hover:bg-accent/60",
             )}
           />
         </a>

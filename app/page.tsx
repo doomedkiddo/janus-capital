@@ -6,10 +6,12 @@ import { AboutTeaser } from "@/components/sections/about-teaser";
 import { Hero } from "@/components/sections/hero";
 import { Strategy } from "@/components/sections/strategy";
 import { Team } from "@/components/sections/team";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 export default function HomePage() {
   return (
     <ContactProvider>
+      <ScrollProgress />
       <Nav />
       <main>
         <Hero />

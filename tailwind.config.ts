@@ -90,6 +90,7 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-inter)", "var(--font-noto-sans)", "system-ui", "sans-serif"],
         body: ["var(--font-inter)", "var(--font-noto-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "var(--font-noto-sans)", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
         serif: [
           "var(--font-garamond)",
           "var(--font-noto-serif)",
