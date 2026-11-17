@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Inter, JetBrains_Mono, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google";
+import { EB_Garamond, Inter, JetBrains_Mono, Jost, Noto_Sans_SC, Noto_Serif_SC } from "next/font/google";
 import { LanguageProvider } from "@/lib/i18n/language-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { THEMES, THEME_STORAGE_KEY } from "@/lib/themes";
@@ -35,6 +35,14 @@ const notoSerifSC = Noto_Serif_SC({
   variable: "--font-noto-serif",
   display: "swap",
   preload: false,
+});
+
+// the face of the wordmark (logo/README.txt): display type on the homepage
+const jost = Jost({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-jost",
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -78,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         ebGaramond.variable,
         notoSerifSC.variable,
         jetbrainsMono.variable,
+        jost.variable,
       )}
     >
       <head>

@@ -45,54 +45,41 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
     <ContactContext.Provider value={{ open: openModal }}>
       {children}
       {open && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-          />
-          <div className="relative mx-4 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_24px_60px_-18px_rgba(15,23,42,0.32)] md:p-8">
+        <div className="ink-surface fixed inset-0 z-[70] flex items-center justify-center p-4 text-paper">
+          <div className="absolute inset-0 bg-ink/80 backdrop-blur-md" onClick={() => setOpen(false)} />
+          <div role="dialog" aria-modal="true" aria-label={copy.title} className="reg relative w-full max-w-md border border-paper/20 bg-ink p-7 md:p-9">
             <button
               onClick={() => setOpen(false)}
               aria-label={copy.close}
-              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center text-paper/50 transition-colors hover:text-paper focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
             >
               <X className="h-4 w-4" />
             </button>
 
-            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-navy-100 bg-navy-50">
-              <Mail className="h-5 w-5 text-navy-600" />
-            </div>
+            <p className="label flex items-center gap-3 text-accent">
+              <Mail className="h-3.5 w-3.5" />
+              Sagnac Trading
+            </p>
+            <h3 className="display mt-6 text-4xl">{copy.title}</h3>
+            <p className="mt-4 text-sm leading-relaxed text-paper/65">{copy.desc}</p>
 
-            <h3 className="mb-2 text-xl font-bold text-slate-900 md:text-2xl">{copy.title}</h3>
-            <p className="mb-5 text-sm leading-relaxed text-slate-500 md:text-base">{copy.desc}</p>
-
-            <div className="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-3 md:p-4">
-              <p className="mb-2 text-xs text-slate-500 md:text-sm">{copy.fallback}</p>
-              <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
-                <a
-                  href={`mailto:${EMAIL}`}
-                  className="break-all font-mono text-sm text-navy-600 transition-colors hover:text-navy-700 md:text-base"
-                >
+            <div className="mt-7 border-t border-paper/15 pt-5">
+              <p className="text-xs text-paper/45">{copy.fallback}</p>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                <a href={`mailto:${EMAIL}`} className="beam-link break-all font-mono text-sm text-paper">
                   {copy.email}
                 </a>
                 <button
                   onClick={copyEmail}
-                  className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-600 transition-colors hover:bg-slate-100"
+                  className="inline-flex shrink-0 items-center gap-2 border border-paper/25 px-3 py-2 font-mono text-[11px] text-paper/80 transition-colors hover:border-paper/70 hover:text-paper focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
                 >
-                  {copied ? (
-                    <Check className="h-3 w-3 text-emerald-600" />
-                  ) : (
-                    <Copy className="h-3 w-3" />
-                  )}
+                  {copied ? <Check className="h-3 w-3 text-accent" /> : <Copy className="h-3 w-3" />}
                   {copied ? copy.copied : copy.copy}
                 </button>
               </div>
             </div>
 
-            <button
-              onClick={() => setOpen(false)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-100 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-200 md:py-3 md:text-base"
-            >
+            <button onClick={() => setOpen(false)} className="btn-beam mt-7 w-full">
               {copy.close}
             </button>
           </div>

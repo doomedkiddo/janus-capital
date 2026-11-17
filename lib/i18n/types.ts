@@ -24,7 +24,16 @@ export type HomeCopy = {
     ctaSecondary: string;
     ticker: string;
     scroll: string;
+    /** the motto, one entry per line of the headline */
+    lines: string[];
+    lede: string;
+    fig: string;
+    caption: string;
+    live: string;
   };
+  /** the page's chapters, in order: source, readout, loop, observers, origin, depart */
+  chapters: string[];
+  loop: { line: string; hint: string };
   team: {
     title1: string;
     title2: string;

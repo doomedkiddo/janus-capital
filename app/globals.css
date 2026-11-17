@@ -264,3 +264,162 @@ svg:hover > g > .logo-fringes {
     transition: none;
   }
 }
+
+/* ---------- The bench: the homepage as one instrument (components/stage, components/sections) ---------- */
+
+/* Display type: the wordmark's face for Latin and figures, Songti for Chinese. */
+@layer components {
+  .display {
+    font-family: var(--font-jost), var(--font-noto-serif), "Songti SC", serif;
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    line-height: 1.04;
+  }
+
+  .display:lang(zh) {
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.18;
+  }
+
+  /* Small technical lettering: captions, chapter marks, readouts. */
+  .label {
+    @apply font-mono text-[10.5px] uppercase leading-none tracking-[0.24em];
+  }
+}
+
+/* While the bench is mounted the page's own ground is the bench's. */
+body.bench-body {
+  background: rgb(9 13 19);
+}
+
+html[data-theme="light"] body.bench-body {
+  background: #fff;
+}
+
+html:has(body.bench-body)::-webkit-scrollbar-track {
+  background: rgb(9 13 19);
+}
+
+html:has(body.bench-body)::-webkit-scrollbar-thumb {
+  background: rgb(60 70 84);
+}
+
+html[data-theme="light"]:has(body.bench-body)::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+html[data-theme="light"]:has(body.bench-body)::-webkit-scrollbar-thumb {
+  background: rgb(var(--c-rule2));
+}
+
+@layer components {
+  /* A button filled by two beams that leave its ends and meet in the middle. */
+  .btn-beam {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    overflow: hidden;
+    border: 1px solid rgb(var(--c-paper) / 0.32);
+    padding: 0.95rem 1.5rem;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgb(var(--c-paper));
+    transition: color 0.35s ease, border-color 0.35s ease;
+  }
+
+  .btn-beam::before,
+  .btn-beam::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 0;
+    background: rgb(var(--c-paper));
+    transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-beam::before {
+    left: 0;
+  }
+
+  .btn-beam::after {
+    right: 0;
+  }
+
+  .btn-beam:hover,
+  .btn-beam:focus-visible {
+    border-color: rgb(var(--c-paper));
+    color: rgb(var(--c-ink));
+    outline: none;
+  }
+
+  .btn-beam:hover::before,
+  .btn-beam:hover::after,
+  .btn-beam:focus-visible::before,
+  .btn-beam:focus-visible::after {
+    width: 50.5%;
+  }
+
+  .btn-beam--solid {
+    border-color: rgb(var(--c-paper));
+    background: rgb(var(--c-paper));
+    color: rgb(var(--c-ink));
+  }
+
+  .btn-beam--solid::before,
+  .btn-beam--solid::after {
+    background: rgb(var(--c-accent));
+  }
+
+  .btn-beam--solid:hover,
+  .btn-beam--solid:focus-visible {
+    border-color: rgb(var(--c-accent));
+  }
+
+  /* Registration marks at the corners of a figure. */
+  .reg {
+    position: relative;
+  }
+
+  .reg::before,
+  .reg::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    pointer-events: none;
+    border: 0 solid rgb(var(--c-paper) / 0.45);
+  }
+
+  .reg::before {
+    left: 0;
+    top: 0;
+    border-left-width: 1px;
+    border-top-width: 1px;
+  }
+
+  .reg::after {
+    right: 0;
+    bottom: 0;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+  }
+}
+
+/* Where WebGL is missing the stage's two full-bleed figures are stood in for by still fringes. */
+html[data-stage="off"] [data-stage-figure] {
+  background-image: repeating-linear-gradient(90deg, rgb(var(--c-paper) / 0.9) 0 8px, transparent 8px 16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-beam::before,
+  .btn-beam::after {
+    transition: none;
+  }
+}

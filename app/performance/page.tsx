@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Bench } from "@/components/bench";
 import { ContactProvider } from "@/components/contact-modal";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
@@ -21,10 +22,14 @@ export const metadata: Metadata = {
 export default function PerformancePage() {
   return (
     <ContactProvider>
-      <ScrollProgress />
-      <Nav />
-      <PerformanceView />
-      <Footer />
+      <Bench hud={false}>
+        <ScrollProgress />
+        <Nav />
+        <main>
+          <PerformanceView />
+        </main>
+        <Footer />
+      </Bench>
     </ContactProvider>
   );
 }

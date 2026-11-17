@@ -71,18 +71,3 @@ export function themeVars(t: Theme): [string, string][] {
   out.push(["--headline-tracking", t.headline.tracking]);
   return out;
 }
-
-/** The chart palette (components/performance) of a theme. */
-export const chartPalette = (t: Theme) => ({
-  ink: t.colors.ink,
-  forest: t.colors.ink3,
-  forest2: t.colors.ink4,
-  wash: t.colors.wash,
-  paper: t.colors.paper2,
-  rule: t.colors.rule,
-  faint: t.colors.ruleFaint,
-  mute: t.colors.mute,
-  brass: t.colors.accent2,
-  claret: t.colors.neg,
-  claretWash: t.colors.negSoft,
-});

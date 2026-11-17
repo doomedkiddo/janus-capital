@@ -90,6 +90,7 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-inter)", "var(--font-noto-sans)", "system-ui", "sans-serif"],
         body: ["var(--font-inter)", "var(--font-noto-sans)", "system-ui", "sans-serif"],
+        jost: ["var(--font-jost)", "var(--font-noto-serif)", "Songti SC", "serif"],
         mono: ["var(--font-mono)", "var(--font-noto-sans)", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
         serif: [
           "var(--font-garamond)",

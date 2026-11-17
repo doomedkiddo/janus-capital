@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { DEFAULT_THEME, THEME_STORAGE_KEY as STORAGE_KEY, THEMES, chartPalette, themeVars, type Theme } from "./themes";
+import { DEFAULT_THEME, THEME_STORAGE_KEY as STORAGE_KEY, THEMES, themeVars, type Theme } from "./themes";
 
 type ThemeContextValue = { theme: Theme; setTheme: (id: string) => void };
 
@@ -39,8 +39,4 @@ export function useTheme() {
   const ctx = useContext(ThemeContext);
   if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
   return ctx;
-}
-
-export function useChartPalette() {
-  return chartPalette(useTheme().theme);
 }

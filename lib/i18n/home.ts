@@ -29,6 +29,16 @@ export const home: Record<Lang, HomeCopy> = {
       ctaSecondary: "Get in touch",
       ticker: "Liquidity • Market Making • Stat Arb • DeFi • HFT • AI Signals • Options",
       scroll: "Scroll",
+      lines: ["In the smallest difference,", "the turning of the world"],
+      lede: "One coherent source. A closed loop. Counter-propagating paths.",
+      fig: "Fig. 0 · A name written in phase",
+      caption: "No fringe here is brighter or darker than the rest. The letters are only half a period out of step.",
+      live: "Live record",
+    },
+    chapters: ["Source", "Readout", "Loop", "Observers", "Origin", "Depart"],
+    loop: {
+      line: "Strategy line",
+      hint: "Two pulses leave together, go round once each way, and meet again at the same point.",
     },
     team: {
       title1: "RESEARCH &",
@@ -109,6 +119,16 @@ export const home: Record<Lang, HomeCopy> = {
       ctaSecondary: "联系我们",
       ticker: "流动性 • 做市 • 统计套利 • DeFi • 高频 • AI信号 • 期权",
       scroll: "下滑",
+      lines: ["于毫厘之差，", "见天地之转"],
+      lede: "同源之光，闭合之环，逆向而行。",
+      fig: "图 0 · 以相位写成的名字",
+      caption: "这里没有哪一道条纹更亮，或更暗。字迹所在，只是错开了半个周期。",
+      live: "实盘记录",
+    },
+    chapters: ["光源", "读数", "闭环", "观测", "来处", "出发"],
+    loop: {
+      line: "策略线",
+      hint: "两束光同时出发，各绕一周，在同一点重逢。",
     },
     team: {
       title1: "数理",

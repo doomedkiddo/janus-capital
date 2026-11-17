@@ -11,6 +11,8 @@ import { home } from "@/lib/i18n/home";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { cn } from "@/lib/utils";
 
+const FOCUS = "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent";
+
 export function Nav() {
   const { lang, toggle } = useLanguage();
   const copy = home[lang].nav;
@@ -19,9 +21,9 @@ export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const onHome = pathname === "/";
-  const prefix = onHome ? "" : "/";
-
+  const prefix = pathname === "/" ? "" : "/";
+  // on the pages built on the stage the bar is clear until the page moves; elsewhere it is a solid block
+  const bench = pathname === "/" || pathname.startsWith("/performance");
   const links = [
     { href: `${prefix}#performance`, label: copy.performance },
     { href: `${prefix}#strategy`, label: copy.strategy },
@@ -53,64 +55,57 @@ export function Nav() {
     <>
       <nav
         className={cn(
-          "ink-surface sticky top-0 z-50 bg-ink text-paper transition-shadow duration-300",
-          scrolled && "shadow-[0_1px_0_0_rgb(var(--c-paper)/0.1)]",
+          "ink-surface sticky top-0 z-50 border-b text-paper transition-[background-color,border-color] duration-500",
+          !bench ? "border-paper/10 bg-ink" : scrolled ? "border-paper/10 bg-ink/75 backdrop-blur-md" : "border-transparent bg-transparent",
         )}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
-          <Link
-            href="/"
-            aria-label="Sagnac Trading"
-            className="rounded transition-opacity duration-300 hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
-          >
+        <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between px-5 md:h-20 md:px-10">
+          <Link href="/" aria-label="Sagnac Trading" className={cn("transition-opacity duration-300 hover:opacity-80", FOCUS)}>
             <Logo variant="mark" className="h-7 w-7 xs:hidden" />
             <Logo className="hidden h-8 w-auto xs:block md:h-9" />
           </Link>
 
-          <div className="hidden items-center gap-8 text-sm font-medium text-paper/70 md:flex">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="beam-link rounded py-1 transition-colors hover:text-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
-              >
+          <div className="hidden items-center gap-9 text-[13px] tracking-[0.08em] text-paper/65 md:flex">
+            {links.map((link, i) => (
+              <a key={link.href} href={link.href} className={cn("beam-link flex items-baseline gap-2 py-1 transition-colors hover:text-paper", FOCUS)}>
+                <span className="font-mono text-[10px] text-paper/35">{String(i + 1).padStart(2, "0")}</span>
                 {link.label}
               </a>
             ))}
             <Link
               href="/about"
               className={cn(
-                "relative inline-flex items-center gap-1.5 rounded py-1 headline text-[15px] tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60",
-                pathname === "/about" ? "text-accent" : "text-paper/70 hover:text-accent",
+                "beam-link flex items-baseline gap-2 py-1 font-serif text-[16px] italic tracking-normal transition-colors",
+                pathname === "/about" ? "text-accent" : "hover:text-accent",
+                FOCUS,
               )}
             >
-              <span className="h-1 w-1 rounded-full bg-accent" />
               {copy.story}
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-2.5">
             <ThemeToggle />
             <button
               onClick={toggle}
               aria-label="Switch language"
-              className="min-w-[3rem] rounded-full border border-paper/25 px-2 py-1.5 text-center text-[10px] font-semibold uppercase tracking-wider text-paper/80 transition-colors hover:border-paper/60 hover:text-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 md:min-w-[4.25rem] md:px-3 md:py-2 md:text-xs"
+              className={cn(
+                "flex h-9 min-w-[2.75rem] items-center justify-center border border-paper/25 px-2 font-mono text-[11px] tracking-[0.12em] text-paper/80 transition-colors hover:border-paper/70 hover:text-paper",
+                FOCUS,
+              )}
             >
               {lang === "en" ? "中文" : "EN"}
             </button>
-            <button
-              onClick={handleContact}
-              className="group hidden items-center gap-1.5 rounded-full bg-paper px-4 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-paper/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:flex md:px-6 md:py-2 md:text-sm"
-            >
+            <button onClick={handleContact} className="btn-beam hidden !gap-2 !px-4 !py-0 sm:inline-flex sm:h-9">
               {copy.cta}
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => setMobileOpen((prev) => !prev)}
               aria-label="Toggle menu"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-paper/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 md:hidden"
+              className={cn("flex h-9 w-9 items-center justify-center border border-paper/25 md:hidden", FOCUS)}
             >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
           </div>
         </div>
@@ -118,33 +113,26 @@ export function Nav() {
 
       {mobileOpen && (
         <div className="ink-surface fixed inset-0 z-40 md:hidden">
-          <div className="absolute inset-0 bg-ink-deep/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
-          <div className="absolute left-3 right-3 top-16 space-y-5 rounded-[28px] bg-ink-2 p-6 text-paper shadow-[0_20px_50px_-20px_rgba(11,26,21,0.6)]">
-            <div className="flex flex-col gap-1">
-              {links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="border-b border-paper/10 py-3 text-lg font-medium transition-colors hover:text-accent"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <Link
-                href="/about"
+          <div className="absolute inset-0 bg-ink/90 backdrop-blur-md" onClick={() => setMobileOpen(false)} />
+          <div className="absolute inset-x-5 top-20 text-paper">
+            {links.map((link, i) => (
+              <a
+                key={link.href}
+                href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 py-3 headline text-lg text-accent"
+                className="flex items-baseline gap-4 border-b border-paper/15 py-5 display text-3xl"
               >
-                <span className="h-1 w-1 rounded-full bg-accent" />
-                {copy.story}
-              </Link>
-            </div>
-            <button
-              onClick={handleContact}
-              className="w-full rounded-full bg-paper py-3 text-sm font-semibold text-ink transition-colors hover:bg-paper/85"
-            >
+                <span className="font-mono text-[11px] text-accent">{String(i + 1).padStart(2, "0")}</span>
+                {link.label}
+              </a>
+            ))}
+            <Link href="/about" onClick={() => setMobileOpen(false)} className="flex items-baseline gap-4 border-b border-paper/15 py-5 font-serif text-3xl italic text-accent">
+              <span className="font-mono text-[11px] not-italic">04</span>
+              {copy.story}
+            </Link>
+            <button onClick={handleContact} className="btn-beam btn-beam--solid mt-8 w-full">
               {copy.cta}
+              <ArrowUpRight className="h-4 w-4" />
             </button>
           </div>
         </div>

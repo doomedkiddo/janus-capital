@@ -17,7 +17,7 @@ export function ThemeToggle() {
       onClick={() => setTheme(next.id)}
       aria-label={label}
       title={label}
-      className="flex h-8 w-8 items-center justify-center rounded-full border border-paper/25 text-paper/80 transition-colors hover:border-paper/60 hover:text-paper focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 md:h-9 md:w-9"
+      className="flex h-9 w-9 items-center justify-center border border-paper/25 text-paper/80 transition-colors hover:border-paper/70 hover:text-paper focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
     >
       <Icon className="h-4 w-4" />
     </button>
