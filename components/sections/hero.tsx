@@ -5,7 +5,6 @@ import { motion, useReducedMotion } from "motion/react";
 import { useContact } from "@/components/contact-modal";
 import { useStageAnchor } from "@/components/stage/bus";
 import { PhaseReadout } from "@/components/ui/readouts";
-import { ShiftText } from "@/components/ui/shift-text";
 import { home } from "@/lib/i18n/home";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { performance } from "@/lib/i18n/performance";
@@ -15,8 +14,8 @@ import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/** Source. The motto above, and under it the stage's first figure: a field of fringes across the whole window in which
- *  the name is written by displacement alone. Below the figure, what the instrument reads today. */
+/** Source. The stage's first figure fills the screen: a field of fringes across the whole window in which the name is
+ *  written by displacement alone. Below the figure, what the instrument reads today. */
 export function Hero() {
   const { lang } = useLanguage();
   const copy = home[lang].hero;
@@ -41,40 +40,23 @@ export function Hero() {
 
   return (
     <section id="top" className="relative flex min-h-[calc(100svh-4rem)] flex-col md:min-h-[calc(100svh-5rem)]">
-      <div className="mx-auto flex w-full max-w-[1320px] flex-1 flex-col justify-end px-5 pb-5 pt-4 md:px-10 md:pb-5">
-        <motion.p {...rise(0.1)} className="label flex items-center gap-3 text-accent">
+      <h1 className="sr-only">Sagnac Trading</h1>
+      <motion.div
+        {...rise(0.1)}
+        className="mx-auto flex w-full max-w-[1320px] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 pt-8 md:px-10 md:pt-10"
+      >
+        <p className="label flex items-center gap-3 text-accent">
           <span className="h-px w-8 bg-accent/60" />
           {copy.tagline}
-        </motion.p>
+        </p>
+        <p className="label flex flex-wrap items-center gap-x-4 gap-y-2 text-paper/50">
+          <span className="whitespace-nowrap">{copy.fig}</span>
+          <PhaseReadout className="whitespace-nowrap normal-case text-accent" />
+        </p>
+      </motion.div>
 
-        <h1
-          className={cn(
-            "display mt-5 md:mt-6",
-            lang === "zh"
-              ? "text-[13.5vw] md:text-[min(7.6vw,11vh)] md:portrait:text-[11.5vw] 2xl:text-[min(7rem,11vh)]"
-              : "text-[6.4vw] md:text-[min(5.9vw,9.2vh)] md:portrait:text-[6.6vw] 2xl:text-[min(5.5rem,9.2vh)]",
-          )}
-        >
-          {copy.lines.map((line, i) => (
-            <ShiftText key={line} inView={false} delay={0.3 + i * 0.14} className="block w-fit">
-              {line}
-            </ShiftText>
-          ))}
-        </h1>
-
-        <motion.div {...rise(0.75)} className="mt-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <p className="font-serif text-lg italic text-paper/70 md:text-[1.35rem]">{copy.lede}</p>
-          <div className="md:max-w-md md:text-right">
-            <p className="label flex flex-wrap items-center gap-x-4 gap-y-2 text-paper/50 md:justify-end">
-              <span className="whitespace-nowrap">{copy.fig}</span>
-              <PhaseReadout className="whitespace-nowrap normal-case text-accent" />
-            </p>
-            <p className="mt-2.5 text-[12px] leading-relaxed text-paper/45">{copy.caption}</p>
-          </div>
-        </motion.div>
-      </div>
-
-      <div ref={anchor} data-stage-figure className="h-[clamp(200px,29svh,330px)] w-full shrink-0 portrait:h-[clamp(240px,34svh,470px)]" />
+      {/* the name, written in the fringes by the stage: the hero is this figure */}
+      <div ref={anchor} data-stage-figure className="mt-6 min-h-[260px] w-full flex-1 md:mt-8" />
 
       <div className="mx-auto w-full max-w-[1320px] px-5 md:px-10">
         <motion.div {...rise(1.5)} className="flex flex-col gap-6 py-6 md:flex-row md:items-end md:justify-between md:py-6">

@@ -29,10 +29,7 @@ export const home: Record<Lang, HomeCopy> = {
       ctaSecondary: "Get in touch",
       ticker: "Liquidity • Market Making • Stat Arb • DeFi • HFT • AI Signals • Options",
       scroll: "Scroll",
-      lines: ["In the smallest difference,", "the turning of the world"],
-      lede: "One coherent source. A closed loop. Counter-propagating paths.",
       fig: "Fig. 0 · A name written in phase",
-      caption: "No fringe here is brighter or darker than the rest. The letters are only half a period out of step.",
       live: "Live record",
     },
     chapters: ["Source", "Readout", "Loop", "Observers", "Origin", "Depart"],
@@ -46,7 +43,7 @@ export const home: Record<Lang, HomeCopy> = {
       subtitle:
         "Veterans from tier-one global market makers and quantitative hedge funds including Optiver and QRT — uniting mathematical research rigor with bare-metal systems engineering.",
       members: [
-        { name: "Ricky", role: "Founder · Bitget · 20M USDT AUM" },
+        { name: "Ricky", role: "Founder · Bitget" },
         { name: "Louise Lee", role: "Optiver Senior Dev" },
         { name: "Peter", role: "Former QRT Quant Researcher" },
       ],
@@ -119,10 +116,7 @@ export const home: Record<Lang, HomeCopy> = {
       ctaSecondary: "联系我们",
       ticker: "流动性 • 做市 • 统计套利 • DeFi • 高频 • AI信号 • 期权",
       scroll: "下滑",
-      lines: ["于毫厘之差，", "见天地之转"],
-      lede: "同源之光，闭合之环，逆向而行。",
       fig: "图 0 · 以相位写成的名字",
-      caption: "这里没有哪一道条纹更亮，或更暗。字迹所在，只是错开了半个周期。",
       live: "实盘记录",
     },
     chapters: ["光源", "读数", "闭环", "观测", "来处", "出发"],
@@ -136,7 +130,7 @@ export const home: Record<Lang, HomeCopy> = {
       subtitle:
         "团队成员来自 Optiver、QRT 等全球一线量化做市商与对冲基金，兼具扎实的数理统计研究背景与超低延迟系统工程经验。",
       members: [
-        { name: "Ricky", role: "创始人 · Bitget · 2000 万 USDT AUM" },
+        { name: "Ricky", role: "创始人 · Bitget" },
         { name: "Louise Lee", role: "Optiver 资深开发" },
         { name: "Peter", role: "前 QRT 量化研究员" },
       ],
