@@ -20,6 +20,7 @@ uniform vec2 uB;       // half size
 uniform float uRho;    // corner radius: 0 a band, min(uB) a disc
 uniform float uHole;   // 0 a full figure, 1 only its outline
 uniform float uField;  // fringes
+uniform float uCalm;   // 1: the field recedes to a quiet ground with soft edges and the displaced fringes carry the figure
 uniform float uText;   // the name as a displaced region
 uniform float uHalf;   // the lower half as a displaced region (the mark)
 uniform float uRing;   // the loop: ring, rim, pulses, nodes
@@ -78,8 +79,10 @@ void main() {
     float aRef = clamp((edge - p.x) / (60.0 * uPx), 0.0, 1.0);
     float aDis = clamp((p.x + edge) / (60.0 * uPx), 0.0, 1.0);
 
-    fg += ref * (1.0 - sel) * body * uField * aRef;
-    ac += dis * sel * body * uField * aDis;
+    // a figure the size of the window must not dazzle: its field is kept low and fades out towards its edges
+    float ground = mix(1.0, 0.17 * smoothstep(0.0, 0.42 * R, -d), uCalm);
+    fg += ref * (1.0 - sel) * body * uField * aRef * ground;
+    ac += dis * sel * body * uField * aDis * mix(1.0, 0.86, uCalm);
   }
 
   if (uRing > 0.001) {

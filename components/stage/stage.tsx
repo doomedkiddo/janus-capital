@@ -53,8 +53,8 @@ function wordCanvas(stacked: boolean) {
   return cvs;
 }
 
-type Fig = { cx: number; cy: number; bx: number; by: number; rho: number; period: number; gap: number; hole: number; field: number; text: number; half: number; ring: number };
-const GEOMETRY = ["cx", "cy", "bx", "by", "rho", "period", "gap"] as const;
+type Fig = { cx: number; cy: number; bx: number; by: number; rho: number; period: number; gap: number; calm: number; hole: number; field: number; text: number; half: number; ring: number };
+const GEOMETRY = ["cx", "cy", "bx", "by", "rho", "period", "gap", "calm"] as const;
 const LEVELS = ["hole", "field", "text", "half", "ring"] as const;
 
 function figure(kind: AnchorKind, r: DOMRect): Fig & { textRect?: [number, number, number, number]; stacked?: boolean } {
@@ -66,17 +66,17 @@ function figure(kind: AnchorKind, r: DOMRect): Fig & { textRect?: [number, numbe
     const tw = Math.min(r.width * (stacked ? 0.84 : 0.9), r.height * (stacked ? 0.8 : 0.7) * aspect);
     const th = tw / aspect;
     return {
-      cx, cy, bx: r.width / 2, by: r.height / 2, rho: 0, period: Math.max((stacked ? th / 2.3 : th) / 12, 5), gap: 0,
+      cx, cy, bx: r.width / 2, by: r.height / 2, rho: 0, period: Math.max((stacked ? th / 2.3 : th) / 12, 5), gap: 0, calm: 1,
       hole: 0, field: 1, text: 1, half: 0, ring: 0, textRect: [cx - tw / 2, cy - th / 2, tw, th], stacked,
     };
   }
   if (kind === "strip") {
-    return { cx, cy, bx: r.width / 2, by: r.height / 2, rho: 0, period: Math.max(r.height / 7, 10), gap: Math.max(r.height * 0.02, 1.5), hole: 0, field: 1, text: 0, half: 1, ring: 0 };
+    return { cx, cy, bx: r.width / 2, by: r.height / 2, rho: 0, period: Math.max(r.height / 7, 10), gap: Math.max(r.height * 0.02, 1.5), calm: 0, hole: 0, field: 1, text: 0, half: 1, ring: 0 };
   }
   // the logo's own proportions: four fringes across the disc, a slit of 6 % of the radius either side of the axis
   const R = Math.min(r.width, r.height) / 2;
   const loop = kind === "loop";
-  return { cx, cy, bx: R, by: R, rho: R, period: R / 2, gap: R * 0.06, hole: loop ? 1 : 0, field: 1, text: 0, half: 1, ring: loop ? 1 : 0 };
+  return { cx, cy, bx: R, by: R, rho: R, period: R / 2, gap: R * 0.06, calm: 0, hole: loop ? 1 : 0, field: 1, text: 0, half: 1, ring: loop ? 1 : 0 };
 }
 
 const smooth = (a: number, b: number, x: number) => {
@@ -117,7 +117,7 @@ export function Stage() {
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
     const U = (name: string) => gl.getUniformLocation(prog, name);
     const u = Object.fromEntries(
-      ["uRes", "uBg", "uFg", "uAc", "uC", "uB", "uRho", "uHole", "uField", "uText", "uHalf", "uRing", "uPeriod", "uShift", "uGap", "uTextRect", "uTex", "uTurn", "uTau", "uNode", "uPx", "uIntro"].map((n) => [n, U(n)]),
+      ["uRes", "uBg", "uFg", "uAc", "uC", "uB", "uRho", "uHole", "uField", "uText", "uHalf", "uRing", "uPeriod", "uShift", "uGap", "uCalm", "uTextRect", "uTex", "uTurn", "uTau", "uNode", "uPx", "uIntro"].map((n) => [n, U(n)]),
     );
 
     const textures = [false, true].map((stacked) => {
@@ -205,7 +205,7 @@ export function Stage() {
 
       // every anchor near the viewport pulls the figure towards its own place and shape
       const vh = window.innerHeight;
-      const mix = { cx: 0, cy: 0, bx: 0, by: 0, rho: 0, period: 0, gap: 0, hole: 0, field: 0, text: 0, half: 0, ring: 0 } as Fig;
+      const mix = { cx: 0, cy: 0, bx: 0, by: 0, rho: 0, period: 0, gap: 0, calm: 0, hole: 0, field: 0, text: 0, half: 0, ring: 0 } as Fig;
       let sum = 0;
       let textRect: [number, number, number, number] | undefined;
       let stacked = false;
@@ -243,6 +243,7 @@ export function Stage() {
       gl.uniform1f(u.uRho, mix.rho * dpr);
       gl.uniform1f(u.uPeriod, mix.period * dpr);
       gl.uniform1f(u.uGap, mix.gap * dpr);
+      gl.uniform1f(u.uCalm, mix.calm);
       gl.uniform1f(u.uHole, mix.hole);
       gl.uniform1f(u.uField, mix.field);
       gl.uniform1f(u.uText, textRect ? mix.text : 0);
