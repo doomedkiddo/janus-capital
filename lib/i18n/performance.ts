@@ -31,7 +31,7 @@ export const performance: Record<Lang, PerformanceCopy> = {
   en: {
     overline: "Live record",
     title: "Live Performance",
-    lede: "The combined net value of our live market-making accounts, marked to market. Amounts are not disclosed.",
+    lede: "The combined net value of our live market-making accounts, marked to market.",
     asof: "As of {t} UTC",
     since: "Since {t} UTC",
     cadence: "synchronised daily",
@@ -65,14 +65,14 @@ export const performance: Record<Lang, PerformanceCopy> = {
     scan: "Move across the record to read it",
     notes: [
       "Three live accounts taken together. Net value from five-minute equity snapshots, open positions included: each interval's return is the accounts' summed profit over their summed equity at its start, compounded. Deposits and withdrawals change the weights, not the net value; an account counts from the moment it joins. Bitcoin held as collateral in one account is left out.",
-      "Sharpe from complete UTC days, annualised by √365; the record is under a year, so returns are not annualised. Amounts are not disclosed. Times in UTC.",
+      "Sharpe from complete UTC days, annualised by √365; the record is under a year, so returns are not annualised. Times in UTC.",
       "Live account record, for information only. Past performance is not indicative of future results.",
     ],
   },
   zh: {
     overline: "实盘记录",
     title: "实盘业绩",
-    lede: "实盘做市账户的合并净值，按市价计值。金额不披露。",
+    lede: "实盘做市账户的合并净值，按市价计值。",
     asof: "截至 {t} UTC",
     since: "自 {t} UTC 起",
     cadence: "每日同步",
@@ -106,7 +106,7 @@ export const performance: Record<Lang, PerformanceCopy> = {
     scan: "在记录上移动以读数",
     notes: [
       "三个实盘账户合并计算。净值取自每 5 分钟的账户权益快照（含未平仓头寸浮动盈亏）：每一段的收益 = 各账户盈亏之和 ÷ 该段起点的权益之和，逐段连乘（复利）。入金与出金只改变权重，不计入净值；账户自加入之时起计入。其中一个账户内作为保证金的比特币不计入。",
-      "夏普比率以完整 UTC 日收益计算，按 √365 年化；样本不足一年，收益率不作年化。金额不披露。时间均为 UTC。",
+      "夏普比率以完整 UTC 日收益计算，按 √365 年化；样本不足一年，收益率不作年化。时间均为 UTC。",
       "以上为实盘账户记录，仅供参考；过往业绩不代表未来表现。",
     ],
   },
