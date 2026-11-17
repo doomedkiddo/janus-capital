@@ -45,7 +45,7 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
     <ContactContext.Provider value={{ open: openModal }}>
       {children}
       {open && (
-        <div className="ink-surface fixed inset-0 z-[70] flex items-center justify-center p-4 text-paper">
+        <div className="ink-surface fixed inset-0 z-[70] flex items-center justify-center p-4 font-mono text-paper">
           <div className="absolute inset-0 bg-ink/80 backdrop-blur-md" onClick={() => setOpen(false)} />
           <div role="dialog" aria-modal="true" aria-label={copy.title} className="reg relative w-full max-w-md border border-paper/20 bg-ink p-7 md:p-9">
             <button

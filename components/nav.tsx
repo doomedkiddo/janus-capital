@@ -75,7 +75,7 @@ export function Nav() {
             <Link
               href="/about"
               className={cn(
-                "beam-link flex items-baseline gap-2 py-1 font-serif text-[16px] italic tracking-normal transition-colors",
+                "beam-link flex items-baseline gap-2 py-1 transition-colors",
                 pathname === "/about" ? "text-accent" : "hover:text-accent",
                 FOCUS,
               )}
@@ -126,8 +126,8 @@ export function Nav() {
                 {link.label}
               </a>
             ))}
-            <Link href="/about" onClick={() => setMobileOpen(false)} className="flex items-baseline gap-4 border-b border-paper/15 py-5 font-serif text-3xl italic text-accent">
-              <span className="font-mono text-[11px] not-italic">04</span>
+            <Link href="/about" onClick={() => setMobileOpen(false)} className="flex items-baseline gap-4 border-b border-paper/15 py-5 display text-3xl text-accent">
+              <span className="font-mono text-[11px]">04</span>
               {copy.story}
             </Link>
             <button onClick={handleContact} className="btn-beam btn-beam--solid mt-8 w-full">
