@@ -77,14 +77,6 @@ export const home: Record<Lang, HomeCopy> = {
           title: "Time Series",
           desc: "Continuous 24/7 directional models spanning microsecond order-book imbalance to mid- and low-frequency momentum and mean-reversion regimes.",
         },
-        {
-          title: "Reinforcement Learning Market Making",
-          desc: "Built on a Rust zero-allocation execution core, RL models jointly estimate short-horizon price direction, adverse selection, and inventory risk to quote dynamically.",
-        },
-        {
-          title: "Polymarket Market Making",
-          desc: "Probability calibration, Bayesian updating, and strict tail-risk controls for continuous two-sided liquidity across event-driven prediction markets.",
-        },
       ],
     },
     footer: "© 2026 Sagnac Trading. All Rights Reserved.",
@@ -163,14 +155,6 @@ export const home: Record<Lang, HomeCopy> = {
         {
           title: "时序策略",
           desc: "面向 7×24 连续市场，从微秒级订单簿失衡到中低频动量与均值回归，在不同时间尺度上捕捉方向性收益。",
-        },
-        {
-          title: "强化学习做市",
-          desc: "基于 Rust 零分配低延迟执行底座，由强化学习模型联合估计短期价格方向、逆向选择风险与库存偏离，实时动态报价。",
-        },
-        {
-          title: "Polymarket 做市",
-          desc: "针对事件驱动型合约建立概率校准与贝叶斯更新模型，在严格的尾部风控约束下提供双边流动性。",
         },
       ],
     },

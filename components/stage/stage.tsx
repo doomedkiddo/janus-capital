@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { WORDMARK } from "@/components/logo";
-import { bus, type AnchorKind } from "./bus";
+import { bus, nodeAngle, type AnchorKind } from "./bus";
 import { FRAG, VERT } from "./shader";
 
 // The wordmark's outline in the logo's own units (components/logo.tsx): S A G | N A C.
@@ -117,7 +117,7 @@ export function Stage() {
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
     const U = (name: string) => gl.getUniformLocation(prog, name);
     const u = Object.fromEntries(
-      ["uRes", "uBg", "uFg", "uAc", "uC", "uB", "uRho", "uHole", "uField", "uText", "uHalf", "uRing", "uPeriod", "uShift", "uGap", "uCalm", "uTextRect", "uTex", "uTurn", "uTau", "uNode", "uPx", "uIntro"].map((n) => [n, U(n)]),
+      ["uRes", "uBg", "uFg", "uAc", "uC", "uB", "uRho", "uHole", "uField", "uText", "uHalf", "uRing", "uPeriod", "uShift", "uGap", "uCalm", "uTextRect", "uTex", "uTurn", "uTau", "uNode", "uCount", "uStart", "uPx", "uIntro"].map((n) => [n, U(n)]),
     );
 
     const textures = [false, true].map((stacked) => {
@@ -201,7 +201,7 @@ export function Stage() {
       const shift = (quiet ? 0 : t * 0.045) + omega * 0.6;
       bus.omega.set(omega);
       bus.phase.set((((0.5 + shift) % 1) + 1) % 1);
-      node += (-Math.PI / 2 + (bus.node * Math.PI) / 3 - node) * (1 - Math.exp(-dt * 5));
+      node += (nodeAngle(bus.node, bus.count) - node) * (1 - Math.exp(-dt * 5));
 
       // every anchor near the viewport pulls the figure towards its own place and shape
       const vh = window.innerHeight;
@@ -253,6 +253,8 @@ export function Stage() {
       gl.uniform1f(u.uTurn, quiet ? 0 : t * 0.05 + y * 0.0012);
       gl.uniform1f(u.uTau, quiet ? 0.9 : t * 1.05);
       gl.uniform1f(u.uNode, node);
+      gl.uniform1f(u.uCount, bus.count);
+      gl.uniform1f(u.uStart, nodeAngle(0, bus.count));
       gl.uniform1f(u.uPx, dpr);
       gl.uniform1f(u.uIntro, intro);
       if (textRect) {

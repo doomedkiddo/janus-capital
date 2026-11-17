@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { RECORD_URL, type PerformanceRecord } from "./performance";
+import { LINES_URL, RECORD_URL, type LinesFile, type PerformanceRecord } from "./performance";
 
 let pending: Promise<PerformanceRecord> | null = null;
 
@@ -28,4 +28,25 @@ export function useRecord() {
     };
   }, []);
   return rec;
+}
+
+let pendingLines: Promise<LinesFile> | null = null;
+
+/** The secondary strategy lines: undefined while they load, "error" if the file is not there. */
+export function useLines() {
+  const [file, setFile] = useState<LinesFile | "error">();
+  useEffect(() => {
+    let on = true;
+    (pendingLines ??= fetch(LINES_URL, { cache: "no-cache" }).then((r) => (r.ok ? (r.json() as Promise<LinesFile>) : Promise.reject(r.status)))).then(
+      (j) => on && setFile(j),
+      () => {
+        pendingLines = null;
+        if (on) setFile("error");
+      },
+    );
+    return () => {
+      on = false;
+    };
+  }, []);
+  return file;
 }

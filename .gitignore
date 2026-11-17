@@ -16,6 +16,9 @@ tsconfig.tsbuildinfo
 # Local verification scratch
 .tmp/
 
+# Written daily by Oculus (composite lines); the page shows the section only when the file is there
+public/data/performance/lines.json
+
 # Environment variables
 .env
 .env.local

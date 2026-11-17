@@ -32,6 +32,8 @@ uniform sampler2D uTex;
 uniform float uTurn;   // the table
 uniform float uTau;    // how far the pulses have travelled from where they met
 uniform float uNode;   // angle of the node where they meet
+uniform float uCount;  // nodes on the ring
+uniform float uStart;  // angle of the first
 uniform float uPx;     // device pixels per CSS pixel
 uniform float uIntro;  // the two rows enter from opposite sides
 
@@ -113,8 +115,9 @@ void main() {
     float nodes = 0.0;
     float lit = 0.0;
     float knock = 0.0;
-    for (int k = 0; k < 6; k++) {
-      float a = -1.5707963 + float(k) * 1.0471976;
+    for (int k = 0; k < 8; k++) {
+      if (float(k) >= uCount) break;
+      float a = uStart + float(k) * TAU / uCount;
       float dn = length(p - R * vec2(cos(a), sin(a)));
       float da = abs(mod(a - uNode + 3.14159265, TAU) - 3.14159265);
       float on = 1.0 - smoothstep(0.0, 0.45, da);

@@ -11,6 +11,7 @@ import { pct, utc, type PerformanceRecord } from "@/lib/performance";
 import { useRecord } from "@/lib/use-record";
 import { cn } from "@/lib/utils";
 import { at, linePath, ticks, useWidth } from "./charts";
+import { StrategyLines } from "./strategy-lines";
 
 const fmt = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ""));
 const pctAxis = (v: number) => `${Math.round(v * 100)}%`.replace("-", "−");
@@ -70,6 +71,7 @@ export function PerformanceView({ variant = "page" }: { variant?: "page" | "home
               <DailyFringes rec={live} className="lg:col-span-7" />
               <Ledger rec={live} className="lg:col-span-5" />
             </div>
+            <StrategyLines className="mt-16 md:mt-24" />
             <ol className="mt-16 grid gap-6 border-t border-paper/15 pt-8 text-[12.5px] leading-relaxed text-paper/50 md:mt-24 md:grid-cols-3 md:gap-10">
               {copy.notes.map((n, i) => (
                 <li key={i} className="flex gap-4">

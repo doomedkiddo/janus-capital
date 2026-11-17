@@ -28,6 +28,12 @@ export type PerformanceRecord = {
 
 export const RECORD_URL = "/data/performance/live.json";
 
+/** The secondary strategy lines (Oculus `composite lines`): one record each, a rolling window of `days` days whose
+ *  net value starts at 1. Same rule: ratios only. */
+export type LinesFile = { days: number; lines: Record<string, PerformanceRecord> };
+
+export const LINES_URL = "/data/performance/lines.json";
+
 export const pct = (v: number, digits = 1, sign = true) =>
   `${sign && v > 0 ? "+" : ""}${(v * 100).toFixed(digits)}%`.replace("-", "−");
 

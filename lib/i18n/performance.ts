@@ -24,6 +24,8 @@ export type PerformanceCopy = {
   /** captions of the two figures and the table */
   figs: [string, string, string];
   scan: string;
+  /** the secondary strategy lines: `lines` are [file key, number of the strategy line in home.strategy.items, what to add to its name] */
+  others: { fig: string; desc: string; ret: string; hint: string; lines: [string, number, string][] };
   notes: string[];
 };
 
@@ -63,6 +65,16 @@ export const performance: Record<Lang, PerformanceCopy> = {
     daily: { title: "Latest days", desc: "UTC days, newest first", cols: ["Date", "Return", "Net value"], partial: "* partial day" },
     figs: ["Fig. 1 · Net-value interferogram", "Fig. 2 · Daily fringes", "Table 1 · Latest days"],
     scan: "Move across the record to read it",
+    others: {
+      fig: "Fig. 3 · Other strategy lines",
+      desc: "one live account each, marked to market · the last {n} days, starting at 1",
+      ret: "{n}-day return",
+      hint: "hover to open",
+      lines: [
+        ["stat-arb", 2, ""],
+        ["hf-maker", 4, "high-frequency maker"],
+      ],
+    },
     notes: [
       "Three live accounts taken together. Net value from five-minute equity snapshots, open positions included: each interval's return is the accounts' summed profit over their summed equity at its start, compounded. Deposits and withdrawals change the weights, not the net value; an account counts from the moment it joins. Bitcoin held as collateral in one account is left out.",
       "Sharpe from complete UTC days, annualised by √365; the record is under a year, so returns are not annualised. Times in UTC.",
@@ -104,6 +116,16 @@ export const performance: Record<Lang, PerformanceCopy> = {
     daily: { title: "最近各日", desc: "UTC 日，由近及远", cols: ["日期", "日收益", "期末净值"], partial: "* 不足一日" },
     figs: ["图 1 · 净值干涉图", "图 2 · 逐日条纹", "表 1 · 最近各日"],
     scan: "在记录上移动以读数",
+    others: {
+      fig: "图 3 · 其他策略线",
+      desc: "各为一个实盘账户的净值，按市价计 · 近 {n} 日，起点记为 1",
+      ret: "近 {n} 日收益",
+      hint: "悬停展开",
+      lines: [
+        ["stat-arb", 2, ""],
+        ["hf-maker", 4, "高频 Maker"],
+      ],
+    },
     notes: [
       "三个实盘账户合并计算。净值取自每 5 分钟的账户权益快照（含未平仓头寸浮动盈亏）：每一段的收益 = 各账户盈亏之和 ÷ 该段起点的权益之和，逐段连乘（复利）。入金与出金只改变权重，不计入净值；账户自加入之时起计入。其中一个账户内作为保证金的比特币不计入。",
       "夏普比率以完整 UTC 日收益计算，按 √365 年化；样本不足一年，收益率不作年化。时间均为 UTC。",

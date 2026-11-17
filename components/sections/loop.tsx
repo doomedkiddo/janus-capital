@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { bus, useStageAnchor } from "@/components/stage/bus";
+import { bus, nodeAngle, useStageAnchor } from "@/components/stage/bus";
 import { ChapterMark } from "@/components/ui/chapter-mark";
 import { ShiftText } from "@/components/ui/shift-text";
 import { home } from "@/lib/i18n/home";
@@ -34,7 +34,10 @@ export function Loop() {
     bus.node = i;
     setActive(i);
   });
-  useEffect(() => () => void (bus.node = 0), []);
+  useEffect(() => {
+    bus.count = n;
+    return () => void (bus.node = 0);
+  }, [n]);
 
   const go = (i: number) => {
     const el = track.current;
@@ -68,7 +71,7 @@ export function Loop() {
             <div className="md:col-span-6">
               <motion.div ref={ring} style={{ opacity: lettered }} className="relative mx-auto aspect-square w-[min(60vw,34svh)] md:w-[min(33vw,54svh)]">
                 {items.map((_, k) => {
-                  const a = ((-90 + 60 * k) * Math.PI) / 180;
+                  const a = nodeAngle(k, n);
                   return (
                     <button
                       key={k}

@@ -21,9 +21,14 @@ export const bus = {
   omega: motionValue(0),
   /** phase between the two rows in periods, [0, 1); the mark rests at 0.5 */
   phase: motionValue(0.5),
-  /** loop figure: index of the node where the two pulses meet */
+  /** loop figure: how many nodes the ring carries, and the index of the one where the two pulses meet */
+  count: 4,
   node: 0,
 };
+
+/** Angle of node k of n on the ring (radians, clockwise from three o'clock). The first sits half a step before twelve,
+ *  so that with four nodes none lies on the axis, where the beam enters the ring. */
+export const nodeAngle = (k: number, n: number) => -Math.PI / 2 - Math.PI / n + (k * 2 * Math.PI) / n;
 
 /** Ref callback that registers an element as the place for one of the stage's figures. */
 export function useStageAnchor(kind: AnchorKind) {
