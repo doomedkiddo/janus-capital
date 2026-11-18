@@ -57,9 +57,9 @@ type Fig = { cx: number; cy: number; bx: number; by: number; rho: number; period
 const GEOMETRY = ["cx", "cy", "bx", "by", "rho", "period", "gap", "calm", "metal"] as const;
 const LEVELS = ["hole", "field", "text", "half", "ring"] as const;
 
-// The skin of the full-bleed figures (the name and the closing band): flat bars, or relief on a polished plate.
-// For the comparison it is chosen in the address: ?skin=metal.
-let METAL = 0;
+// The skin of the full-bleed figures (the name and the closing band): relief on a polished plate (the user's choice,
+// 2026-11-17). The flat bars it replaced are still there for comparison: ?skin=flat.
+let METAL = 1;
 
 function figure(kind: AnchorKind, r: DOMRect): Fig & { textRect?: [number, number, number, number]; stacked?: boolean } {
   const cx = r.left + r.width / 2;
@@ -95,7 +95,7 @@ export function Stage() {
 
   useEffect(() => {
     const canvas = ref.current!;
-    METAL = new URLSearchParams(window.location.search).get("skin") === "metal" ? 1 : 0;
+    METAL = new URLSearchParams(window.location.search).get("skin") === "flat" ? 0 : 1;
     const gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "high-performance" });
     const root = document.documentElement;
     if (!gl) {

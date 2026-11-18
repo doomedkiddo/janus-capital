@@ -145,11 +145,11 @@ void main() {
       float light = step(0.5, dot(uBg, vec3(0.299, 0.587, 0.114)));
       vec3 base = mix(mix(uBg, vec3(0.30, 0.33, 0.37), 0.32), mix(uBg, vec3(0.62, 0.65, 0.69), 0.30), light);
       vec3 room = mix(vec3(0.70, 0.74, 0.80), vec3(0.26, 0.29, 0.33), light);
-      base = mix(base, uAc, 0.16 * sel);
+      base = mix(base, uAc, 0.22 * sel);
       room = mix(room, uAc, 0.62 * sel);
       // kept low: the plate is lit, not shining (the full-contrast fringes were too bright to look at)
-      metal = base + (room - base) * clamp(lit.x * mix(0.52, 0.62, sel), 0.0, 1.0);
-      metal = mix(metal, vec3(1.0), lit.y * mix(0.32, 0.22, light));
+      metal = base + (room - base) * clamp(lit.x * mix(0.38, 0.66, sel), 0.0, 1.0);
+      metal = mix(metal, vec3(1.0), lit.y * mix(0.32, 0.22, light) * mix(0.6, 1.0, sel));
       // the plate's edges fade into the ground as the calm field's do
       metalA = uMetal * uField * body * mix(1.0, smoothstep(0.0, 0.42 * R, -d), uCalm) * smoothstep(0.0, 1.0, uIntro);
     }
