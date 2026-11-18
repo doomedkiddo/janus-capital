@@ -36,6 +36,8 @@ uniform float uCount;  // nodes on the ring
 uniform float uStart;  // angle of the first
 uniform float uPx;     // device pixels per CSS pixel
 uniform float uIntro;  // the two rows enter from opposite sides
+uniform float uMetal;  // 1: the fringes are relief on a polished plate, lit, instead of flat bars
+uniform float uTime;   // seconds, for the light and the slow swell of the plate
 
 const float TAU = 6.2831853;
 
@@ -53,12 +55,58 @@ float bars(float x, float P) {
   return clamp(0.5 + 0.25 * P - f, 0.0, 1.0);
 }
 
+// which fringes are out of step at f: the letters of the name, or the lower half
+float selAt(vec2 f, vec2 p) {
+  float s = 0.0;
+  if (uText > 0.001) {
+    vec2 uv = (f - uTextRect.xy) / uTextRect.zw;
+    if (uv.x > 0.0 && uv.x < 1.0 && uv.y > 0.0 && uv.y < 1.0) s = texture2D(uTex, uv).a * uText;
+  }
+  return max(s, clamp(0.5 + p.y, 0.0, 1.0) * uHalf);
+}
+
+// a ridge on every bar of the flat picture: highest on its centre, flat between
+float ridge(float u) {
+  float r = 0.5 + 0.5 * cos(TAU * u);
+  return r * r * (3.0 - 2.0 * r);
+}
+
+// The plate: the fringes as ridges, those of the name half a period along, on a surface that swells slowly like a
+// liquid. Unitless height; f in device pixels.
+float plate(vec2 f) {
+  vec2 p = f - uC;
+  float P = uPeriod;
+  float t = uTime;
+  float w = P * (0.2 * sin(p.y / (P * 3.1) + t * 0.33) + 0.14 * sin((0.6 * p.x + p.y) / (P * 5.3) - t * 0.25));
+  float s = selAt(f, p);
+  float h = mix(ridge((p.x + 0.25 * P + w) / P), ridge((p.x - 0.25 * P - uShift * P + w) / P), s);
+  // the liquid: two broad swells that drift against each other, much taller than the ridges, so the light rolls
+  // over the plate in large soft forms and the fringes ride on them
+  float swell = sin((p.x + 0.4 * p.y) / (P * 5.0) + t * 0.18) * sin((p.y - 0.3 * p.x) / (P * 3.6) - t * 0.13)
+              + 0.7 * sin((p.x - 0.8 * p.y) / (P * 7.5) - t * 0.11) * sin((0.5 * p.x + p.y) / (P * 4.8) + t * 0.09);
+  return 0.45 * h + 9.0 * swell;
+}
+
+// Lit by a studio: two tall soft boxes either side (they draw a line of light down every ridge), a long one above,
+// and a key light that drifts. Returns (light from the room, specular glints).
+vec2 studio(vec3 n) {
+  float t = uTime;
+  vec3 r = vec3(2.0 * n.z * n.x, 2.0 * n.z * n.y, 2.0 * n.z * n.z - 1.0);
+  float side = exp(-pow((r.x - 0.45 - 0.12 * sin(t * 0.17)) * 2.2, 2.0)) + 0.5 * exp(-pow((r.x + 0.55) * 2.0, 2.0));
+  float top = 0.42 * exp(-pow((r.y + 0.5 + 0.1 * sin(t * 0.11)) * 1.8, 2.0));
+  vec3 key = normalize(vec3(0.55 * cos(t * 0.13), -0.45, 0.7));
+  float glint = pow(max(dot(n, normalize(key + vec3(0.0, 0.0, 1.0))), 0.0), 40.0);
+  return vec2(clamp(side + top, 0.0, 1.4), glint);
+}
+
 void main() {
   vec2 f = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y);
   vec2 p = f - uC;
   float R = min(uB.x, uB.y);
   float fg = 0.0;
   float ac = 0.0;
+  vec3 metal = uBg;
+  float metalA = 0.0;
 
   if (uField > 0.001) {
     float d = sdBox(p, uB, uRho);
@@ -83,8 +131,28 @@ void main() {
 
     // a figure the size of the window must not dazzle: its field is kept low and fades out towards its edges
     float ground = mix(1.0, 0.17 * smoothstep(0.0, 0.42 * R, -d), uCalm);
-    fg += ref * (1.0 - sel) * body * uField * aRef * ground;
-    ac += dis * sel * body * uField * aDis * mix(1.0, 0.86, uCalm);
+    float bars2d = 1.0 - uMetal;
+    fg += ref * (1.0 - sel) * body * uField * aRef * ground * bars2d;
+    ac += dis * sel * body * uField * aDis * mix(1.0, 0.86, uCalm) * bars2d;
+
+    if (uMetal > 0.001) {
+      float e = 2.0 * uPx;
+      float hx = (plate(f + vec2(e, 0.0)) - plate(f - vec2(e, 0.0))) / (2.0 * e);
+      float hy = (plate(f + vec2(0.0, e)) - plate(f - vec2(0.0, e))) / (2.0 * e);
+      vec3 n = normalize(vec3(-hx * 0.42 * P, -hy * 0.42 * P, 1.0));
+      vec2 lit = studio(n);
+      // gunmetal on the dark ground, brushed steel on the light one; the name takes the accent in its reflections
+      float light = step(0.5, dot(uBg, vec3(0.299, 0.587, 0.114)));
+      vec3 base = mix(mix(uBg, vec3(0.30, 0.33, 0.37), 0.32), mix(uBg, vec3(0.62, 0.65, 0.69), 0.30), light);
+      vec3 room = mix(vec3(0.70, 0.74, 0.80), vec3(0.26, 0.29, 0.33), light);
+      base = mix(base, uAc, 0.16 * sel);
+      room = mix(room, uAc, 0.62 * sel);
+      // kept low: the plate is lit, not shining (the full-contrast fringes were too bright to look at)
+      metal = base + (room - base) * clamp(lit.x * mix(0.52, 0.62, sel), 0.0, 1.0);
+      metal = mix(metal, vec3(1.0), lit.y * mix(0.32, 0.22, light));
+      // the plate's edges fade into the ground as the calm field's do
+      metalA = uMetal * uField * body * mix(1.0, smoothstep(0.0, 0.42 * R, -d), uCalm) * smoothstep(0.0, 1.0, uIntro);
+    }
   }
 
   if (uRing > 0.001) {
@@ -139,7 +207,8 @@ void main() {
     ac += uRing * (inner * 0.55 + p2 + g2 + lit + flash * 0.5);
   }
 
-  vec3 col = mix(uBg, uFg, clamp(fg, 0.0, 1.0));
+  vec3 col = mix(uBg, metal, metalA);
+  col = mix(col, uFg, clamp(fg, 0.0, 1.0));
   col = mix(col, uAc, clamp(ac, 0.0, 1.0));
   gl_FragColor = vec4(col, 1.0);
 }
