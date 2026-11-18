@@ -14,14 +14,14 @@ export function Instruments() {
   const copy = about[lang].instruments;
 
   return (
-    <section className="relative px-5 py-14 md:py-20 lg:py-24">
+    <section className="relative px-5 py-14 md:px-10 md:py-20 lg:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mx-auto max-w-2xl text-center">
           <BlurFade>
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent/85">{copy.overline}</p>
+            <p className="label text-accent">{copy.overline}</p>
           </BlurFade>
           <BlurFade delay={0.06}>
-            <h2 className="mt-4 text-balance break-keep font-serif text-[2rem] leading-tight text-paper md:mt-5 md:text-[2.85rem]">
+            <h2 className="display mt-5 text-balance md:break-keep text-[2.3rem] text-paper md:mt-6 md:text-[3.4rem]">
               {copy.title}
             </h2>
           </BlurFade>
@@ -32,13 +32,13 @@ export function Instruments() {
             const Glyph = glyphs[index];
             return (
               <BlurFade key={item.label} delay={0.18 + index * 0.1}>
-                <article className="flex h-full flex-col border-t border-paper/10 pt-7">
+                <article className="flex h-full flex-col border-t border-paper/15 pt-7">
                   <div className="w-32 md:w-36">
                     <Glyph className="text-accent/80" />
                   </div>
-                  <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-accent/75">{item.label}</p>
-                  <h3 className="mt-2 font-serif text-xl text-paper md:text-[1.6rem]">{item.title}</h3>
-                  <p className="mt-3 text-[14px] leading-[1.9] text-paper/60 md:text-[15px]">{item.desc}</p>
+                  <p className="label mt-6 text-accent/85">{item.label}</p>
+                  <h3 className="display mt-3 text-[1.5rem] text-paper md:text-[1.8rem]">{item.title}</h3>
+                  <p className="mt-3 text-[13px] leading-[1.9] text-paper/60 md:text-[14px]">{item.desc}</p>
                   <code className="mt-auto block pt-6 font-mono text-[11px] text-accent/60">{item.code}</code>
                 </article>
               </BlurFade>
@@ -47,7 +47,7 @@ export function Instruments() {
         </div>
 
         <BlurFade delay={0.4}>
-          <p className="mt-14 text-balance text-center font-serif text-lg italic leading-relaxed text-paper/85 md:mt-20 md:text-[1.6rem]">
+          <p className="display mt-14 text-balance text-center text-[1.4rem] !leading-relaxed text-paper/85 md:mt-20 md:text-[2rem]">
             {copy.closing}
           </p>
         </BlurFade>

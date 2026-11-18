@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { bus } from "@/components/stage/bus";
 import { about } from "@/lib/i18n/about";
 import { useLanguage } from "@/lib/i18n/language-context";
 import { cn } from "@/lib/utils";
@@ -16,7 +17,10 @@ export function ChapterNav() {
     const onScroll = () => {
       const first = document.getElementById("chapter-1");
       if (!first) return;
-      setVisible(first.getBoundingClientRect().top < window.innerHeight * 0.6);
+      // shown from the first chapter until the closing call comes into view (it would sit on the closing band)
+      const end = document.getElementById("about-cta");
+      const past = end ? end.getBoundingClientRect().top < window.innerHeight * 0.85 : false;
+      setVisible(first.getBoundingClientRect().top < window.innerHeight * 0.6 && !past);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -35,7 +39,10 @@ export function ChapterNav() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (!visible) return;
         const index = sections.indexOf(visible.target as HTMLElement);
-        if (index >= 0) setActive(index);
+        if (index >= 0) {
+          setActive(index);
+          bus.node = index;
+        }
       },
       { rootMargin: "-40% 0px -40% 0px", threshold: [0.05, 0.3, 0.6] },
     );
@@ -60,7 +67,7 @@ export function ChapterNav() {
         >
           <span
             className={cn(
-              "whitespace-nowrap font-serif text-[11px] tracking-wide transition-all duration-300",
+              "whitespace-nowrap font-mono text-[11px] tracking-[0.12em] transition-all duration-300",
               active === index
                 ? "text-accent opacity-100"
                 : "text-paper/40 opacity-0 group-hover:opacity-100",
@@ -70,7 +77,7 @@ export function ChapterNav() {
           </span>
           <span
             className={cn(
-              "font-serif text-xs transition-colors duration-300",
+              "font-mono text-[11px] tabular-nums transition-colors duration-300",
               active === index ? "text-accent" : "text-paper/25 group-hover:text-accent/70",
             )}
           >

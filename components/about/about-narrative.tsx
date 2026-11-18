@@ -14,7 +14,6 @@ import { Instruments } from "@/components/about/instruments";
 import { NameStatement } from "@/components/about/name-statement";
 import { Prologue } from "@/components/about/prologue";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
-import { TracingBeam } from "@/components/ui/tracing-beam";
 import { about } from "@/lib/i18n/about";
 import { useLanguage } from "@/lib/i18n/language-context";
 
@@ -29,34 +28,23 @@ export function AboutNarrative() {
   }, [lang]);
 
   return (
-    <div className="ink-surface">
+    <>
       <ScrollProgress />
       <ChapterNav />
       <main>
         <AboutHero />
-        <div className="story-panel">
-          <TracingBeam>
-            <div className="relative z-[1]">
-              <Prologue />
-              {chapters.map((chapter, index) => {
-                const Glyph = glyphs[index];
-                return (
-                  <Chapter
-                    key={chapter.marker}
-                    chapter={chapter}
-                    index={index}
-                    glyph={<Glyph className="text-accent/80" />}
-                  />
-                );
-              })}
-              <NameStatement />
-              <Instruments />
-              <Epilogue />
-            </div>
-          </TracingBeam>
+        <div className="relative">
+          <Prologue />
+          {chapters.map((chapter, index) => {
+            const Glyph = glyphs[index];
+            return <Chapter key={chapter.marker} chapter={chapter} index={index} glyph={<Glyph className="text-accent/80" />} />;
+          })}
+          <NameStatement />
+          <Instruments />
+          <Epilogue />
         </div>
         <AboutCta />
       </main>
-    </div>
+    </>
   );
 }

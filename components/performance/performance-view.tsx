@@ -405,13 +405,20 @@ function Interferogram({ rec }: { rec: PerformanceRecord }) {
               {/* the deepest drawdown: from its peak to its trough */}
               <line x1={x(rows[iPeak][0])} x2={x(rows[iPeak][0])} y1={yUp(rows[iPeak][1])} y2={UP + SLIT + DN} strokeDasharray="2 3" className="stroke-neg/70" />
               <line x1={x(rows[iTrough][0])} x2={x(rows[iTrough][0])} y1={yUp(rows[iTrough][1])} y2={UP + SLIT + DN} strokeDasharray="2 3" className="stroke-neg/70" />
-              <text x={x(rows[iTrough][0]) + 8} y={UP + SLIT + DN - 4} fontSize={11} className="fill-neg font-mono tabular-nums">
+              {/* the label sits on the side of the trough that has room */}
+              <text
+                x={x(rows[iTrough][0]) + (x(rows[iTrough][0]) > w * 0.6 ? -8 : 8)}
+                textAnchor={x(rows[iTrough][0]) > w * 0.6 ? "end" : "start"}
+                y={UP + SLIT + DN - 4}
+                fontSize={11}
+                className="fill-neg font-mono tabular-nums"
+              >
                 {copy.nav.mdd} {pct(k.max_dd)}
               </text>
 
               <circle cx={x(last[0])} cy={yUp(last[1])} r={3.5} className="fill-accent" />
               <circle cx={x(last[0])} cy={yUp(last[1])} r={8} fill="none" className="stroke-accent/50" />
-              <text x={x(last[0]) - 14} y={yUp(last[1]) - 12} textAnchor="end" fontSize={17} className="fill-paper font-jost tabular-nums">
+              <text x={x(last[0]) - 14} y={yUp(last[1]) - 12} textAnchor="end" fontSize={17} stroke="rgb(var(--c-ink))" strokeWidth={5} paintOrder="stroke" className="fill-paper font-jost tabular-nums">
                 {last[1].toFixed(3)}
               </text>
             </g>

@@ -23,7 +23,7 @@ export function Depart() {
     <section id="contact" className="scroll-mt-16 border-t border-paper/15 pt-24 md:pt-36">
       <div className="mx-auto max-w-[1320px] px-5 md:px-10">
         <ChapterMark index={5} />
-        <h2 className={cn("display mt-6 md:mt-8", lang === "zh" ? "text-[3.6rem] md:text-[8rem]" : "text-[2.5rem] md:text-[6rem]")}>
+        <h2 className={cn("display mt-6 md:mt-8", lang === "zh" ? "text-[3rem] sm:text-[3.6rem] md:text-[8rem]" : "text-[2.5rem] md:text-[6rem]")}>
           <ShiftText className="!whitespace-normal">{cta.title}</ShiftText>
         </h2>
         <div className="mt-8 flex flex-col gap-8 md:mt-12 md:flex-row md:items-end md:justify-between">

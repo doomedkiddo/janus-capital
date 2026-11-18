@@ -78,42 +78,6 @@ html[data-theme="light"] .ink-surface {
   --logo-main: #090d13; --logo-accent: #0a84e0; --logo-sub: #667182;
 }
 
-/* ---------- About page surfaces ---------- */
-.story-surface {
-  position: relative;
-  background-color: rgb(var(--c-ink));
-  background-image:
-    radial-gradient(60% 50% at 50% 46%, rgb(var(--c-accent) / 0.08) 0%, transparent 70%),
-    radial-gradient(120% 70% at 50% -10%, rgb(var(--c-ink3) / 0.7) 0%, transparent 65%);
-}
-
-.story-surface::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--noise);
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Long-scroll narrative surface: no directional gradient, so it reads the same
-   at any container height. */
-.story-panel {
-  position: relative;
-  background-color: rgb(var(--c-ink));
-}
-
-.story-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--noise);
-  opacity: 0.04;
-  pointer-events: none;
-  z-index: 0;
-}
-
 /* Small-caps inscription lettering used for Latin epigraphs */
 .inscription {
   font-variant-caps: small-caps;
@@ -122,7 +86,9 @@ html[data-theme="light"] .ink-surface {
 
 /* Drop cap for narrative opening paragraphs */
 .dropcap::first-letter {
-  @apply font-serif text-accent;
+  font-family: var(--font-jost), var(--font-noto-serif), "Songti SC", serif;
+  font-weight: 300;
+  @apply text-accent;
   float: left;
   font-size: 3.6rem;
   line-height: 0.86;

@@ -199,7 +199,8 @@ void main() {
     float flash = meet * exp(-dot(mp, mp) / (700.0 * px * px));
 
     // the beam comes in along the axis and is split where it meets the ring
-    float beam = cov(abs(p.y) - 0.5 * px) * step(p.x, -R);
+    // (a short run of it, fading out: the ring may stand beside text)
+    float beam = cov(abs(p.y) - 0.5 * px) * step(p.x, -R) * smoothstep(-1.6 * R, -1.15 * R, p.x);
     vec2 s = p + vec2(R, 0.0);
     float split = cov(abs(s.x + s.y) * 0.7071 - 0.8 * px) * step(abs(s.x - s.y) * 0.7071, 14.0 * px);
 

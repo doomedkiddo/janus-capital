@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Live Performance — Sagnac Trading",
     description: "Live account record, marked to market.",
     type: "website",
-    images: ["/og.jpg?v=2"],
+    images: ["/og.jpg?v=3"],
   },
 };
 

@@ -23,7 +23,7 @@ export function Nav() {
 
   const prefix = pathname === "/" ? "" : "/";
   // on the pages built on the stage the bar is clear until the page moves; elsewhere it is a solid block
-  const bench = pathname === "/" || pathname.startsWith("/performance");
+  const bench = pathname === "/" || pathname.startsWith("/performance") || pathname.startsWith("/about");
   const links = [
     { href: `${prefix}#performance`, label: copy.performance },
     { href: `${prefix}#strategy`, label: copy.strategy },

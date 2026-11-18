@@ -69,8 +69,9 @@ export const metadata: Metadata = {
     title: "Sagnac Trading | Systematic Crypto Trading",
     description: "In the smallest difference, the turning of the world.",
     type: "website",
-    images: ["/og.jpg?v=2"],
+    images: [{ url: "/og.jpg?v=3", width: 1200, height: 630 }],
   },
+  twitter: { card: "summary_large_image", images: ["/og.jpg?v=3"] },
 };
 
 const themeBoot = `try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(${JSON.stringify(THEMES.map((t) => t.id))}.indexOf(t)>=0)document.documentElement.dataset.theme=t}catch(e){}`;
